@@ -5,7 +5,7 @@ ScriptVox is a command-line tool that makes a narrated and captioned MP4 from a 
 | Item | Data |
 |---|---|
 | Licence | Apache-2.0 |
-| Version | 0.1.0, a first private release. The public release follows |
+| Version | 0.1.0, the first public release |
 | Platforms | Linux and Windows. macOS is a preview: see [its limits](#macos-preview) |
 | Form | One binary. No account and no telemetry |
 | Cost control | A plan that costs money stops until you approve it |
@@ -115,7 +115,7 @@ The Windows program is not signed. Windows can show a warning for a file that yo
 
 ScriptVox uses the FFmpeg (`ffmpeg-full`) and the uv of Homebrew on macOS. The install script tells you the two commands. The demo video, captions, English cards, the default voice and the quality check were run on Apple silicon and on Intel. The limits at this time are:
 
-- In an Arabic card, Latin letters in an Arabic line are drawn too large.
+- `scriptvox setup image-local` has no build for Intel Macs. It refuses there with a clear message.
 - `scriptvox setup voice-local` can refuse a long data folder path. Set `SCRIPTVOX_DATA` to a short path.
 - ScriptVox has no pinned FFmpeg for macOS. It uses the FFmpeg of Homebrew.
 - The program is not signed.

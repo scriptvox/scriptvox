@@ -255,6 +255,11 @@ pub fn wait(project: &Path, id: &str, timeout: Duration) -> Envelope {
                 )
             }
             Some((_, Some(pid))) if !alive(pid) => {
+                // The supervisor can write its result and exit between the read above and this check
+                // (the macOS runner, 16 Nov 2026): read once more before calling it dead.
+                if let Some(v) = read_result(project, id) {
+                    return replay("wait", v);
+                }
                 // The supervisor died without a result (killed, crashed or out of memory).
                 return Envelope::fail_code(
                     "wait",

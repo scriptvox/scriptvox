@@ -72,7 +72,10 @@ fn a_model_is_added_pinned_and_runs_through_its_file() {
     };
 
     // The engine, as a stub: it records its arguments in the -o file.
-    let pin = scriptvox::provision::pin("sd-cli").unwrap();
+    // No sd-cli build is pinned for some systems (macOS Intel): `setup image-local` refuses there (tests/image_local.rs).
+    let Some(pin) = scriptvox::provision::pin("sd-cli") else {
+        return;
+    };
     let bin = scriptvox::provision::tool_dir(&pin).join(&pin.bins[0]);
     std::fs::create_dir_all(bin.parent().unwrap()).unwrap();
     std::fs::write(&bin, "#!/bin/sh\nwhile [ $# -gt 0 ]; do [ \"$1\" = -o ] && o=$2; a=\"$a $1\"; shift; done\n[ -n \"$o\" ] && echo \"$a\" > \"$o\"\nexit 0\n").unwrap();

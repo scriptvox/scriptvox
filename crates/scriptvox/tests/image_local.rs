@@ -42,6 +42,18 @@ fn local_image_is_opt_in_and_runs_one_process() {
     };
 
     let (code, v) = run(&["setup", "image-local", "--dry-run"], &[]);
+    // ponytail: a system with no pinned build (macOS Intel) must refuse with its name; the rest needs the build.
+    if p::pin("sd-cli").is_none() {
+        assert_eq!(code, 2, "{v}");
+        assert!(
+            v["error"]["message"]
+                .as_str()
+                .unwrap()
+                .contains("no image build is pinned"),
+            "{v}"
+        );
+        return;
+    }
     assert_eq!(code, 0, "{v}");
     assert!(
         v["metrics"]["download_bytes"].as_u64().unwrap() > 5_000_000_000,
