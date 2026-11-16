@@ -1,0 +1,11 @@
+/target
+*.snap.new
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.scriptvox/
+/dist
+scriptvox-out/
+/.env
+site/media/

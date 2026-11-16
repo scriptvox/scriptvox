@@ -1,0 +1,31 @@
+{
+  "lang": "en",
+  "tts": "kokoro-rust",
+  "voice": "af_heart",
+  "aspect": "16:9",
+  "duration": 40,
+  "hook": "A city learns to ride",
+  "music": "calm",
+  "music_level": "quiet",
+  "background": "ocean",
+  "transition": "dissolve",
+  "scenes": [
+    {"script": "In the city of Velmora, more people ride a bike to work each year. Here is that change in three pictures: a trend, a move and a table."},
+    {"script": "In 2021, about 4 thousand people cycled to work each day. Two years later it was 7 thousand, and by 2025 it was 11 thousand.",
+     "card": {"kind": "bars", "label": "Riders a day, thousands", "items": ["2021", "2023", "2025"], "values": [4, 7, 11]}},
+    {"script": "So the bike's share of all trips to work moved from 6 percent to 17 percent in four years.",
+     "card": {"kind": "number_line", "label": "Percent of trips by bike", "values": [0, 30], "points": [17], "items": ["Share"], "from": 6}},
+    {"script": "The centre gained the most. The north grew more slowly, and the harbour is still far behind.",
+     "card": {"kind": "table", "label": "Share by district",
+              "rows": [["District", "2021", "2025"], ["Centre", "9%", "24%"], ["North", "5%", "14%"], ["Harbour", "3%", "8%"]],
+              "mark": [{"part": "Centre", "on": "centre"}, {"part": "North", "on": "north"}, {"part": "Harbour", "on": "harbour"}]}},
+    {"script": "The lesson is simple. Where the city built safe lanes first, the riders came next.",
+     "card": {"kind": "title", "text": "Safe lanes first, riders next", "mark": [{"part": "Safe lanes", "on": "simple"}]}}
+  ],
+  "sources": [
+    {"text": "Riders a day: 4 thousand in 2021, 7 thousand in 2023, 11 thousand in 2025 (in thousands: 4, 7, 11)", "title": "PLACEHOLDER, replace: yearly travel count", "publisher": "Example City Survey"},
+    {"text": "Share of trips to work by bike: 6 percent in 2021, 17 percent in 2025", "title": "PLACEHOLDER, replace: yearly travel count", "publisher": "Example City Survey"},
+    {"text": "Share by district in 2021 and 2025: Centre 9% and 24%, North 5% and 14%, Harbour 3% and 8%", "title": "PLACEHOLDER, replace: district table", "publisher": "Example Transport Office"}
+  ],
+  "sources_card": true
+}

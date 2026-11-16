@@ -1,0 +1,13 @@
+{
+  "name": "scriptvox",
+  "version": "0.1.0",
+  "description": "Narrated, captioned, self-checked MP4s from a script, in English or Arabic, and edits of a video you have. It runs on your machine, and any paid model needs your approval.",
+  "mcpServers": {
+    "scriptvox": {
+      "command": "scriptvox",
+      "args": [
+        "mcp"
+      ]
+    }
+  }
+}

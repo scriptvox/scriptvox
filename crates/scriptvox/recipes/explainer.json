@@ -1,0 +1,34 @@
+{
+  "lang": "en",
+  "tts": "kokoro-rust",
+  "voice": "af_heart",
+  "aspect": "16:9",
+  "duration": 60,
+  "hook": "Nobody else sees your rainbow",
+  "music": "calm",
+  "music_level": "quiet",
+  "background": "night",
+  "transition": "fade",
+  "scenes": [
+    {"script": "A rainbow is not a thing in the sky. You can never reach it, and nobody else sees the one you see."},
+    {"script": "Most people think it is painted on the clouds, like a picture on a wall. But it is made fresh, inside falling rain, every moment.",
+     "card": {"kind": "title", "text": "Made inside the rain"}},
+    {"script": "Here is the real reason. Sunlight looks white, but it is a mix of every colour.",
+     "card": {"kind": "title", "text": "White light is every colour", "on": "white",
+              "mark": [{"part": "every colour", "on": "every", "style": "highlight"}]}},
+    {"script": "When sunlight enters a raindrop, it bends. Then it bounces off the back of the drop, and it leaves on the same side it came in.",
+     "card": {"kind": "steps", "items": ["Light enters the drop", "It bounces off the back", "It leaves on the same side"]}},
+    {"script": "Each colour bends by a slightly different amount, so the white light fans out. Red leaves at one angle, and violet at another.",
+     "card": {"kind": "diagram", "label": "One drop sorts the light",
+              "nodes": ["Sunlight", "Raindrop", "Red", "Violet"],
+              "edges": [["Sunlight", "Raindrop"], ["Raindrop", "Red"], ["Raindrop", "Violet"]]}},
+    {"script": "So each drop sends only one colour to your eye. Higher drops send red, lower drops send violet, and millions together draw the bow.",
+     "card": {"kind": "list", "items": ["Higher drops send red", "Lower drops send violet", "Millions draw the bow"]}},
+    {"script": "That is why the sun must be behind you. Try it with a garden hose: turn your back to the sun, and spray a fine mist.",
+     "cards": [
+       {"kind": "title", "text": "Sun behind you, rain in front", "hold": 2.5},
+       {"kind": "list", "items": ["Turn your back to the sun", "Spray a fine mist"], "on": "Try"}
+     ]},
+    {"script": "So the next rainbow you see is yours alone: light, sorted by water, and aimed at your own eyes."}
+  ]
+}

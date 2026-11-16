@@ -1,0 +1,29 @@
+{
+  "lang": "en",
+  "tts": "kokoro-rust",
+  "voice": "af_heart",
+  "aspect": "9:16",
+  "duration": 30,
+  "hook": "5 habits for a calm morning",
+  "music": "pulse",
+  "cut_on": "beat",
+  "sfx": true,
+  "background": "#1d2b64,#6a3093,#2d1b4e",
+  "transition": "slide",
+  "captions": "pop",
+  "scenes": [
+    {"script": "Five small habits that make a morning calm. Number one changed mine."},
+    {"script": "Five. Lay out your clothes the night before.",
+     "card": {"kind": "title", "text": "5. Clothes out the night before"}},
+    {"script": "Four. Drink a glass of water before your coffee.",
+     "card": {"kind": "title", "text": "4. Water before coffee"}},
+    {"script": "Three. Open the window, and let the light in.",
+     "card": {"kind": "title", "text": "3. Open the window"}},
+    {"script": "Two. Write the one task that matters today.",
+     "card": {"kind": "title", "text": "2. One task that matters"}},
+    {"script": "And one. Leave your phone in another room until you are dressed.",
+     "card": {"kind": "title", "text": "1. Phone in another room"}},
+    {"script": "So: clothes, water, window, task, and phone. Which one will you try tomorrow?",
+     "card": {"kind": "list", "items": ["Clothes", "Water", "Window", "Task", "Phone"]}}
+  ]
+}

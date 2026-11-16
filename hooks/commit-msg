@@ -1,0 +1,5 @@
+#!/bin/sh
+# DCO: every commit needs a Signed-off-by line. Use: git commit -s
+grep -q '^Signed-off-by: .\+ <.\+>' "$1" && exit 0
+echo "scriptvox: commit refused. Add a DCO sign-off: git commit -s" >&2
+exit 1

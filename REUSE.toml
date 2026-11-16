@@ -1,0 +1,54 @@
+version = 1
+
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 ScriptVox contributors"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = "assets/fonts/**"
+precedence = "override"
+SPDX-FileCopyrightText = "2022 The Noto Project Authors"
+SPDX-License-Identifier = "OFL-1.1"
+
+# Adapted from a dual-licensed (MIT OR Apache-2.0) source, used here as Apache-2.0. See docs/provenance/kokoro-rust.md.
+[[annotations]]
+path = "crates/scriptvox-kokoro/src/**"
+precedence = "override"
+SPDX-FileCopyrightText = ["2026 ArtCraft Team and the FilmCraft contributors", "2026 ScriptVox contributors"]
+SPDX-License-Identifier = "Apache-2.0"
+
+# Helpers adapted from a dual-licensed (MIT OR Apache-2.0) source, used here as Apache-2.0. See docs/provenance/comfyui-bridge.md.
+[[annotations]]
+path = "crates/scriptvox/src/comfy.rs"
+precedence = "override"
+SPDX-FileCopyrightText = ["2026 ArtCraft Team and the craft-ai-integrations contributors", "2026 ScriptVox contributors"]
+SPDX-License-Identifier = "Apache-2.0"
+
+# Generated test patterns, CC0-1.0 as PROVENANCE.tsv records.
+[[annotations]]
+path = "fixtures/media/**"
+precedence = "override"
+SPDX-FileCopyrightText = "2026 ScriptVox contributors"
+SPDX-License-Identifier = "CC0-1.0"
+
+# Generated third-party notices: they quote other licences, including their SPDX lines.
+[[annotations]]
+path = "licenses/THIRD_PARTY.md"
+precedence = "override"
+SPDX-FileCopyrightText = "2026 ScriptVox contributors"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = "plugins/kokoro/**"
+precedence = "override"
+SPDX-FileCopyrightText = "2026 ScriptVox contributors"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+# Launch videos made with paid AI services (Kling through fal, ElevenLabs): vendor terms, not Apache-2.0.
+[[annotations]]
+path = "docs/launch/hero-*.mp4"
+precedence = "override"
+SPDX-FileCopyrightText = "2026 ScriptVox contributors"
+SPDX-License-Identifier = "LicenseRef-VendorTerms"

@@ -1,0 +1,9 @@
+{
+  "script": "This video was made by one command. [pause 0.5] I wrote the script. ScriptVox read it aloud, cut my own clips on the rhythm of my voice, and wrote captions that fit the screen. [pause 0.5] It checked every frame before it gave me the file. It never spent a cent I did not approve. And if my laptop had crashed, it would have picked up where it stopped. [pause 0.5] ScriptVox. Ask your agent for a video.",
+  "media": "clips",
+  "music": "calm",
+  "duration": 24,
+  "aspect": "9:16",
+  "tts": "elevenlabs",
+  "voice": "21m00Tcm4TlvDq8ikWAM"
+}

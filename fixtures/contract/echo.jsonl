@@ -1,0 +1,7 @@
+{"core":{"jsonrpc":"2.0","id":0,"method":"hello","params":{"proto":"1.0"}}}
+{"worker":{"jsonrpc":"2.0","id":0,"result":{"proto":"1.0","worker":"0.1.0","tools":[{"name":"debug.echo","network":false,"cost":"free","deterministic":true},{"name":"tts.edge","network":true,"cost":"free","deterministic":false,"timing":"exact","terms":"unofficial, personal or non-commercial, may break"},{"name":"tts.elevenlabs","network":true,"cost":"paid","deterministic":false,"timing":"exact","terms":"commercial use on paid plans, see elevenlabs.io/terms"}]}}}
+{"core":{"jsonrpc":"2.0","id":7,"method":"tool.call","params":{"tool":"debug.echo","run":"r_test","stage":"voice","input":{"text":"مرحبا"},"out_dir":"tmp/7"}}}
+{"worker":{"jsonrpc":"2.0","method":"event","params":{"type":"progress","done":1,"total":1,"explain":"echo"}}}
+{"worker":{"jsonrpc":"2.0","id":7,"result":{"artifacts":{},"echo":{"text":"مرحبا"},"cost_usd":0}}}
+{"core":{"jsonrpc":"2.0","id":8,"method":"shutdown"}}
+{"worker":{"jsonrpc":"2.0","id":8,"result":{}}}

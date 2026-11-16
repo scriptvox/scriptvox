@@ -1,0 +1,7 @@
+# What a setup will fetch, and the card found (G007, first part)
+
+- `doctor` gives `gpus`: name and `memory_mb` of each NVIDIA card, from `nvidia-smi`, which only reads. An empty list means none was seen, not that none exists: AMD and Apple are not read yet.
+- `setup`, `setup voice-local` and `setup speech-local` with `--dry-run` give `downloads` (name, version, bytes, licence, URL), `data_folder`, `gpus`, and `download_bytes` and `disk_free_bytes` in `metrics`. A `disk` warning shows when the pinned files do not fit. Nothing is fetched or created.
+- The plugin setups add a `note`: the Python packages come on top, through uv. Measured for `speech-local`: 418 MB in its `.venv`.
+- `setup image-local --dry-run` adds `expected`: `tier`, `detail`, `seconds_per_picture` and `measured` (G007, second part). Tier comes from the largest NVIDIA card against the 3,882 MB that `--offload-to-cpu` used on the H100: `card`, `small_card` or `cpu`. Only `cpu` gives a time: 446 s, measured at 512x512 on 2 cores with the pinned build, not at full size. A card gets `null`, because the pinned build has no measured speed on any card. `measured` holds both real figures with where they ran: the pinned build on the CPU, and the 44 s of an own CUDA build on one H100 (G006). Tiers read NVIDIA only, so an AMD or Apple machine reads `cpu`, and `detail` says another card may work through Vulkan.
+- `setup speech-local` and `voice-local` get no tier: not needed for a CPU model.

@@ -1,0 +1,117 @@
+{
+  "$defs": {
+    "ErrorInfo": {
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "fix": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "retry_after_s": {
+          "format": "uint64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "description": "`scriptvox.result/v1`: with `--json` (or no TTY) stdout holds exactly this document.",
+  "properties": {
+    "artifacts": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "command": {
+      "type": "string"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ErrorInfo"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "events_file": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "findings": {
+      "items": true,
+      "type": "array"
+    },
+    "metrics": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "needs_input": {
+      "items": true,
+      "type": "array"
+    },
+    "next": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "plan_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "run_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "ok",
+    "status",
+    "command",
+    "needs_input",
+    "findings",
+    "next",
+    "artifacts",
+    "metrics"
+  ],
+  "title": "Envelope",
+  "type": "object"
+}

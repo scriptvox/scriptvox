@@ -1,0 +1,17 @@
+---
+source: crates/scriptvox/tests/captions.rs
+expression: "to_vtt(&pages, &words)"
+---
+WEBVTT
+
+00:00:00.100 --> 00:00:03.800
+ScriptVox turns your own clips into a
+narrated video.
+
+00:00:03.800 --> 00:00:08.088
+It writes captions that fit the screen,
+in English and in Arabic.
+
+00:00:08.088 --> 00:00:10.375
+Every render can resume after
+a crash.

@@ -1,0 +1,8 @@
+{
+  "fixture": "kinetic",
+  "command": "scriptvox demo --golden",
+  "size": "180x320",
+  "fps": 12,
+  "secs": 4,
+  "psnr_min": 38.0
+}

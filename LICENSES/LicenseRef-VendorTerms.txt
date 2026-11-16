@@ -1,0 +1,10 @@
+Vendor terms (not an open licence)
+
+This file was made with paid third-party AI services. The ScriptVox project does not place it under Apache-2.0
+and grants no rights beyond what those services grant.
+
+docs/launch/hero-en.mp4 and docs/launch/hero-ar.mp4: the pictures are clips made by Kling 3.0 Pro through fal.ai,
+and the voice is made by ElevenLabs. Their use is under the terms of Kling (https://kling.ai/docs/user-policy),
+fal.ai (https://fal.ai/terms) and ElevenLabs (https://elevenlabs.io/terms-of-use). Read those terms before you
+reuse or redistribute these files. The briefs that made them (docs/launch/hero-en.json, hero-ar.json) are
+Apache-2.0, so you can make your own videos from them.

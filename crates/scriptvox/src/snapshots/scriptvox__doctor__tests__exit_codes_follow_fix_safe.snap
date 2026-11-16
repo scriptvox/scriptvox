@@ -1,0 +1,9 @@
+---
+source: crates/scriptvox/src/doctor.rs
+expression: "table.join(\"\\n\")"
+---
+all ok: 0 OK
+warn only: 0 OK
+fail, safe fix: 1 ERROR
+fail, unsafe fix: 10 NEEDS_INPUT
+both fails: 10 NEEDS_INPUT

@@ -1,0 +1,19 @@
+# Licence and ban gate (PLAN-R1 D8). Run: just licenses
+[graph]
+all-features = true
+
+[licenses]
+allow = [
+    "Apache-2.0", "Apache-2.0 WITH LLVM-exception", "MIT", "BSD-2-Clause", "BSD-3-Clause",
+    "ISC", "Zlib", "Unicode-3.0", "OpenSSL", "CDLA-Permissive-2.0", "blessing", "MPL-2.0",
+]
+confidence-threshold = 0.9
+unused-allowed-license = "allow"
+
+[bans]
+multiple-versions = "allow"
+wildcards = "deny"
+allow-wildcard-paths = true
+
+[advisories]
+ignore = []

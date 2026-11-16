@@ -1,0 +1,64 @@
+---
+source: crates/scriptvox/tests/discovery.rs
+expression: "run(&[\"templates\"])[\"templates\"]"
+---
+[
+  {
+    "aspects": [
+      "9:16",
+      "16:9",
+      "1:1",
+      "4:5",
+      "3:4",
+      "4:3",
+      "2:3",
+      "21:9"
+    ],
+    "command": "scriptvox make --script f",
+    "keys": "none",
+    "name": "narrated-gradient",
+    "status": "available"
+  },
+  {
+    "aspects": [
+      "9:16"
+    ],
+    "command": "scriptvox demo",
+    "keys": "none",
+    "name": "kinetic-text",
+    "status": "available"
+  },
+  {
+    "aspects": [
+      "9:16",
+      "16:9",
+      "1:1",
+      "4:5",
+      "3:4",
+      "4:3",
+      "2:3",
+      "21:9"
+    ],
+    "command": "scriptvox make --script f --media dir",
+    "keys": "none",
+    "name": "own-media-reel",
+    "status": "available"
+  },
+  {
+    "aspects": [
+      "9:16",
+      "16:9",
+      "1:1",
+      "4:5",
+      "3:4",
+      "4:3",
+      "2:3",
+      "21:9"
+    ],
+    "command": "scriptvox make --script f --stock auto",
+    "keys": "none",
+    "name": "stock-short",
+    "optional_keys": "PEXELS_API_KEY or PIXABAY_API_KEY add those sources",
+    "status": "available"
+  }
+]

@@ -1,0 +1,44 @@
+# Upload limits and screen zones per platform (G057). Data, not code. Read on the date in `read`.
+# `source` says where each figure comes from. "official" is the platform's own page. "secondary" is third-party guides
+# that quote the platform; the platform's own page could not be read on that date, so check it before a paid campaign.
+# A limit nobody could read is left out, and `check --platform` says it did not check it.
+
+[[platform]]
+name = "youtube-shorts"
+label = "YouTube Shorts"
+aspects = ["9:16", "1:1"]
+max_seconds = 180
+read = "2026-11-10"
+source = "official"
+url = "https://support.google.com/youtube/answer/15424877"
+note = "Up to three minutes, square or vertical. A wider frame is not a Short. No published screen zones were found."
+
+[[platform]]
+name = "youtube"
+label = "YouTube"
+aspects = ["16:9"]
+read = "2026-11-10"
+source = "official"
+url = "https://support.google.com/youtube/answer/15424877"
+note = "A 16:9 video stays long form. No length limit was read."
+
+[[platform]]
+name = "instagram-reels"
+label = "Instagram Reels (ads)"
+aspects = ["9:16"]
+safe = { top = 14, bottom = 35, left = 6, right = 6 }
+read = "2026-11-10"
+source = "secondary"
+url = "https://adkit.so/tools/safe-zones/meta"
+note = "Ad placement figures, as several guides quote Meta. Meta's own page could not be read on this date. Other guides differ for organic Reels."
+
+[[platform]]
+name = "tiktok"
+label = "TikTok (in-feed ads)"
+aspects = ["9:16", "16:9", "1:1"]
+max_mb = 500
+safe = { top = 13, bottom = 35, left = 0, right = 0 }
+read = "2026-11-10"
+source = "secondary"
+url = "https://ads.tiktok.com/resources/help/article/tiktok-reservation-in-feed-ads-reach-frequency?lang=en"
+note = "500 MB and the shapes are from TikTok's reservation in-feed page. TikTok publishes no fixed zone: it depends on caption length. The zone is one guide's reading of a 720x1280 template. The duration limit differs by ad type, so it is not checked."

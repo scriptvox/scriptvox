@@ -1,0 +1,8 @@
+#!/bin/sh
+# Key scan on the staged diff. Keys never enter the repo (PLAN-R1 L0).
+# ponytail: regex scan of common key shapes; add gitleaks if a key ever slips past.
+if git diff --cached -U0 --no-color | grep '^+' | grep -Eq \
+  'sk-[A-Za-z0-9_-]{40,}|AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{36,}|xox[abpr]-[A-Za-z0-9-]{10,}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}:[0-9a-f]{32}|hf_[A-Za-z0-9]{30,}|sk_[a-f0-9]{40,}|github_pat_[A-Za-z0-9_]{40,}|AIza[0-9A-Za-z_-]{35}|[?&]sig=[A-Za-z0-9%]{30,}|Basic [A-Za-z0-9+/]{20,}={0,2}|-----BEGIN [A-Z ]*PRIVATE KEY-----'; then
+  echo "scriptvox: commit refused. The staged diff holds what looks like a secret key." >&2
+  exit 1
+fi

@@ -1,0 +1,90 @@
+---
+source: crates/scriptvox/tests/discovery.rs
+expression: "v[\"voices\"]"
+---
+[
+  {
+    "business_use": "Personal use only",
+    "commercial": false,
+    "cost": "free",
+    "engine": "edge",
+    "gender": "male",
+    "id": "ar-AE-HamdanNeural",
+    "lang": "ar",
+    "network": true,
+    "service": "free, external service, no key",
+    "terms": "unofficial, personal or non-commercial, may break",
+    "timing": "exact"
+  },
+  {
+    "business_use": "Personal use only",
+    "commercial": false,
+    "cost": "free",
+    "engine": "edge",
+    "gender": "female",
+    "id": "ar-AE-FatimaNeural",
+    "lang": "ar",
+    "network": true,
+    "service": "free, external service, no key",
+    "terms": "unofficial, personal or non-commercial, may break",
+    "timing": "exact"
+  },
+  {
+    "business_use": "Personal use only",
+    "commercial": false,
+    "cost": "free",
+    "engine": "edge",
+    "gender": "male",
+    "id": "ar-SA-HamedNeural",
+    "lang": "ar",
+    "network": true,
+    "service": "free, external service, no key",
+    "terms": "unofficial, personal or non-commercial, may break",
+    "timing": "exact"
+  },
+  {
+    "business_use": "Business use yes",
+    "commercial": true,
+    "cost": "paid",
+    "engine": "elevenlabs",
+    "gender": "any",
+    "id": "21m00Tcm4TlvDq8ikWAM",
+    "key": "ELEVENLABS_API_KEY",
+    "lang": "en,ar",
+    "model": "eleven_multilingual_v2",
+    "network": true,
+    "price_checked": "2026-11-06",
+    "price_source": "https://elevenlabs.io/pricing/api",
+    "service": "paid external API, your own key ELEVENLABS_API_KEY, $0.08 per 1000 characters",
+    "terms": "commercial use on paid plans, see elevenlabs.io/terms",
+    "timing": "exact",
+    "usd_per_1k_chars": 0.08
+  },
+  {
+    "business_use": "Business use yes",
+    "commercial": true,
+    "cost": "free",
+    "engine": "selfhost",
+    "gender": "built-in (one voice; clone a consented sample for others)",
+    "id": "chatterbox-ar",
+    "key": "SCRIPTVOX_SELFHOST_KEY",
+    "lang": "ar",
+    "network": true,
+    "service": "no charge, on your own GPU service (`services/gen`), your own key",
+    "terms": "Chatterbox Multilingual (MIT) on self-hosted GPUs, watermarked output; word times from Whisper",
+    "timing": "aligned"
+  },
+  {
+    "business_use": "Business use yes",
+    "commercial": true,
+    "cost": "free",
+    "engine": "none",
+    "gender": "no voice: text on screen at reading pace, with music if the brief has it",
+    "id": "no-voice",
+    "lang": "en,ar",
+    "network": false,
+    "service": "free, local",
+    "terms": "no voice is made",
+    "timing": "reading pace"
+  }
+]

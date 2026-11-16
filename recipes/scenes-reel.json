@@ -1,0 +1,10 @@
+{
+  "scenes": [
+    {"script": "Start on the test card. It sets the tone.", "media": "../fixtures/media/01-testcard.mp4"},
+    {"script": "Cut to the fractal for the big idea.", "media": "../fixtures/media/02-fractal.jpg"},
+    {"script": "Then the cells, while the music carries on.", "media": "../fixtures/media/04-cells.jpg"}
+  ],
+  "hook": "Every line, its own shot",
+  "music": "calm",
+  "aspect": "9:16"
+}

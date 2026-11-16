@@ -1,0 +1,19 @@
+# scriptvox-gen: open video and image models behind a fal-style queue (server.py). Built by kaniko on a build machine; the weights are not
+# in the image: an init step pulls them from the registry (oras) onto the node NVMe once.
+FROM pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime
+RUN pip install --no-cache-dir diffusers==0.42.1 transformers==5.22.1 accelerate==1.15.0 ftfy==6.3.1 \
+        imageio==2.37.0 imageio-ffmpeg==0.6.0 sentencepiece==0.2.1 \
+        omegaconf==2.3.0 einops==0.8.1 rotary_embedding_torch==0.8.9 opencv-python-headless==4.12.0.88 \
+        gguf==0.17.1 psutil==7.1.0 timm==1.0.29 kornia==0.8.2 \
+ && python -c "import urllib.request,tarfile,io,hashlib; d=urllib.request.urlopen('https://github.com/oras-project/oras/releases/download/v1.2.3/oras_1.2.3_linux_amd64.tar.gz').read(); assert hashlib.sha256(d).hexdigest()=='b4efc97a91f471f323f193ea4b4d63d8ff443ca3aab514151a30751330852827', 'oras tarball sha256'; tarfile.open(fileobj=io.BytesIO(d)).extract('oras','/usr/local/bin')" \
+ && python -c "import urllib.request,tarfile,io,hashlib; d=urllib.request.urlopen('https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler/archive/refs/tags/v2.5.23.tar.gz').read(); assert hashlib.sha256(d).hexdigest()=='1838948a224a3defaf82adbc7e995f7afd3839b7b94cc4f24a0dfd2283b9d4c4'; t=tarfile.open(fileobj=io.BytesIO(d)); t.extractall('/opt'); import os; os.rename('/opt/ComfyUI-SeedVR2_VideoUpscaler-2.5.23','/opt/seedvr2')" \
+ && python -c "import urllib.request,tarfile,zipfile,io,hashlib,os,shutil; g=lambda u,h:(lambda d:(hashlib.sha256(d).hexdigest()==h or exit('sha256 '+u)) and d)(urllib.request.urlopen(u).read()); t=tarfile.open(fileobj=io.BytesIO(g('https://github.com/hzwer/Practical-RIFE/archive/bbfd2ea90910789a860ea3e2b32a240cd577b75e.tar.gz','b4c979a966e0070ae513e3757bf4d41baaa53f1ab301d0c9d20c596329e32726'))); t.extractall('/opt'); os.rename('/opt/Practical-RIFE-bbfd2ea90910789a860ea3e2b32a240cd577b75e','/opt/rife'); z=zipfile.ZipFile(io.BytesIO(g('https://huggingface.co/hzwer/RIFE/resolve/main/RIFEv4.26_0921.zip','1fa9b9cda3d9b8c3e301359e2595960902f97bf926c08598b0e9957a3f3f760e'))); os.makedirs('/opt/rife/train_log'); [open('/opt/rife/train_log/'+n,'wb').write(z.read('RIFEv4.26_0921/'+n)) for n in ('IFNet_HDv3.py','flownet.pkl')]" \
+ && ln -s "$(python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')" /usr/local/bin/ffmpeg \
+ && oras version && ffmpeg -hide_banner -encoders 2>/dev/null | grep -q libx264 && pip freeze | grep -iE "^(torch|diffusers|transformers|accelerate|huggingface)" \
+ && python -c "import timm, kornia; from diffusers import Flux2KleinPipeline, WanImageToVideoPipeline, WanPipeline; print('imports ok')" \
+ && cd /opt/seedvr2 && python inference_cli.py --help > /dev/null && python -c 'import src.models.video_vae_v3.modules.attn_video_vae, src.models.dit_3b.nadit' && echo seedvr2 cli ok \
+ && cd /opt/rife && python -c 'from train_log.IFNet_HDv3 import IFNet; IFNet(); print("rife ok")'
+COPY server.py engines_video.py /app/
+ENV PYTHONUNBUFFERED=1 HF_HUB_OFFLINE=1 DIFFUSERS_NO_TELEMETRY=1 ENGINES=video PYTHONPATH=/app
+EXPOSE 8080
+CMD ["python", "/app/server.py"]

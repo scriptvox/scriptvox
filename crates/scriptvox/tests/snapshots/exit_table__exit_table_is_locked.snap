@@ -1,0 +1,16 @@
+---
+source: crates/scriptvox/tests/exit_table.rs
+expression: "table.join(\"\\n\")"
+---
+ 0 OK                 ok, also a detached start
+ 1 ERROR              error, fixable
+ 2 USAGE              usage error
+ 3 GATE_FAILED        a quality gate failed
+ 4 APPROVAL_NEEDED    approval needed for this plan
+ 5 PROVIDER_RETRYABLE provider error, retry is safe
+ 6 UNCONFIRMED_CHARGE unconfirmed charge, do NOT retry
+ 7 WATCHDOG_KILL      watchdog killed a stalled step
+ 8 CANCELLED          cancelled
+ 9 STILL_RUNNING      still running (wait timeout only)
+10 NEEDS_INPUT        needs input from a human or the agent
+70 INTERNAL           internal bug

@@ -1,0 +1,146 @@
+{
+ "voice": "en-US-AndrewNeural",
+ "text": "ScriptVox turns your own clips into a narrated video. It writes captions that fit the screen, in English and in Arabic. Every render can resume after a crash.",
+ "words": [
+  {
+   "text": "ScriptVox",
+   "start": 0.1,
+   "end": 0.737
+  },
+  {
+   "text": "turns",
+   "start": 0.75,
+   "end": 1.1
+  },
+  {
+   "text": "your",
+   "start": 1.113,
+   "end": 1.325
+  },
+  {
+   "text": "own",
+   "start": 1.337,
+   "end": 1.525
+  },
+  {
+   "text": "clips",
+   "start": 1.538,
+   "end": 2.025
+  },
+  {
+   "text": "into",
+   "start": 2.138,
+   "end": 2.375
+  },
+  {
+   "text": "a",
+   "start": 2.388,
+   "end": 2.438
+  },
+  {
+   "text": "narrated",
+   "start": 2.45,
+   "end": 2.938
+  },
+  {
+   "text": "video",
+   "start": 2.95,
+   "end": 3.388
+  },
+  {
+   "text": "It",
+   "start": 3.8,
+   "end": 3.95
+  },
+  {
+   "text": "writes",
+   "start": 3.962,
+   "end": 4.188
+  },
+  {
+   "text": "captions",
+   "start": 4.2,
+   "end": 4.713
+  },
+  {
+   "text": "that",
+   "start": 4.725,
+   "end": 4.875
+  },
+  {
+   "text": "fit",
+   "start": 4.888,
+   "end": 5.15
+  },
+  {
+   "text": "the",
+   "start": 5.162,
+   "end": 5.25
+  },
+  {
+   "text": "screen",
+   "start": 5.263,
+   "end": 5.788
+  },
+  {
+   "text": "in",
+   "start": 6.075,
+   "end": 6.188
+  },
+  {
+   "text": "English",
+   "start": 6.25,
+   "end": 6.763
+  },
+  {
+   "text": "and",
+   "start": 6.912,
+   "end": 7.025
+  },
+  {
+   "text": "in",
+   "start": 7.037,
+   "end": 7.137
+  },
+  {
+   "text": "Arabic",
+   "start": 7.15,
+   "end": 7.675
+  },
+  {
+   "text": "Every",
+   "start": 8.088,
+   "end": 8.325
+  },
+  {
+   "text": "render",
+   "start": 8.338,
+   "end": 8.713
+  },
+  {
+   "text": "can",
+   "start": 8.725,
+   "end": 8.875
+  },
+  {
+   "text": "resume",
+   "start": 8.887,
+   "end": 9.35
+  },
+  {
+   "text": "after",
+   "start": 9.488,
+   "end": 9.763
+  },
+  {
+   "text": "a",
+   "start": 9.775,
+   "end": 9.812
+  },
+  {
+   "text": "crash",
+   "start": 9.825,
+   "end": 10.375
+  }
+ ]
+}

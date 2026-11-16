@@ -1,0 +1,4 @@
+{"core":{"jsonrpc":"2.0","id":5,"method":"tool.call","params":{"tool":"tts.elevenlabs","input":{"text":"Paid words.","voice":"21m00Tcm4TlvDq8ikWAM","out_dir":"tmp/5","usd_per_1k_chars":0.3}}}}
+{"worker":{"jsonrpc":"2.0","id":"w1","method":"ledger.reserve","params":{"provider":"elevenlabs","est_usd":0.0033}}}
+{"core":{"jsonrpc":"2.0","id":"w1","error":{"code":-32020,"message":"spend cap $0.00 reached"}}}
+{"worker":{"jsonrpc":"2.0","id":5,"error":{"code":-32020,"message":"spend cap $0.00 reached"}}}

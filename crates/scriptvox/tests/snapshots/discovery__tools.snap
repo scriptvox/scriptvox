@@ -1,0 +1,226 @@
+---
+source: crates/scriptvox/tests/discovery.rs
+expression: "run(&[\"tools\"])[\"tools\"]"
+---
+[
+  {
+    "cost": "free",
+    "licence": "GPL-3.0-or-later (pinned BtbN build)",
+    "name": "engine.ffmpeg",
+    "network": false,
+    "process": "native"
+  },
+  {
+    "cost": "free",
+    "name": "tts.edge",
+    "network": true,
+    "process": "python worker",
+    "service": "free, external service, no key",
+    "terms": "unofficial, personal or non-commercial, may break",
+    "timing": "exact"
+  },
+  {
+    "cost": "paid",
+    "name": "tts.elevenlabs",
+    "network": true,
+    "process": "python worker",
+    "service": "paid external API, your own key ELEVENLABS_API_KEY, $0.08 per 1000 characters",
+    "terms": "commercial use on paid plans, see elevenlabs.io/terms",
+    "timing": "exact"
+  },
+  {
+    "cost": "free",
+    "name": "stock.video.pexels",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": true,
+      "note": "Pexels licence: free to use, no attribution needed, do not resell or redistribute as stock",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "free external API, your own key PEXELS_API_KEY"
+  },
+  {
+    "cost": "free",
+    "name": "stock.video.pixabay",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": true,
+      "note": "Pixabay Content Licence: free to use, do not sell or redistribute unaltered",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "free external API, your own key PIXABAY_API_KEY"
+  },
+  {
+    "cost": "free",
+    "name": "stock.video.commons",
+    "network": true,
+    "output_terms": {
+      "attribution_required": true,
+      "commercial": null,
+      "note": "Terms per file: CC0, public domain or CC BY forms, read from each file's page",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "free external API, no key"
+  },
+  {
+    "cost": "free",
+    "name": "stock.video.archive",
+    "network": true,
+    "output_terms": {
+      "attribution_required": true,
+      "commercial": null,
+      "note": "Terms per file: the licence its uploader states on the item",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "free external API, no key"
+  },
+  {
+    "cost": "paid",
+    "name": "video.gen.kling-2.6-pro",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": null,
+      "note": "Kling through fal. Not confirmed for business use: the fal page says commercial use via fal. Kling's own terms (https://kling.ai/docs/user-policy, updated 21 Apr 2026) ask for written permission for commercial use, so read both before business use. Read 9 Nov 2026.",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "paid external API through fal, your own key FAL_KEY, $0.07/s"
+  },
+  {
+    "cost": "paid",
+    "name": "video.gen.minimax-h3-max-turbo",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": null,
+      "note": "MiniMax H3 through fal. Output may run up to 0.7 s longer than asked (fal page). Not confirmed for business use: the fal page tags it for commercial use, and the page of MiniMax's own terms (https://platform.minimax.io/protocol/terms-of-service) gave no text to read. Read 9 Nov 2026.",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "paid external API through fal, not run live yet, your own key FAL_KEY, $0.046/s"
+  },
+  {
+    "cost": "paid",
+    "name": "video.gen.grok-imagine",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": null,
+      "note": "xAI Grok Imagine through fal. Not confirmed for business use: the fal page tags it for commercial use, and the terms of xAI (https://x.ai/legal) refused an automated read. Read 9 Nov 2026.",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "paid external API through fal, not run live yet, your own key FAL_KEY, $0.0704/s"
+  },
+  {
+    "cost": "paid",
+    "name": "image.gen.flux-pro-ultra-fal",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": null,
+      "note": "FLUX1.1 [pro] ultra through fal, a closed model. The page says $0.06 per image and also billing by rounded megapixels, so the price is an estimate. Not confirmed for business use: the fal page says commercial use enabled via fal partnership, and the terms of Black Forest Labs (https://bfl.ai/legal/terms-of-service, revised 1 Aug 2026) let you use your output for your own purposes. Read them before business use. Read 9 Nov 2026.",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "paid external API through fal, not run live yet, your own key FAL_KEY, $0.06 an image"
+  },
+  {
+    "cost": "paid",
+    "name": "stt.scribe-fal",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": null,
+      "note": "ElevenLabs speech to text through fal, a closed model, $0.03 per minute of audio. `edit`, `clips`, `analyze` and `dub` use it only when no free speech row is set up, and only with `--approve` of its own plan. A data URI as audio_url is not stated on the page. Not confirmed for business use: the terms of ElevenLabs (https://elevenlabs.io/terms-of-use, updated 9 Oct 2026) allow commercial use on paid plans only, and do not say how a call through fal counts. Read 9 Nov 2026.",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "paid external API through fal, not run live yet, your own key FAL_KEY, $0.0005/s of audio"
+  },
+  {
+    "cost": "paid",
+    "name": "video.gen.kling-3.0-pro",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": null,
+      "note": "Kling 3.0 Pro through fal, a closed model. Not confirmed for business use: the fal page tags it for commercial use. Kling's own terms (https://kling.ai/docs/user-policy, updated 21 Apr 2026) ask for written permission for commercial use, so read both before business use. Read 9 Nov 2026. $0.112 a second with sound off, $0.168 with sound.",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "paid external API through fal, your own key FAL_KEY, $0.112/s"
+  },
+  {
+    "cost": "paid",
+    "name": "video.gen.seedance-2-fal",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": null,
+      "note": "Seedance 2.0 through fal, a closed model, at 720p. The page prices $0.3034 a second with sound and does not state a price with sound off, so the price is an estimate. Not confirmed for business use: the fal page tags it for commercial use, and no terms for outputs were found on https://seed.bytedance.com/en/seedance2_0. Read 9 Nov 2026.",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "paid external API through fal, not run live yet, your own key FAL_KEY, $0.3034/s"
+  },
+  {
+    "cost": "paid",
+    "name": "lipsync.sync-lipsync-2-fal",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": null,
+      "note": "lipsync-2 through fal, a closed model, $3 a minute. Not confirmed for business use: the fal page says commercial use is permitted with its Partner designation, and the terms of Sync Labs (https://sync.so/terms, revised 6 Jun 2024) do not cover outputs. Read 9 Nov 2026. Use a person's face and voice only with their consent.",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "paid external API through fal, not run live yet, your own key FAL_KEY, $0.05/s of the source"
+  },
+  {
+    "cost": "paid",
+    "name": "video.gen.kling-4.0-fal",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": null,
+      "note": "Kling 4.0 through fal, a closed model, at 1080p. Not confirmed for business use: the fal listing tags it for commercial use. Kling's own terms (https://kling.ai/docs/user-policy, updated 21 Apr 2026) ask for written permission for commercial use, so read both before business use. Read 9 Nov 2026. A 720p call costs $0.157 a second.",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "paid external API through fal, not run live yet, your own key FAL_KEY, $0.235/s"
+  },
+  {
+    "cost": "paid",
+    "name": "video.gen.luma-ray-3.2-fal",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": null,
+      "note": "Luma Ray 3.2 through fal, a closed model, at 720p. Not confirmed for business use: the fal listing tags it for commercial use, and the terms of Luma (https://lumalabs.ai/legal/tos, updated 14 May 2026) allow commercial use only of output made during an active subscription. Read 9 Nov 2026.",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "paid external API through fal, not run live yet, your own key FAL_KEY, $0.2/s"
+  },
+  {
+    "cost": "paid",
+    "name": "video.gen.gemini-omni-flash-fal",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": null,
+      "note": "Gemini Omni Flash 1.2 through fal, a closed model, at 720p. Native sound is in the price and scriptvox adds its own voice. Not confirmed for business use: the fal listing tags it for commercial use, and Google's terms (https://aistudio.google.com/docs/terms, effective 23 Mar 2026) claim no ownership and have no clause on commercial use. Read 9 Nov 2026.",
+      "redistribution": false
+    },
+    "process": "native http row",
+    "service": "paid external API through fal, not run live yet, your own key FAL_KEY, $0.0819/s"
+  }
+]

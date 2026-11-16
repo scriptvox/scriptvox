@@ -1,0 +1,17 @@
+$ scriptvox plan --brief brief.json
+  exit 3  SVX_NEEDS_SHORTER_SCRIPT: narration is 1.78x the 6.0 s target (estimated before TTS; nothing was synthesized or rendered)
+  fix: Cut about 7 words, or raise --duration.
+  (the agent cuts the script)
+$ scriptvox plan --brief brief-fit.json
+  ok  cost $0.00  tts.edge, engine.ffmpeg, gates
+$ scriptvox make --brief brief-fit.json --detach
+  running  run r_14ecdb
+$ scriptvox wait r_14ecdb
+  ok  6.0 s  gates: black pass, slideshow pass, silence pass, loudness pass, av_drift pass, words pass, captions pass, text_bounds pass
+  (the owner asks for a headline: only that field changes, the voice is kept)
+$ scriptvox resume r_14ecdb --patch hook.json
+  running  run r_14ecdb.1
+$ scriptvox wait r_14ecdb.1
+  ok  6.0 s  gates: black pass, slideshow pass, silence pass, loudness pass, av_drift pass, words pass, captions pass, text_bounds pass
+$ scriptvox snapshot r_14ecdb.1 --sheet 9
+  ok  r_14ecdb.1.sheet.png  (9 frames)

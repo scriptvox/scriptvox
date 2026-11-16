@@ -1,0 +1,5 @@
+{
+  "permissions": {
+    "deny": ["Edit(~/ai-video-research/repos/**)"]
+  }
+}

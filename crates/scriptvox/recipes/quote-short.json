@@ -1,0 +1,17 @@
+{
+  "lang": "en",
+  "tts": "none",
+  "aspect": "9:16",
+  "duration": 10,
+  "music": "calm",
+  "background": "night",
+  "transition": "dissolve",
+  "captions": "reveal",
+  "scenes": [
+    {"script": "Some days the list is long and the hours are short."},
+    {"script": "On those days, remember this. [pause 1]",
+     "card": {"kind": "quote", "text": "Start small. Small is still a start.", "on": "remember",
+              "mark": [{"part": "still a start", "on": "this", "style": "highlight"}]}},
+    {"script": "Pick one thing. Begin now."}
+  ]
+}

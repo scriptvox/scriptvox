@@ -1,0 +1,146 @@
+# macOS build and smoke test on GitHub's own Apple runners. Not run by hand yet: the first run on GitHub is the proof.
+# It starts only by hand (Actions, "macOS build", Run workflow) or on a version tag, because a macOS minute counts as
+# ten on a private repository.
+#
+# ScriptVox has no pinned FFmpeg for macOS, so this uses a Homebrew build that has libass, through SCRIPTVOX_FFMPEG. The result is
+# an artifact, not a release: the owner decides when a macOS file goes into a release.
+name: macOS build
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "arm = Apple silicon only (a macOS minute counts as ten on a private repository). Empty = both"
+        required: false
+        default: ""
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        # 11 Nov 2026: GitHub answered "The configuration 'macos-14-arm64-us-xl' is not supported" for macos-14,
+        # and a macos-13 job stayed in the queue. `macos-latest` is Apple silicon; `macos-15-intel` is the Intel image.
+        include: ${{ fromJSON(inputs.only == 'arm' && '[{"runner":"macos-latest","target":"aarch64-apple-darwin"}]' || '[{"runner":"macos-latest","target":"aarch64-apple-darwin"},{"runner":"macos-15-intel","target":"x86_64-apple-darwin"}]') }}
+    runs-on: ${{ matrix.runner }}
+    # Intel runners are about 4 times slower: the integration tests did not end in 60 min (16 Nov 2026).
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rust 1.99.1 and FFmpeg
+        run: |
+          rustup toolchain install 1.99.1 --profile minimal
+          rustup default 1.99.1
+          rustup target add ${{ matrix.target }}
+          # ScriptVox draws captions and cards with FFmpeg's `ass` filter (libass). On 11 Nov 2026 the plain
+          # Homebrew `ffmpeg` had no such filter, so `ffmpeg-full` is tried first. The first build that has `ass`
+          # is used; with none, this step fails here and says so.
+          brew install ffmpeg-full || brew install ffmpeg
+          # uv as a Homebrew user has it (the formula depends on it). Without uv, tests that start the Python worker
+          # failed on "no uv pin for this platform", which is not what a user meets (14 Nov 2026).
+          brew install uv
+          ff=""
+          for c in "$(brew --prefix ffmpeg-full 2>/dev/null)/bin/ffmpeg" "$(brew --prefix ffmpeg 2>/dev/null)/bin/ffmpeg" "$(command -v ffmpeg || true)"; do
+            if [ -x "$c" ] && "$c" -hide_banner -filters 2>/dev/null | awk '{print $2}' | grep -qx ass; then ff="$c"; break; fi
+          done
+          if [ -z "$ff" ]; then echo "no FFmpeg with the ass filter (libass) was found on this runner"; exit 1; fi
+          echo "SCRIPTVOX_FFMPEG=$ff" >> "$GITHUB_ENV"
+          "$ff" -version | head -1
+
+      - name: Build
+        run: cargo build --release --locked --target ${{ matrix.target }}
+
+      - name: Unit tests
+        run: cargo test --release --locked --target ${{ matrix.target }} -p scriptvox --lib
+
+      # Real commands with no key and no voice service: the machine check, the zero-key video, and a captioned video
+      # with cards from a script. A failure here is a macOS fault to fix, so it fails the job.
+      - name: Smoke test
+        run: |
+          set -eu
+          bin="$PWD/target/${{ matrix.target }}/release/scriptvox"
+          mkdir smoke && cd smoke
+          "$bin" --version
+          # On a failure the answer goes to the log: it holds the cause.
+          show() { echo "--- $1"; cat "$1"; echo; exit 1; }
+          "$bin" doctor --offline --json > doctor.json || true
+          grep -o '"name":"ffmpeg","status":"[a-z]*"' doctor.json || true
+          "$bin" demo --json --out demo.mp4 > demo.json || show demo.json
+          printf '%s' '{"aspect":"16:9","tts":"none","scenes":[{"script":"A first line for the Mac.","card":{"kind":"title","text":"macOS"}},{"script":"Forty two percent.","card":{"kind":"stat","text":"42%","label":"works"}}]}' > b.json
+          "$bin" make --brief b.json --out made.mp4 --json > make.json || show make.json
+          "$bin" check made.mp4 --json > check.json || show check.json
+          "$bin" snapshot made.mp4 --sheet 4 --out sheet.png --json > snapshot.json || show snapshot.json
+          ls -la
+
+      # The whole test suite, for information: some tests may assume Linux. It does not fail the job yet.
+      - name: Integration tests (report only)
+        continue-on-error: true
+        timeout-minutes: 140
+        run: |
+          mkdir -p target/test-config target/test-data
+          env -u HF_TOKEN -u ELEVENLABS_API_KEY -u FAL_KEY \
+            SCRIPTVOX_CONFIG="$PWD/target/test-config" SCRIPTVOX_DATA="$PWD/target/test-data" INSTA_UPDATE=no \
+            cargo test --release --locked --no-fail-fast --target ${{ matrix.target }} -p scriptvox 2>&1 | tee tests.log | tail -60
+          # A golden-picture test writes the frame that differs to the temporary folder: keep those for a look.
+          mkdir -p test-frames && cp "${TMPDIR:-/tmp}"/scriptvox-*.png test-frames/ 2>/dev/null || true
+
+      - name: Package
+        run: |
+          set -eu
+          v=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
+          n="scriptvox-$v-${{ matrix.target }}"
+          mkdir -p "dist/$n"
+          cp "target/${{ matrix.target }}/release/scriptvox" LICENSE README.md CREDITS.md licenses/THIRD_PARTY.md LICENSES/OFL-1.1.txt "dist/$n/"
+          tar -czf "dist/$n.tar.gz" -C dist "$n"
+          (cd dist && shasum -a 256 "$n.tar.gz" > "$n.tar.gz.sha256")
+
+      # The Homebrew way, as a user gets it: the formula from scripts/packaging.sh with this archive, in a local tap.
+      # It must bring FFmpeg and uv by itself, so SCRIPTVOX_FFMPEG is unset here.
+      - name: Homebrew install test
+        run: |
+          set -eu
+          SCRIPTVOX_MAINTAINER="CI <ci@example.invalid>" SCRIPTVOX_BASE_URL="file://$PWD/dist" sh scripts/packaging.sh dist "$PWD/pkg-out"
+          cat pkg-out/homebrew/scriptvox.rb
+          brew tap-new --no-git scriptvox/local
+          cp pkg-out/homebrew/scriptvox.rb "$(brew --repository scriptvox/local)/Formula/scriptvox.rb"
+          brew install scriptvox/local/scriptvox
+          brew test scriptvox/local/scriptvox
+          unset SCRIPTVOX_FFMPEG
+          mkdir brewtest && cd brewtest
+          scriptvox --version
+          scriptvox doctor --offline --json > doctor.json || true
+          grep -o '"name":"ffmpeg","status":"[a-z]*"' doctor.json || true
+          scriptvox demo --json --out demo.mp4 > demo.json || { cat demo.json; exit 1; }
+          ls -la demo.mp4
+
+      # The default voice needs uv, Python packages and Microsoft's read-aloud service. A data-centre address may be
+      # refused by that service, so this step reports and does not fail the job.
+      - name: Voice through the Homebrew uv (report only)
+        continue-on-error: true
+        run: |
+          cd brewtest
+          unset SCRIPTVOX_FFMPEG
+          echo "ScriptVox reads this line aloud on a Mac." > s.txt
+          scriptvox make --script s.txt --out voice.mp4 --json > voice.json || { cat voice.json; exit 1; }
+          scriptvox check voice.mp4 --json | head -c 600
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scriptvox-${{ matrix.target }}
+          path: |
+            dist/*.tar.gz
+            dist/*.sha256
+            smoke/*.json
+            smoke/sheet.png
+            brewtest/*.json
+            pkg-out/homebrew/scriptvox.rb
+            tests.log
+            test-frames/*.png
+          if-no-files-found: warn

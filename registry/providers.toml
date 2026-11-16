@@ -1,0 +1,90 @@
+# HTTP provider rows (PLAN-R1 D3): data, run by Rust (src/http_rows.rs).
+# Paths: `a.b` reads a field, `a[*]` every array item, `a.*` every object value.
+# {q} query, {orientation} portrait|landscape|square, {key} the API key (query auth only).
+
+[[provider]]
+name = "pexels"
+kind = "stock.video"
+key = "pexels"
+search_url = "https://api.pexels.com/videos/search?query={q}&per_page=15&orientation={orientation}"
+auth_header = "Authorization"
+results = "videos[*]"
+id = "id"
+duration = "duration"
+files = "video_files[*]"
+file_url = "link"
+file_w = "width"
+file_h = "height"
+credit_name = "user.name"
+credit_url = "url"
+site = "Pexels"
+# Clip URLs must be https on one of these hosts (a recipe from an MP4 is not trusted).
+hosts = ["pexels.com", "vimeo.com"]
+terms = { commercial = true, attribution_required = false, redistribution = false, note = "Pexels licence: free to use, no attribution needed, do not resell or redistribute as stock" }
+
+[[provider]]
+name = "pixabay"
+kind = "stock.video"
+key = "pixabay"
+search_url = "https://pixabay.com/api/videos/?key={key}&q={q}&per_page=15"
+results = "hits[*]"
+id = "id"
+duration = "duration"
+files = "videos.*"
+file_url = "url"
+file_w = "width"
+file_h = "height"
+credit_name = "user"
+credit_url = "pageURL"
+site = "Pixabay"
+hosts = ["pixabay.com"]
+terms = { commercial = true, attribution_required = false, redistribution = false, note = "Pixabay Content Licence: free to use, do not sell or redistribute unaltered" }
+
+# Keyless rows: a first video with real pictures and no key. Tried after the rows with a key.
+# Terms are per file (`license`): CC0, public domain and CC BY forms. No-derivatives and unread licences are dropped.
+
+[[provider]]
+name = "commons"
+kind = "stock.video"
+key = ""
+search_url = "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=filetype:video+intitle:{q}&gsrnamespace=6&gsrlimit=20&prop=videoinfo&viprop=url%7Csize%7Cderivatives%7Cextmetadata&viextmetadatafilter=LicenseShortName%7CArtist&format=json&formatversion=2"
+results = "query.pages[*]"
+rank = "index"
+id = "pageid"
+duration = "videoinfo[*].duration"
+files = "videoinfo[*].derivatives[*]"
+file_url = "src"
+file_w = "width"
+file_h = "height"
+file_ext = ".vp9.webm"
+max_duration = 180.0
+license = "videoinfo[*].extmetadata.LicenseShortName.value"
+credit_name = "videoinfo[*].extmetadata.Artist.value"
+credit_url = "videoinfo[*].descriptionurl"
+site = "Wikimedia Commons"
+hosts = ["upload.wikimedia.org"]
+terms = { attribution_required = true, redistribution = false, note = "Terms per file: CC0, public domain or CC BY forms, read from each file's page" }
+
+[[provider]]
+name = "archive"
+kind = "stock.video"
+key = ""
+search_url = "https://archive.org/advancedsearch.php?q=title%3A%28{q}%29+AND+mediatype%3Amovies+AND+licenseurl%3A%28*creativecommons*+OR+*publicdomain*%29&fl%5B%5D=identifier&fl%5B%5D=licenseurl&fl%5B%5D=creator&sort%5B%5D=downloads+desc&rows=8&output=json"
+results = "response.docs[*]"
+id = "identifier"
+duration = "length"
+detail_url = "https://archive.org/metadata/{id}"
+files = "files[*]"
+file_url = "name"
+file_base = "https://archive.org/download/{id}/"
+file_w = "width"
+file_h = "height"
+file_duration = "length"
+max_duration = 180.0
+license = "licenseurl"
+credit_name = "creator"
+credit_url = "identifier"
+credit_base = "https://archive.org/details/"
+site = "Internet Archive"
+hosts = ["archive.org"]
+terms = { attribution_required = true, redistribution = false, note = "Terms per file: the licence its uploader states on the item" }

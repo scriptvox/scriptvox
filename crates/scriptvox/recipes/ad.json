@@ -1,0 +1,25 @@
+{
+  "lang": "en",
+  "tts": "kokoro-rust",
+  "voice": "af_heart",
+  "aspect": "9:16",
+  "duration": 12,
+  "hook": "Wake up your afternoon",
+  "music": "pulse",
+  "cut_on": "beat",
+  "sfx": true,
+  "background": "#3a1c0b,#8a3c12,#d98a1e",
+  "accent": "#ffd166",
+  "transition": "flash",
+  "captions": "pop",
+  "caption_size": "large",
+  "scenes": [
+    {"script": "Hot afternoon? Slow brain?"},
+    {"script": "Sunmere iced tea. Real leaves, cold brewed, no sugar.",
+     "card": {"kind": "list", "items": ["Real leaves", "Cold brewed", "No sugar"], "ease": "spring", "stagger": 0.5}},
+    {"script": "One bottle, and the afternoon is yours again.",
+     "card": {"kind": "title", "text": "Your afternoon, back"}},
+    {"script": "Find Sunmere in the cold aisle today."}
+  ],
+  "outro": {"text": "Sunmere. In the cold aisle."}
+}

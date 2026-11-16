@@ -1,0 +1,94 @@
+# ScriptVox
+
+> ScriptVox is a command-line tool (one binary, Apache-2.0) that makes a narrated, captioned MP4 from a script. A coding agent writes the script and runs the commands. ScriptVox makes the voice, the captions and the video, and checks the result. A plan that costs money runs only after a person approves it.
+
+Every fact here is from the help of the binary (`scriptvox --help`, `scriptvox <command> --help`) and from its code. The binary is the source of truth: when this file and the help differ, the help is correct.
+
+## Install
+
+Use the route of the system:
+
+- Linux or macOS (macOS is a preview; then `brew install ffmpeg-full uv`): `curl -fsSL https://github.com/scriptvox/scriptvox/releases/latest/download/install.sh -o install.sh && sh install.sh`
+- Windows (PowerShell): `irm https://github.com/scriptvox/scriptvox/releases/latest/download/install.ps1 -OutFile install.ps1; powershell -ExecutionPolicy Bypass -File install.ps1`
+
+Each install script checks the sha256 of the archive and prints the folder of the binary. Do not use `sudo`. Do not change a shell profile. To build from source, run `cargo build --release` in a checkout. If cargo is missing, ask the person to install Rust.
+
+Then:
+
+- `scriptvox doctor --json` checks the machine. `scriptvox doctor --fix --json` downloads the pinned tools.
+- `scriptvox demo --json` makes a short test video (`scriptvox-demo.mp4` in the current folder) with no key.
+- `scriptvox skills install` writes the skills for Claude Code to `~/.claude/skills/`.
+- `scriptvox skills install --agents` writes them to `~/.agents/skills/` (Codex, Cursor, Gemini CLI, opencode, Pi) and to the Hermes skills folder when Hermes is installed.
+- `scriptvox init --agents` adds a short block to `AGENTS.md` and `CLAUDE.md` of the current project.
+
+## How to make a video
+
+Give each command `--json`. Then stdout holds one JSON document, the envelope. Without the flag this is also the default when stdout is not a terminal.
+
+1. `scriptvox doctor --json`. Exit 1: run `scriptvox doctor --fix --json`. Exit 10: show each `needs_input[].human_action` to the person.
+2. Write `brief.json`. You write the full narration in its `script` field. Example: `{"script": "Dates are an old food of the Gulf. [pause 1] They give fast energy.", "lang": "en", "duration": 20, "music": "calm"}`. All fields: `scriptvox schema brief`.
+3. `scriptvox plan --brief brief.json --json`. It prints the stages, the cost (`metrics.cost_usd`) and a `plan_id`. It runs nothing. On an error, do what `error.fix` says (for example, add or cut words to fit `duration`).
+4. `scriptvox make --brief brief.json --detach --json`. It returns at once with a `run_id`. The run goes on in the background. Use `--detach` for each make: a make takes minutes, and without it the run stops when the time limit of your shell stops the command.
+5. `scriptvox wait <run_id> --json`. It prints the result when the run is finished, with the video in `artifacts.video`. The default timeout is 100 seconds. At the timeout the exit code is 9. This is not a failure: the run is still going. Run the command in `error.fix`. With a longer shell limit, use `--timeout 540`. Do not poll with `sleep`.
+6. `scriptvox check <run_id> --json`. It runs the quality gates on the run or on an MP4 file. `findings` has one row for each gate. Exit 3 means that a gate failed.
+7. `scriptvox snapshot <run_id> --sheet 9 --json`. It writes one PNG with 9 frames (`artifacts.image`). Read the PNG and look at the frames and the captions.
+8. To change the video, edit `brief.json` and run `scriptvox resume <run_id> --brief brief.json --json`. It makes a child run `<run_id>.1` in the background from what is finished. Run `wait` on the child. The new video is next to the old one. Do not start a second `make` for the same video.
+
+If you are not sure about a run: `scriptvox status <run_id> --json` gives `alive` (true or false). When `alive` is false and there is no video, `scriptvox resume <run_id> --json` goes on from what is finished.
+
+The default voice is free and needs the network. With no media, the video has a built-in moving background. `--media <folder>` uses the person's own clips and photos.
+
+## The envelope
+
+Schema name: `scriptvox.result/v1`. JSON Schema: `scriptvox schema result`.
+
+- `schema`: `scriptvox.result/v1`.
+- `ok`: true or false.
+- `status`: `ok`, `error`, `needs_input`, `approval_needed`, `running` or `cancelled`.
+- `command`: the command that answered.
+- `run_id`, `plan_id`: text or null.
+- `error`: null, or `code` (for example `SVX_STILL_RUNNING`), `message`, `fix` (what to do next, in words or as a command), `retryable`, `retry_after_s`.
+- `needs_input`: a list of things that a person or the agent must give. Each item has a `kind` (for example `secret`, `approval`, `input`) and a `human_action`.
+- `findings`: a list of checks, each with a `status` (`pass`, `ok`, `warn`, `fail`).
+- `next`: the next steps, most of them commands.
+- `artifacts`: paths of files, for example `video` and `image`.
+- `metrics`: numbers, for example `duration_s` and `cost_usd`.
+- `events_file`: the event log of a run, or null.
+- A command can add its own fields at the top level.
+
+## Exit codes
+
+- 0: ok, also a detached start
+- 1: error, fixable (read `error.fix`)
+- 2: usage error
+- 3: a quality gate failed
+- 4: approval needed for this plan
+- 5: provider error, retry is safe
+- 6: unconfirmed charge, do not retry
+- 7: the watchdog killed a stalled step
+- 8: cancelled
+- 9: still running (only from `wait` at its timeout)
+- 10: needs input from a human or the agent
+- 70: internal bug
+
+## Rules for money
+
+- A plan that costs money does not run. The command stops with exit 4 and status `approval_needed` until it has `--approve <plan_id>`.
+- The approval belongs to the person. Show the price and the `plan_id` to the person and ask. Add `--approve <plan_id>` only after the person says yes.
+- CAUTION: An agent must not approve a plan by itself. An agent must not raise `--max-spend` by itself.
+- Use the free route first. With `--local-only`, no network engine runs.
+
+## Rules for keys
+
+- Do not ask for a key in chat. Do not print a key.
+- When a key is missing, the answer has a `needs_input` item of kind `secret`. Show its `human_action` to the person.
+- The person runs `scriptvox keys set <provider>` in a terminal. The providers are: elevenlabs, pexels, pixabay, fal, vision, selfhost, hf.
+- `scriptvox keys list` shows names and sources, not values.
+
+## More
+
+- [README](README.md): what works with no key, and what each extra needs.
+- [The main skill](plugin/skills/scriptvox/SKILL.md): the same steps with more detail, all brief fields and all commands. It is generated from the binary.
+- [Command status](docs/command-status.md): what each command is known to do.
+- [MCP server](docs/specs/mcp.md): the same commands as MCP tools, `scriptvox mcp`.
+- [Result schema](schemas/result.json) and [brief schema](schemas/brief.json).

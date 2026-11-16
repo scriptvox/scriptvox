@@ -1,0 +1,143 @@
+{
+"voice": "ar-AE-HamdanNeural",
+"text": "مرحبا بكم في راويفوكس.",
+"chunks": [
+{
+"type": "WordBoundary",
+"offset": 1026250,
+"duration": 6842080,
+"text": "مرحبا"
+},
+{
+"type": "WordBoundary",
+"offset": 8000000,
+"duration": 3026250,
+"text": "بكم"
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMQ=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMg=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMw=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgNA=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgNQ=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgNg=="
+},
+{
+"type": "WordBoundary",
+"offset": 11157910,
+"duration": 1710410,
+"text": "في"
+},
+{
+"type": "WordBoundary",
+"offset": 13000000,
+"duration": 10394580,
+"text": "راويفوكس"
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgNw=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgOA=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgOQ=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTA="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTE="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTI="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTM="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTQ="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTU="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTY="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTc="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTg="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTk="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMjA="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMjE="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMjI="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMjM="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMjQ="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMjU="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMjY="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMjc="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMjg="
+}
+],
+"note": "Word timings recorded live from Edge TTS 7.3.1. Audio bytes replaced with placeholders: no Microsoft audio is stored."
+}

@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "tts": "kokoro-rust",
+  "voice": "af_heart",
+  "aspect": "9:16",
+  "duration": 30,
+  "hook": "Velmora starts a night bus",
+  "music": "none",
+  "background": "slate",
+  "transition": "cut",
+  "scenes": [
+    {"script": "The town of Velmora started its first night bus service on Monday, the town council says."},
+    {"script": "Buses now run on 3 routes from the harbour to the hills, until 2 in the morning.",
+     "card": {"kind": "title", "text": "Velmora night bus: 3 routes"}},
+    {"script": "The council says a bus comes every 20 minutes, and a ticket costs the same as in the day.",
+     "card": {"kind": "stat", "text": "20 min", "label": "between night buses"}},
+    {"script": "The plan has three parts. A test until June, then a public review, and a council vote in September.",
+     "card": {"kind": "timeline", "items": ["Test until June", "Public review", "Council vote in September"]}},
+    {"script": "Drivers told the local paper that the first night was quiet. The review opens in June."}
+  ],
+  "sources": [
+    {"text": "Night buses run on 3 routes until 2 in the morning, one every 20 minutes", "title": "PLACEHOLDER, replace: council notice on the night bus", "publisher": "Example Council"},
+    {"text": "A test until June, then a public review, and a council vote in September", "title": "PLACEHOLDER, replace: council notice on the night bus", "publisher": "Example Council"},
+    {"text": "Drivers said the first night was quiet", "title": "PLACEHOLDER, replace: newspaper report", "publisher": "Example News"}
+  ],
+  "sources_card": true
+}

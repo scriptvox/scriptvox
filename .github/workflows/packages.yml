@@ -1,0 +1,141 @@
+# Package-manager test on GitHub's own machines: the files that scripts/packaging.sh makes from the archives of one
+# release are installed as a user installs them, and the installed tool makes the zero-key video.
+# It starts only by hand (Actions, "Package install test", Run workflow, with the tag of a release of this repository).
+# macOS and Homebrew have their own workflow (macos.yml), because that one builds the binary on the Mac.
+name: Package install test
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag of the release whose archives are tested"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Makes the package files, then installs the .deb on Ubuntu. The archives are served on 127.0.0.1 in each job, so a
+  # package downloads them through its own address, as it does from a release page.
+  ubuntu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package files from the release archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          mkdir -p pkg/dist
+          gh release download "${{ inputs.tag }}" -D pkg/dist
+          ls -la pkg/dist
+          SCRIPTVOX_MAINTAINER="CI <ci@example.invalid>" SCRIPTVOX_BASE_URL="http://127.0.0.1:8765" sh scripts/packaging.sh pkg/dist "$PWD/pkg/out"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pkg
+          path: pkg
+      - name: Install the .deb and make the demo video
+        run: |
+          set -eu
+          sudo apt-get install -y ./pkg/out/deb/scriptvox_*_amd64.deb
+          dpkg -s scriptvox | head -8
+          command -v scriptvox
+          scriptvox --version
+          mkdir t && cd t
+          scriptvox demo --json --out demo.mp4 > demo.json || { cat demo.json; exit 1; }
+          ls -la demo.mp4
+          sudo apt-get remove -y scriptvox
+          test ! -e /usr/bin/scriptvox
+      - name: lintian (report only)
+        continue-on-error: true
+        run: |
+          sudo apt-get install -y lintian >/dev/null
+          lintian pkg/out/deb/scriptvox_*_amd64.deb || true
+
+  arch:
+    needs: ubuntu
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: pkg
+          path: pkg
+      - name: Build the AUR package, install it and make the demo video
+        run: |
+          set -eu
+          pacman -Syu --noconfirm --needed base-devel python
+          useradd -m build
+          chown -R build pkg
+          (cd pkg/dist && python3 -m http.server 8765 >/dev/null 2>&1 &)
+          sleep 2
+          su build -c "cd pkg/out/aur && makepkg -f --noconfirm"
+          pacman -U --noconfirm pkg/out/aur/*.pkg.tar.zst
+          pacman -Ql scriptvox-bin
+          su build -c "cd /tmp && scriptvox --version && scriptvox demo --json --out demo.mp4 > demo.json || { cat demo.json; exit 1; }"
+          ls -la /tmp/demo.mp4
+
+  windows:
+    needs: ubuntu
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: pkg
+          path: pkg
+      # Chocolatey is on the runner. The package is made from its source and installed from that folder, as
+      # `choco install scriptvox` does from the community feed.
+      - name: Install with Chocolatey and make the demo video
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Start-Process python -ArgumentList '-m','http.server','8765','--directory','pkg/dist' -WindowStyle Hidden
+          Start-Sleep 3
+          choco pack pkg\out\chocolatey\scriptvox.nuspec --outputdirectory pkg\out\chocolatey
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          choco install scriptvox --source "$PWD\pkg\out\chocolatey" -y --no-progress
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          $exe = "$env:ChocolateyInstall\bin\scriptvox.exe"
+          & $exe --version
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          New-Item -ItemType Directory c | Out-Null
+          Set-Location c
+          & $exe demo --json --out demo.mp4 | Out-File demo.json
+          if ($LASTEXITCODE -ne 0) { Get-Content demo.json; exit 1 }
+          Get-Item demo.mp4
+          Set-Location ..
+          choco uninstall scriptvox -y
+          if (Test-Path $exe) { Write-Output "the command is still there after the removal"; exit 1 }
+          Get-Process python -ErrorAction SilentlyContinue | Stop-Process -Force
+
+      # winget checks the three manifest files against its schema. An install needs a public https address, so the
+      # install itself is proven only after a release. The runner may have no winget: this step reports only.
+      - name: winget manifest check (report only)
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          Get-ChildItem pkg\out\winget
+          winget --version
+          winget validate --manifest pkg\out\winget
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      - name: Install with Scoop and make the demo video
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Start-Process python -ArgumentList '-m','http.server','8765','--directory','pkg/dist' -WindowStyle Hidden
+          Start-Sleep 3
+          Invoke-Expression "& {$(Invoke-RestMethod get.scoop.sh)} -RunAsAdmin"
+          $env:PATH = "$env:USERPROFILE\scoop\shims;$env:PATH"
+          scoop install .\pkg\out\scoop\scriptvox.json
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          scriptvox --version
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          New-Item -ItemType Directory t | Out-Null
+          Set-Location t
+          scriptvox demo --json --out demo.mp4 | Out-File demo.json
+          if ($LASTEXITCODE -ne 0) { Get-Content demo.json; exit 1 }
+          Get-Item demo.mp4

@@ -1,0 +1,6 @@
+{"core":{"jsonrpc":"2.0","id":1,"method":"hello","params":{"proto":"2.0"}}}
+{"worker":{"jsonrpc":"2.0","id":1,"error":{"code":-32002,"message":"proto mismatch: core 2.0, worker 1.0"}}}
+{"core":{"jsonrpc":"2.0","id":2,"method":"nope"}}
+{"worker":{"jsonrpc":"2.0","id":2,"error":{"code":-32601,"message":"unknown method nope"}}}
+{"core":{"jsonrpc":"2.0","id":3,"method":"tool.call","params":{"tool":"no.such"}}}
+{"worker":{"jsonrpc":"2.0","id":3,"error":{"code":-32601,"message":"unknown tool no.such"}}}

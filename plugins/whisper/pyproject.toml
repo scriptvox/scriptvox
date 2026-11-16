@@ -1,0 +1,11 @@
+[project]
+name = "scriptvox-whisper"
+version = "0.1.0"
+description = "ScriptVox opt-in local speech to text (faster-whisper small on the CPU), in a separate plugin process."
+requires-python = ">=3.12"
+license = "Apache-2.0"
+# av 16 and later refuse the `metadata_errors` argument that faster-whisper 1.2.1 passes (seen on the first real run).
+dependencies = ["faster-whisper==1.2.1", "av==15.1.0"]
+
+[tool.uv]
+package = false

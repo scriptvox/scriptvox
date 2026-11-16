@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "tts": "kokoro-rust",
+  "voice": "af_heart",
+  "aspect": "16:9",
+  "duration": 30,
+  "hook": "Your notes, found in seconds",
+  "music": "pulse",
+  "music_level": "quiet",
+  "background": "slate",
+  "accent": "#5ec8ff",
+  "transition": "push",
+  "scenes": [
+    {"script": "You wrote it down somewhere. Now the meeting has started, and you cannot find it."},
+    {"script": "Fernhollow Notes keeps every note in one place, and finds it as fast as you can type.",
+     "card": {"kind": "title", "text": "Fernhollow Notes"}},
+    {"script": "Search reads every word, even inside pictures. Tags sort themselves. And shared pages stay up to date for the whole team.",
+     "card": {"kind": "list", "items": ["Search inside pictures", "Tags that sort themselves", "Shared pages for the team"],
+              "mark": [{"part": "inside pictures", "on": "pictures"}, {"part": "the team", "on": "team", "style": "ring"}]}},
+    {"script": "Start on the free plan by yourself, or bring ten people on the team plan.",
+     "card": {"kind": "table", "label": "Plans",
+              "rows": [["Plan", "Price a month", "Seats"], ["Free", "$0", "1"], ["Team", "$12", "10"]],
+              "mark": [{"part": "Free", "on": "free"}, {"part": "Team", "on": "team"}]}},
+    {"script": "Try Fernhollow Notes today, and find your next note before the meeting starts."}
+  ],
+  "outro": {"text": "Try it free at fernhollow.example"}
+}

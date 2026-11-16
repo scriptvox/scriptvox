@@ -1,0 +1,23 @@
+{
+  "lang": "en",
+  "tts": "kokoro-rust",
+  "voice": "af_heart",
+  "aspect": "9:16",
+  "duration": 30,
+  "hook": "The onion fights back",
+  "music": "calm",
+  "background": "forest",
+  "transition": "rise",
+  "captions": "pop",
+  "scenes": [
+    {"script": "An onion does not want to make you cry. It only wants to stop being eaten."},
+    {"script": "When your knife breaks its cells, two things that were kept safely apart mix together.",
+     "card": {"kind": "title", "text": "Cut cells, mixed juices"}},
+    {"script": "In seconds they form a gas, and the gas floats up to your eyes.",
+     "card": {"kind": "diagram", "nodes": ["Knife", "Broken cells", "Gas", "Your eyes"],
+              "edges": [["Knife", "Broken cells"], ["Broken cells", "Gas"], ["Gas", "Your eyes"]]}},
+    {"script": "Your eyes feel the sting, so they make tears to wash it away. That is all crying over an onion is."},
+    {"script": "So chill the onion first, and use a sharp knife. Cold slows the gas, and a clean cut breaks far fewer cells.",
+     "card": {"kind": "list", "items": ["Chill the onion", "Use a sharp knife"]}}
+  ]
+}

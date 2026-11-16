@@ -1,0 +1,18 @@
+# scriptvox-gen lip sync: LatentSync 1.6. Its own image because it pins torch 2.5 and old diffusers. Built on a build machine by
+# kaniko. Weights are not in the image: an init step pulls them from the registry (oras) onto the node NVMe once.
+# Code: bytedance/LatentSync, Apache-2.0, downloaded unchanged at build time; its licence file stays at /opt/latentsync/LICENSE.
+FROM pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime
+RUN apt-get update && apt-get install -y --no-install-recommends g++ libgl1 libglib2.0-0 \
+ && pip install --no-cache-dir diffusers==0.32.2 transformers==4.48.0 accelerate==0.26.1 einops==0.7.0 omegaconf==2.3.0 \
+    opencv-python-headless==4.9.0.80 python_speech_features==0.6 librosa==0.10.1 scenedetect==0.6.1 imageio==2.31.1 \
+    imageio-ffmpeg==0.5.1 ffmpeg-python==0.2.0 huggingface-hub==0.30.2 numpy==1.26.4 kornia==0.8.0 insightface==0.7.3 \
+    onnxruntime-gpu==1.21.0 DeepCache==0.1.1 decord==0.6.0 matplotlib==3.9.2 soundfile==0.12.1 \
+ && python -c "import urllib.request,tarfile,io,hashlib; d=urllib.request.urlopen('https://github.com/oras-project/oras/releases/download/v1.2.3/oras_1.2.3_linux_amd64.tar.gz').read(); assert hashlib.sha256(d).hexdigest()=='b4efc97a91f471f323f193ea4b4d63d8ff443ca3aab514151a30751330852827', 'oras tarball sha256'; tarfile.open(fileobj=io.BytesIO(d)).extract('oras','/usr/local/bin')" \
+ && python -c "import urllib.request,tarfile,io,hashlib,os; d=urllib.request.urlopen('https://github.com/bytedance/LatentSync/archive/a229c3948406bc2cf6eaf4873e662e70c6a04746.tar.gz').read(); assert hashlib.sha256(d).hexdigest()=='49e285678f27b7ac84136f2e47887284c2572771a3ca29d64df003caeff8d956'; tarfile.open(fileobj=io.BytesIO(d)).extractall('/opt'); os.rename('/opt/LatentSync-a229c3948406bc2cf6eaf4873e662e70c6a04746','/opt/latentsync')" \
+ && ln -s /data/models/latentsync-16 /opt/latentsync/checkpoints \
+ && ln -s "$(python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')" /usr/local/bin/ffmpeg \
+ && cd /opt/latentsync && PYTHONPATH=/opt/latentsync python -c "from latentsync.pipelines.lipsync_pipeline import LipsyncPipeline; from latentsync.whisper.audio2feature import Audio2Feature; from insightface.app import FaceAnalysis; import onnxruntime as o; print('imports ok', o.get_available_providers())"
+COPY server.py engines_lipsync.py /app/
+ENV PYTHONUNBUFFERED=1 HF_HUB_OFFLINE=1 ENGINES=lipsync PYTHONPATH=/app:/opt/latentsync LD_LIBRARY_PATH=/opt/conda/lib
+EXPOSE 8080
+CMD ["python", "/app/server.py"]

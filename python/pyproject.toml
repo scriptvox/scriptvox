@@ -1,0 +1,16 @@
+[project]
+name = "scriptvox-worker"
+version = "0.1.0"
+description = "ScriptVox Python worker (RVX-RPC)"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+dependencies = ["edge-tts==7.3.1"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

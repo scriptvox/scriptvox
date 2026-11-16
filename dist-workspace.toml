@@ -1,0 +1,10 @@
+# cargo-dist configuration (written, not built; nothing is published in v0.1).
+[workspace]
+members = ["cargo:."]
+
+[dist]
+cargo-dist-version = "0.33.1"
+ci = []
+installers = []
+targets = ["x86_64-unknown-linux-musl", "x86_64-pc-windows-gnullvm"]
+include = ["LICENSE", "licenses/THIRD_PARTY.md", "LICENSES/OFL-1.1.txt", "LICENSES/GPL-3.0-or-later.txt", "licenses/python-packages.tsv", "README.md", "CREDITS.md"]

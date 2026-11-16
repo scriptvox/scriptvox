@@ -1,0 +1,410 @@
+# Tool pins (PLAN-R1 §5 "Lazy provisioning"). Compiled into the binary.
+# FFmpeg: BtbN month-end tags only (daily builds vanish after 14 days), gpl variant.
+# uv: a release at least 2 weeks old. Never uv's own installer (it edits shell profiles).
+# Binaries are never mirrored without their sources (GPLv3 §6).
+
+[[tool]]
+name = "ffmpeg"
+version = "n8.1.3-btbn-20261031"
+target = "linux-x86_64"
+url = "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-31-12-59/ffmpeg-n8.1.3-27-g8dca1586f4-linux64-gpl-8.1.tar.xz"
+sha256 = "41e9c565594c390622cf968d82fa4135d9e9a11d06c1515644288cbc844e3380"
+size = 152246308
+licence = "GPL-3.0-or-later"
+strip = 1
+bins = ["bin/ffmpeg", "bin/ffprobe"]
+
+[[tool]]
+name = "ffmpeg"
+version = "n8.1.3-btbn-20261031"
+target = "linux-aarch64"
+url = "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-31-12-59/ffmpeg-n8.1.3-27-g8dca1586f4-linuxarm64-gpl-8.1.tar.xz"
+sha256 = "a08c0ee6e1c4e02139344b303002dcc7c37cf125d639f1fbd15dabee40fcb525"
+size = 127720576
+licence = "GPL-3.0-or-later"
+strip = 1
+bins = ["bin/ffmpeg", "bin/ffprobe"]
+
+[[tool]]
+name = "ffmpeg"
+version = "n8.1.3-btbn-20261031"
+target = "windows-x86_64"
+url = "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-31-12-59/ffmpeg-n8.1.3-27-g8dca1586f4-win64-gpl-8.1.zip"
+sha256 = "401dffcf14c301082e1fc03b0bc876b92ea676bfc521fc56e80a1537d137034f"
+size = 194182300
+licence = "GPL-3.0-or-later"
+strip = 1
+bins = ["bin/ffmpeg.exe", "bin/ffprobe.exe"]
+
+[[tool]]
+name = "uv"
+version = "0.13.1"
+target = "linux-x86_64"
+url = "https://github.com/astral-sh/uv/releases/download/0.13.1/uv-x86_64-unknown-linux-musl.tar.gz"
+sha256 = "6c86040a8f045ab9adc9e3ec4cdafa03fd00e9a988ed2bf28971c7fc2d0debd0"
+size = 18745521
+licence = "MIT OR Apache-2.0"
+strip = 1
+bins = ["uv"]
+
+[[tool]]
+name = "uv"
+version = "0.13.1"
+target = "linux-aarch64"
+url = "https://github.com/astral-sh/uv/releases/download/0.13.1/uv-aarch64-unknown-linux-musl.tar.gz"
+sha256 = "345a8308e4d1835cdfaadf692836fd3137a6d45864773f05ad7bf59442b1ba16"
+size = 17262001
+licence = "MIT OR Apache-2.0"
+strip = 1
+bins = ["uv"]
+
+[[tool]]
+name = "uv"
+version = "0.13.1"
+target = "windows-x86_64"
+url = "https://github.com/astral-sh/uv/releases/download/0.13.1/uv-x86_64-pc-windows-msvc.zip"
+sha256 = "3b2661a463a5baea7f5076ea2b25ab71d77f36a6c0d809e5350651792f80a672"
+size = 15308685
+licence = "MIT OR Apache-2.0"
+strip = 0
+bins = ["uv.exe"]
+
+# Kokoro (opt-in, `scriptvox setup voice-local`): raw model files, any platform.
+# GitHub publishes no digest for these assets: pinned by the sha256 of the first download.
+[[tool]]
+name = "kokoro-model"
+version = "v1.0-int8"
+target = "any"
+url = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.int8.onnx"
+sha256 = "6e742170d309016e5891a994e1ce1559c702a2ccd0075e67ef7157974f6406cb"
+size = 92361271
+licence = "Apache-2.0"
+strip = 0
+raw = true
+bins = ["kokoro-v1.0.int8.onnx"]
+
+[[tool]]
+name = "kokoro-voices"
+version = "v1.0"
+target = "any"
+url = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin"
+sha256 = "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d"
+size = 28214398
+licence = "Apache-2.0"
+strip = 0
+raw = true
+bins = ["voices-v1.0.bin"]
+
+# Local speech to text (`scriptvox setup speech-local`): Systran/faster-whisper-small, MIT, at one Hugging Face revision.
+# model.bin by the hash Hugging Face publishes; the others by the sha256 of the first download.
+[[tool]]
+name = "whisper-small-model"
+version = "536b066"
+target = "any"
+url = "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/model.bin"
+sha256 = "3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671"
+size = 483546902
+licence = "MIT"
+strip = 0
+raw = true
+bins = ["model.bin"]
+
+[[tool]]
+name = "whisper-small-config"
+version = "536b066"
+target = "any"
+url = "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/config.json"
+sha256 = "b55496ac7940a7ae47d2c01eab40edfd8701feec1229d9cce3b40014383fb828"
+size = 2370
+licence = "MIT"
+strip = 0
+raw = true
+bins = ["config.json"]
+
+[[tool]]
+name = "whisper-small-tokenizer"
+version = "536b066"
+target = "any"
+url = "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/tokenizer.json"
+sha256 = "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab"
+size = 2203239
+licence = "MIT"
+strip = 0
+raw = true
+bins = ["tokenizer.json"]
+
+[[tool]]
+name = "whisper-small-vocabulary"
+version = "536b066"
+target = "any"
+url = "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/vocabulary.txt"
+sha256 = "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913"
+size = 459861
+licence = "MIT"
+strip = 0
+raw = true
+bins = ["vocabulary.txt"]
+
+# Arabic model (`scriptvox setup speech-local --arabic`, docs/specs/speech-local-arabic.md): openai/whisper-small fine-tuned
+# for Arabic, version r12-a70 (Apache-2.0 model card, MIT code; data CC BY 4.0 and CC0). No public address yet: `url` stays
+# empty until publication, and setup takes the files from `--from <folder>`. The sha256 is of the files of record.
+
+[[tool]]
+name = "whisper-ar-model"
+version = "r12-a70"
+target = "any"
+url = "https://huggingface.co/scriptvox/whisper-small-ar/resolve/77fd1d927a9db3fe1605b30d9d8c3a666ea24e00/model.bin"
+sha256 = "f09579e04bcbca6f42ab69ca2eba36ecb1a0e093a9eac2c93fc3eac93a829f8c"
+size = 483546977
+licence = "Apache-2.0 AND MIT"
+strip = 0
+raw = true
+bins = ["model.bin"]
+
+[[tool]]
+name = "whisper-ar-config"
+version = "r12-a70"
+target = "any"
+url = "https://huggingface.co/scriptvox/whisper-small-ar/resolve/77fd1d927a9db3fe1605b30d9d8c3a666ea24e00/config.json"
+sha256 = "b55496ac7940a7ae47d2c01eab40edfd8701feec1229d9cce3b40014383fb828"
+size = 2370
+licence = "Apache-2.0 AND MIT"
+strip = 0
+raw = true
+bins = ["config.json"]
+
+[[tool]]
+name = "whisper-ar-preprocessor"
+version = "r12-a70"
+target = "any"
+url = "https://huggingface.co/scriptvox/whisper-small-ar/resolve/77fd1d927a9db3fe1605b30d9d8c3a666ea24e00/preprocessor_config.json"
+sha256 = "994838f1fa6462c8b9b3c90edada831f11f3dd8b4664634e18f4694d005c9dbf"
+size = 356
+licence = "Apache-2.0 AND MIT"
+strip = 0
+raw = true
+bins = ["preprocessor_config.json"]
+
+[[tool]]
+name = "whisper-ar-tokenizer"
+version = "r12-a70"
+target = "any"
+url = "https://huggingface.co/scriptvox/whisper-small-ar/resolve/77fd1d927a9db3fe1605b30d9d8c3a666ea24e00/tokenizer.json"
+sha256 = "27fc476bfe7f17299480be2273fc0608e4d5a99aba2ab5dec5374b4482d1a566"
+size = 2480466
+licence = "Apache-2.0 AND MIT"
+strip = 0
+raw = true
+bins = ["tokenizer.json"]
+
+[[tool]]
+name = "whisper-ar-vocabulary"
+version = "r12-a70"
+target = "any"
+url = "https://huggingface.co/scriptvox/whisper-small-ar/resolve/77fd1d927a9db3fe1605b30d9d8c3a666ea24e00/vocabulary.json"
+sha256 = "5ad28279db5e546349708b9a74736e2c018737ac5a600f1048f1f26c99b85b47"
+size = 1068103
+licence = "Apache-2.0 AND MIT"
+strip = 0
+raw = true
+bins = ["vocabulary.json"]
+
+# Local image model (`scriptvox setup image-local`, G008). sd.cpp upstream release builds, MIT, by the sha256 GitHub publishes.
+# Linux: the Ubuntu 24.04 Vulkan build of master-1043 (glibc 2.38 and libstdc++ GLIBCXX_3.4.32: Ubuntu 24.04, Debian 13 and newer),
+# a Vulkan driver, else the CPU. The newer releases publish Linux only for Ubuntu 26.04 (glibc 2.43); 1043 to 1052 is 9
+# commits, none on FLUX.2 (audit H3). There is no CUDA pin: the own CUDA pack of G006
+# has no host yet (owner decision). A later pin comes in here or through SCRIPTVOX_TOOLCHAIN, with no code change.
+[[tool]]
+name = "sd-cli"
+version = "master-1043-3be2378"
+target = "linux-x86_64"
+url = "https://github.com/leejet/stable-diffusion.cpp/releases/download/master-1043-3be2378/sd-master-3be2378-bin-Linux-Ubuntu-24.04-x86_64-vulkan.zip"
+sha256 = "7608901016fb4a348bc5b75c46fc971085dadadf44e6f30daa97301844b1ce2e"
+size = 37675781
+licence = "MIT"
+strip = 0
+bins = ["sd-cli"]
+
+[[tool]]
+name = "sd-cli"
+version = "master-1052-f5df5f8"
+target = "macos-aarch64"
+url = "https://github.com/leejet/stable-diffusion.cpp/releases/download/master-1052-f5df5f8/sd-master-f5df5f8-bin-Darwin-macOS-26.6.2-arm64.zip"
+sha256 = "2592c4abd774e53cbc9c2b767d45439de01d516824b935d3c76a2530240b7a25"
+size = 37747681
+licence = "MIT"
+strip = 0
+bins = ["sd-cli"]
+
+[[tool]]
+name = "sd-cli"
+version = "master-1052-f5df5f8"
+target = "windows-x86_64"
+url = "https://github.com/leejet/stable-diffusion.cpp/releases/download/master-1052-f5df5f8/sd-master-f5df5f8-bin-win-vulkan-x64.zip"
+sha256 = "2247d5e17fc9d426dfbe0bdd164ccd557a11049f4e61071caade3a3f069f6f6d"
+size = 29863784
+licence = "MIT"
+strip = 0
+bins = ["sd-cli.exe"]
+
+# FLUX.2 klein 4B, Apache-2.0, not gated (read 6 Nov 2026), each at one Hugging Face revision, by the hash Hugging Face publishes.
+[[tool]]
+name = "klein-4b-dit"
+version = "3b1f5a9"
+target = "any"
+url = "https://huggingface.co/leejet/FLUX.2-klein-4B-GGUF/resolve/3b1f5a9dc3abb32238b053aeb3d823c30afdacbd/flux-2-klein-4b-Q4_0.gguf"
+sha256 = "d1023499ef3f2f82ff7c50e6778495195c1b6cc34835741778868428111f9ff4"
+size = 2460378560
+licence = "Apache-2.0"
+strip = 0
+raw = true
+bins = ["flux-2-klein-4b-Q4_0.gguf"]
+
+[[tool]]
+name = "klein-4b-text"
+version = "22c9fc8"
+target = "any"
+url = "https://huggingface.co/unsloth/Qwen3-4B-GGUF/resolve/22c9fc8a8c7700b76a1789366280a6a5a1ad1120/Qwen3-4B-Q4_0.gguf"
+sha256 = "92f4a83cdfe691b216a949f915e47f35f0ed85b833aa03490c719160ac5cdf7a"
+size = 2375773472
+licence = "Apache-2.0"
+strip = 0
+raw = true
+bins = ["Qwen3-4B-Q4_0.gguf"]
+
+[[tool]]
+name = "klein-4b-vae"
+version = "e7b7dc2"
+target = "any"
+url = "https://huggingface.co/black-forest-labs/FLUX.2-klein-4B/resolve/e7b7dc27f91deacad38e78976d1f2b499d76a294/vae/diffusion_pytorch_model.safetensors"
+sha256 = "ca70d2202afe6415bdbcb8793ba8cd99fd159cfe6192381504d6c4d3036e0f04"
+size = 168120878
+licence = "Apache-2.0"
+strip = 0
+raw = true
+bins = ["diffusion_pytorch_model.safetensors"]
+
+# Larger tier (`scriptvox setup speech-large`): deepdml/faster-whisper-large-v3-turbo-ct2, MIT, at one revision.
+# model.bin by the hash Hugging Face publishes; the others by the sha256 of the first download.
+[[tool]]
+name = "whisper-turbo-model"
+version = "4df90f7"
+target = "any"
+url = "https://huggingface.co/deepdml/faster-whisper-large-v3-turbo-ct2/resolve/4df90f75321148c3a29a9e2351b7ddf8f5b115a8/model.bin"
+sha256 = "e76620f83d5f5b69efd3d87e3dc180c1bd21df9fbebacfd4335e5e1efcc018da"
+size = 1617884929
+licence = "MIT"
+strip = 0
+raw = true
+bins = ["model.bin"]
+
+[[tool]]
+name = "whisper-turbo-config"
+version = "4df90f7"
+target = "any"
+url = "https://huggingface.co/deepdml/faster-whisper-large-v3-turbo-ct2/resolve/4df90f75321148c3a29a9e2351b7ddf8f5b115a8/config.json"
+sha256 = "b0253ea6c0d3bea6b1e19e91a02acfd3b53f4467362efcb5a3e6b16c9b3a9b7e"
+size = 2263
+licence = "MIT"
+strip = 0
+raw = true
+bins = ["config.json"]
+
+[[tool]]
+name = "whisper-turbo-preprocessor"
+version = "4df90f7"
+target = "any"
+url = "https://huggingface.co/deepdml/faster-whisper-large-v3-turbo-ct2/resolve/4df90f75321148c3a29a9e2351b7ddf8f5b115a8/preprocessor_config.json"
+sha256 = "7ccc62c6f2765af1f3b46c00c9b5894426835a05021c8b9c01eecb6dfb542711"
+size = 340
+licence = "MIT"
+strip = 0
+raw = true
+bins = ["preprocessor_config.json"]
+
+[[tool]]
+name = "whisper-turbo-tokenizer"
+version = "4df90f7"
+target = "any"
+url = "https://huggingface.co/deepdml/faster-whisper-large-v3-turbo-ct2/resolve/4df90f75321148c3a29a9e2351b7ddf8f5b115a8/tokenizer.json"
+sha256 = "297b13372ac43916285644fb9687add3cc62ee2a1adb60da3dc25cc94c1871fd"
+size = 2710337
+licence = "MIT"
+strip = 0
+raw = true
+bins = ["tokenizer.json"]
+
+[[tool]]
+name = "whisper-turbo-vocabulary"
+version = "4df90f7"
+target = "any"
+url = "https://huggingface.co/deepdml/faster-whisper-large-v3-turbo-ct2/resolve/4df90f75321148c3a29a9e2351b7ddf8f5b115a8/vocabulary.json"
+sha256 = "c69260f2ab26d659b7c398f9a2b2b48ed0df16c3b47d7326782fd9cba71690c1"
+size = 1068114
+licence = "MIT"
+strip = 0
+raw = true
+bins = ["vocabulary.json"]
+
+# The Rust English voice (`scriptvox setup voice-rust`): Kokoro-82M weights (Apache-2.0, model card) and CMUdict (BSD-2-Clause), one revision each.
+# Hashes from the upstream catalogue, checked again at the first download. The weights file is also checked before its pickle is read.
+[[tool]]
+name = "kokoro-rust-weights"
+version = "f3ff357"
+target = "any"
+url = "https://huggingface.co/hexgrad/Kokoro-82M/resolve/f3ff3571791e39611d31c381e3a41a3af07b4987/kokoro-v1_0.pth"
+sha256 = "496dba118d1a58f5f3db2efc88dbdc216e0483fc89fe6e47ee1f2c53f18ad1e4"
+size = 327212226
+licence = "Apache-2.0"
+strip = 0
+raw = true
+bins = ["kokoro-v1_0.pth"]
+
+[[tool]]
+name = "kokoro-rust-config"
+version = "f3ff357"
+target = "any"
+url = "https://huggingface.co/hexgrad/Kokoro-82M/resolve/f3ff3571791e39611d31c381e3a41a3af07b4987/config.json"
+sha256 = "5abb01e2403b072bf03d04fde160443e209d7a0dad49a423be15196b9b43c17f"
+size = 2351
+licence = "Apache-2.0"
+strip = 0
+raw = true
+bins = ["config.json"]
+
+[[tool]]
+name = "kokoro-rust-dict"
+version = "7479086"
+target = "any"
+url = "https://raw.githubusercontent.com/cmusphinx/cmudict/74790861f652b15e4ac49015a90074ad62a27690/cmudict.dict"
+sha256 = "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+size = 3618488
+licence = "BSD-2-Clause"
+strip = 0
+raw = true
+bins = ["cmudict.dict"]
+
+[[tool]]
+name = "kokoro-rust-voice-af_heart"
+version = "f3ff357"
+target = "any"
+url = "https://huggingface.co/hexgrad/Kokoro-82M/resolve/f3ff3571791e39611d31c381e3a41a3af07b4987/voices/af_heart.pt"
+sha256 = "0ab5709b8ffab19bfd849cd11d98f75b60af7733253ad0d67b12382a102cb4ff"
+size = 523425
+licence = "Apache-2.0"
+strip = 0
+raw = true
+bins = ["af_heart.pt"]
+
+[[tool]]
+name = "kokoro-rust-voice-am_michael"
+version = "f3ff357"
+target = "any"
+url = "https://huggingface.co/hexgrad/Kokoro-82M/resolve/f3ff3571791e39611d31c381e3a41a3af07b4987/voices/am_michael.pt"
+sha256 = "9a443b79a4b22489a5b0ab7c651a0bcd1a30bef675c28333f06971abbd47bd37"
+size = 523435
+licence = "Apache-2.0"
+strip = 0
+raw = true
+bins = ["am_michael.pt"]
+

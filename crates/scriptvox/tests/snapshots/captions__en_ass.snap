@@ -1,0 +1,20 @@
+---
+source: crates/scriptvox/tests/captions.rs
+expression: ass
+---
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans,72,&H0000E5FF,&H00FFFFFF,&H59000000,&H59000000,1,0,0,0,100,100,0,0,4,12,0,2,60,60,260,-1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.10,0:00:03.80,Cap,,0,0,0,,{\k64}ScriptVox {\k36}turns {\k22}your {\k20}own {\k50}clips {\k35}into {\k6}a\N{\k50}narrated {\k45}video.
+Dialogue: 0,0:00:03.80,0:00:08.09,Cap,,0,0,0,,{\k15}It {\k24}writes {\k53}captions {\k16}that {\k28}fit {\k10}the {\k54}screen,\N{\k40}in {\k58}English {\k26}and {\k11}in {\k54}Arabic.
+Dialogue: 0,0:00:08.09,0:00:10.38,Cap,,0,0,0,,{\k24}Every {\k39}render {\k16}can {\k47}resume {\k41}after\N{\k5}a {\k56}crash.

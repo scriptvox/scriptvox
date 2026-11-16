@@ -1,0 +1,1 @@
+Turn this into a 30 second vertical explainer that does not feel like a slideshow: 'Abu Dhabi gets about 90 per cent of its drinking water from the sea. Three things cut the energy cost: solar power, brine recovery and fixing leaks.'

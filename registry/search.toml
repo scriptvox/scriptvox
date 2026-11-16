@@ -1,0 +1,104 @@
+# Search rows for `scriptvox research` (docs/specs/research.md, section 2). A row is data: where to ask, and where
+# the title and the page address are in the answer. Free rows with no key come first. The user's own rows are in
+# search.toml in the config folder.
+#
+# search_url: {query}, {lang} and {limit} are filled in. page_url and text: {lang} and each {field} of one result;
+# a field can be a path (data[*].title: the first match).
+# near_url: a second form of the request, for a name: the page whose title is the query or is near it. The answer has
+# the form of search_url. A row with no such form is asked only with search_url.
+# family: rows of one owner; the two-source rule counts a family as one publisher.
+# langs: the languages that the row has text in; the row is not asked for another language. None: every language.
+# terms, terms_read: what the publisher says about automated access, and the day it was read. good_for: the kind
+# of fact. One request for each row in one run, one at a time, with the User-Agent of the tool and nothing about the
+# user. The order is the order of the page slots: one result of each row in turn.
+
+[[search]]
+name = "wikipedia"
+key = ""
+publisher = "Wikipedia"
+family = "wikimedia"
+search_url = "https://{lang}.wikipedia.org/w/api.php?action=query&list=search&format=json&srlimit={limit}&srsearch={query}"
+# srwhat=nearmatch (public API help, module query+search): the page with this title, also through a redirect, or nothing.
+near_url = "https://{lang}.wikipedia.org/w/api.php?action=query&list=search&format=json&srlimit=1&srwhat=nearmatch&srsearch={query}"
+results = "query.search[*]"
+title = "title"
+page_url = "https://{lang}.wikipedia.org/wiki/{title}"
+hosts = ["wikipedia.org"]
+good_for = "general facts on any topic, in the edition of the language"
+
+# Photo and video captions of NASA: the text of the result itself, no page read. Checked 13 Nov 2026: the search
+# answers with no key; the page of a result answers 200 to a plain client and shows its text only with JavaScript.
+[[search]]
+name = "nasa"
+key = ""
+publisher = "NASA"
+family = "nasa"
+search_url = "https://images-api.nasa.gov/search?media_type=image&page_size={limit}&q={query}"
+results = "collection.items[*]"
+title = "data[*].title"
+page_url = "https://images.nasa.gov/details/{data[*].nasa_id}"
+text = "{data[*].description}"
+hosts = ["images.nasa.gov"]
+langs = ["en"]
+good_for = "space, Earth and air science: sizes, distances, dates of missions, in the words of a caption"
+terms = "No key and no rate limit is stated for images-api.nasa.gov (API document of images.nasa.gov; the answer has no rate-limit header). NASA media guidelines: not under US copyright in general, name NASA as the source, do not suggest that NASA endorses a product. The page api.nasa.gov could not be read."
+terms_read = "2026-11-13"
+
+# Abstracts of life-science papers: the text of the result itself, no page read. Checked 13 Nov 2026: the search
+# answers with no key; the article page answers 403 to a plain client (a person's browser opens it), so
+# `export --check-links` names it.
+[[search]]
+name = "europepmc"
+key = ""
+publisher = "Europe PMC"
+family = "papers"
+search_url = "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&resultType=core&pageSize={limit}&query={query}"
+results = "resultList.result[*]"
+title = "title"
+page_url = "https://europepmc.org/article/{source}/{id}"
+text = "{abstractText}"
+hosts = ["europepmc.org"]
+langs = ["en"]
+good_for = "health, medicine and biology: measured values and study results, in the words of a paper's abstract"
+terms = "No key and no rate limit is stated (dev.europepmc.org/RestfulWebService). EMBL-EBI terms of use: a use that hinders the service is blocked; EMBL-EBI adds no limit of its own on reuse and expects attribution; the rights of each paper are its own. The page europepmc.org/RestfulWebService refused a plain client."
+terms_read = "2026-11-13"
+
+# Abstracts of open-access journal articles in all fields: the text of the result itself, no page read. Checked
+# 13 Nov 2026: the search answers with no key; the article page answers 403 to a plain client, as europepmc.
+# One family with europepmc: the two can give the same paper, and one paper must not confirm itself.
+[[search]]
+name = "doaj"
+key = ""
+publisher = "DOAJ"
+family = "papers"
+search_url = "https://doaj.org/api/search/articles/{query}?pageSize={limit}"
+results = "results[*]"
+title = "bibjson.title"
+page_url = "https://doaj.org/article/{id}"
+text = "{bibjson.abstract}"
+hosts = ["doaj.org"]
+langs = ["en"]
+good_for = "research results in any field, in the words of an open-access article's abstract"
+terms = "doaj.org/api/docs: no key for a search; at most two requests a second on all routes. doaj.org/terms: the article metadata is under a CC0 waiver."
+terms_read = "2026-11-13"
+
+# The entity search: label and description are the text, no page is read.
+[[search]]
+name = "wikidata"
+key = ""
+publisher = "Wikidata"
+family = "wikimedia"
+search_url = "https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&language={lang}&uselang={lang}&limit={limit}&search={query}"
+results = "search[*]"
+title = "label"
+page_url = "https://www.wikidata.org/wiki/{id}"
+text = "{label}: {description}."
+hosts = ["wikidata.org"]
+good_for = "what a thing is, in one line"
+
+# Looked at on 13 Nov 2026 and left out. Crossref: an abstract only with a filter and with markup, at one request a
+# second; the same kind of text as doaj and europepmc. Internet Archive: its terms of use page could not be read, and
+# the results are noisy. Open Library: no text of a fact in the answer, and its pages ask "are you a human". GOV.UK:
+# the search API is "unsupported and may change", and it is for one country. Library of Congress: the JSON search
+# answered 403 with a challenge page. OpenAlex: the abstract is a word index, not text, and the key-less budget is
+# small. arXiv: the answer is Atom XML, and a row reads JSON.

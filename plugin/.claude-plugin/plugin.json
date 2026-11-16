@@ -1,0 +1,10 @@
+{
+  "name": "scriptvox",
+  "description": "ScriptVox: ask Claude Code for a video. Narrated, captioned, self-checked MP4s from a script, in English or Arabic, from your own clips, stock footage or a built-in background. Free tools first; paid stages need your approval.",
+  "version": "0.1.0",
+  "author": {
+    "name": "ScriptVox contributors"
+  },
+  "repository": "https://github.com/scriptvox/scriptvox",
+  "license": "Apache-2.0"
+}

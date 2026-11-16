@@ -1,0 +1,1247 @@
+{
+  "$defs": {
+    "Card": {
+      "additionalProperties": false,
+      "description": "Motion text over this scene.",
+      "properties": {
+        "at": {
+          "description": "Or seconds from the scene's start when the card comes in, 0 or more. Give `on` or `at`, not both.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "behind": {
+          "description": "Title only: the title stands behind the subject of the shot (the subject is cut out on every frame by the\nfree matte row and laid back over the text). Use it when the subject is large and crosses the middle.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "ease": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ease"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "List and bars only: how each item moves in, `out`, `spring` or `linear`. Default: list items fade in, bars\ngrow at one speed."
+        },
+        "edges": {
+          "description": "Diagram only: 1 to 12 arrows, each `[\"from\", \"to\"]` with two labels of `nodes`; no circle, no arrow over a step.",
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "from": {
+          "description": "Stat: the number the count starts from (default 0). Number line: the value the first marker travels from. `\"text\": \"42%\", \"from\": 30` counts from 30% to 42%,\nand a `from` above the number counts down. It takes the unit and the decimals of `text`.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "grid": {
+          "description": "Plot only: `true` draws light grid lines at round steps (1, 2 or 5 times a power of ten). Default: none.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "hold": {
+          "description": "Seconds the card stays after it comes in; then it fades out and the scene goes on. Default: to the end of the\nscene. Above 0; a `hold` past the scene's end stops at the end. Not for a formula with `then`.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "items": {
+          "description": "The points of a list (1 to 5, at most 40 characters each), the bar names of a `bars` chart, the point\nnames of a `line` chart (3 to 8, at most 12 characters, usually years), the 2 to 5 steps of a `steps` card,\nor the names of the `points` of a `number_line`.",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "kind": {
+          "$ref": "#/$defs/Kind",
+          "description": "title, stat, lower_third, list, bars, line, formula, code, diff, terminal, plot, quote, compare, donut,\ntimeline, table, number_line, diagram, steps, progress or gauge."
+        },
+        "label": {
+          "description": "The line under a stat, the role under a name, or the heading above a `bars` or `line` chart. Refused on\n`title`, `list`, `donut`, `timeline` and `steps`, which do not draw it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mark": {
+          "description": "Up to 4 pieces of the card that are marked when the voice says a word. Formula: the piece takes the accent\ncolour, for example `[{\"part\": \"mc^2\", \"on\": \"energy\"}]` on `E = mc^2`; not with `then`. Title, stat, quote\nand list: words of the card get an underline, a ring or a highlight, for example\n`[{\"part\": \"forty percent\", \"on\": \"forty\", \"style\": \"ring\"}]`.",
+          "items": {
+            "$ref": "#/$defs/Mark"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "nodes": {
+          "description": "Diagram only: 2 to 8 box labels, each at most 18 characters and there once.",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "on": {
+          "description": "A word of the scene's narration, as the script writes it: the card comes in when the voice says it, not at\nthe scene's start (`\"on\": \"forty\"` for \"revenue grew by forty two percent\"). `plan` refuses a word the\nscene's script does not have. A formula with `then` is the exception: there `on` is when the change to the\nsecond formula starts (default: halfway through the scene).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "points": {
+          "description": "Number line only: 1 to 4 values to mark on the line, each inside `values`; `items` may name them.",
+          "items": {
+            "format": "double",
+            "type": "number"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "rows": {
+          "description": "Table only: 2 to 8 rows of 2 to 5 cells each (at most 24 characters a cell); the first row is the header.",
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "stagger": {
+          "description": "List and bars only: seconds from one item to the next (0.05 to 1.5). Default: a list item comes when the\nvoice says it; bars come 0.15 s apart.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "text": {
+          "description": "The headline, the number with its unit (\"87%\", \"$1.2 billion\"), the name, or the formula (`E = mc^2`,\n`\\frac{d}{t}`, `\\sqrt{x}`, `\\pi r^2`). Refused on `bars`, `line`, `list`, `compare` and `timeline`, which do\nnot draw it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "then": {
+          "description": "Formula only: a second formula the first one turns into. Pieces both share (same symbols, in order) move\nto their new place; the rest fades out and in. Example: `A = \\pi r^2` then `A = \\pi (2r)^2 = 4\\pi r^2`.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "trace": {
+          "description": "Plot only: `true` puts a dot on the first curve that runs with it as it is drawn, with its x and y beside it;\nit rests at the curve's right end. Default: none.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "values": {
+          "description": "The numbers of a `bars` chart (one per item, 0 or more), of a `line` chart (one per point, any sign), the\nx range of a `plot` (`[from, to]`, default `[-5, 5]`), the two ends of a `number_line`, or `[value]` (out of\n100) or `[value, top]` of a `progress` or `gauge` card.",
+          "items": {
+            "format": "double",
+            "type": "number"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "y": {
+          "description": "Plot only: the y range `[min, max]`. Default: the range of the curves. A curve is cut where it leaves it.",
+          "items": {
+            "format": "double",
+            "type": "number"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "type": "object"
+    },
+    "Character": {
+      "additionalProperties": false,
+      "description": "The same person or thing in every generated scene.",
+      "properties": {
+        "file": {
+          "description": "A picture of them inside the project, relative to the brief (PNG, JPEG or WebP). Add `prompt` when the video has\nclips: a clip row reads words only.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "description": "The name scenes use in `who` (brief `characters`).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prompt": {
+          "description": "Describe them: an image row makes one reference picture, once, and keeps it. Clip prompts carry these words too.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "Cutaway": {
+      "additionalProperties": false,
+      "description": "A picture over the base video for a few seconds (brief `cutaways`). The base video's own sound plays on.",
+      "properties": {
+        "at": {
+          "description": "Seconds of the base video where it starts.",
+          "format": "double",
+          "type": "number"
+        },
+        "file": {
+          "description": "A clip or still inside the project, relative to the brief. Or `prompt`.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model": {
+          "description": "A row from `scriptvox providers`. Default: the cheapest ready row that fits the shape, which can be a paid row.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prompt": {
+          "description": "Or the shot to make with a generator row (the plan prices it). The brief's `style` goes at its end.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "seconds": {
+          "description": "How long it shows, 0.5 s or more. A clip shorter than this holds its last frame.",
+          "format": "double",
+          "type": "number"
+        },
+        "still": {
+          "description": "A still from an image row instead of a clip: far faster.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "at",
+        "seconds"
+      ],
+      "type": "object"
+    },
+    "Ease": {
+      "description": "How a list item or a bar moves in.",
+      "oneOf": [
+        {
+          "const": "linear",
+          "description": "The same speed all the way.",
+          "type": "string"
+        },
+        {
+          "const": "out",
+          "description": "Fast at first, then slows as it lands.",
+          "type": "string"
+        },
+        {
+          "const": "spring",
+          "description": "Goes a little past its place and settles back.",
+          "type": "string"
+        }
+      ]
+    },
+    "GenScene": {
+      "additionalProperties": false,
+      "description": "A generated clip: what to show, and optionally which row, how long and a first frame.",
+      "properties": {
+        "character": {
+          "description": "`false`: this scene leaves out the brief's `character` or `characters` (a skyline, a chart, an empty room).",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "first_frame": {
+          "description": "Or a prompt for a first frame: an image row makes it, then the clip starts from it (image to video).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "image": {
+          "description": "A first-frame image inside the project, relative to the brief (image to video).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "last_frame": {
+          "description": "The picture the clip ends on, inside the project, relative to the brief. Needs `image` or `first_frame`, and a\nrow with `takes_last_frame` in `scriptvox providers`.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model": {
+          "description": "A row from `scriptvox providers` (generators). Default: the cheapest row with a key that fits the aspect.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prompt": {
+          "description": "The shot: subject, action, camera, light, style.",
+          "type": "string"
+        },
+        "seconds": {
+          "description": "Clip length to ask for. Default: the scene narration length, estimated from its words.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "still": {
+          "description": "A still picture from an image row instead of a clip: far faster (about 10 s against minutes), with a slow push-in\nor the scene's `camera`.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "who": {
+          "description": "Which of the brief's `characters` are in this scene, by name (at most 4). Default: all of them.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "prompt"
+      ],
+      "type": "object"
+    },
+    "Inset": {
+      "additionalProperties": false,
+      "description": "A picture in picture.",
+      "properties": {
+        "corner": {
+          "description": "`top_right` (default), `top_left`, `bottom_right` or `bottom_left`. The bottom ones stay above the captions.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "file": {
+          "description": "A clip or photo inside the project, relative to the brief.",
+          "type": "string"
+        },
+        "width": {
+          "description": "Share of the frame width, 0.2 to 0.6. Default 0.4.",
+          "format": "float",
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "file"
+      ],
+      "type": "object"
+    },
+    "Kind": {
+      "oneOf": [
+        {
+          "enum": [
+            "title",
+            "stat",
+            "lower_third",
+            "list",
+            "bars",
+            "line"
+          ],
+          "type": "string"
+        },
+        {
+          "const": "formula",
+          "description": "A math formula in a small TeX-like subset, typeset by scriptvox (no LaTeX install).",
+          "type": "string"
+        },
+        {
+          "const": "code",
+          "description": "A code snippet in an editor panel, coloured and typed in line by line.",
+          "type": "string"
+        },
+        {
+          "const": "diff",
+          "description": "A code change (G187): a code card where a line that starts with `+` is added (green) and one that starts\nwith `-` is removed (red). Other lines are context.",
+          "type": "string"
+        },
+        {
+          "const": "terminal",
+          "description": "A terminal (G187): a line that starts with `$ ` is a command and is typed in; the other lines are its\noutput and come whole.",
+          "type": "string"
+        },
+        {
+          "const": "plot",
+          "description": "y = f(x) drawn on axes: `text` is the function (`x^2 - 2`, `2sin(x)`), `values` the x range.",
+          "type": "string"
+        },
+        {
+          "const": "quote",
+          "description": "A quotation in `text`, with the speaker in `label`.",
+          "type": "string"
+        },
+        {
+          "const": "compare",
+          "description": "Two panels side by side: two `items`, two `values`, the unit in `label`. The second panel is lit.",
+          "type": "string"
+        },
+        {
+          "const": "donut",
+          "description": "A donut chart: `items` and `values` (parts of a whole), an optional middle text in `text`.",
+          "type": "string"
+        },
+        {
+          "const": "timeline",
+          "description": "Events down a line: 2 to 5 `items`. Each comes when the voice says it.",
+          "type": "string"
+        },
+        {
+          "const": "table",
+          "description": "A table: `rows`, the first row is the header. A `mark` lights a row, a column or a cell on a spoken word.",
+          "type": "string"
+        },
+        {
+          "const": "number_line",
+          "description": "A line from `values[0]` to `values[1]` with ticks and the `points` marked on it; `from` makes the first\nmarker travel.",
+          "type": "string"
+        },
+        {
+          "const": "diagram",
+          "description": "Boxes and arrows: `nodes` are the box labels, `edges` the arrows. Laid out in steps by the arrows.",
+          "type": "string"
+        },
+        {
+          "const": "steps",
+          "description": "A numbered process: 2 to 5 `items`. The step the voice is at is lit.",
+          "type": "string"
+        },
+        {
+          "const": "progress",
+          "description": "One value on a bar that fills to it: `values` is `[value]` out of 100 or `[value, top]`.",
+          "type": "string"
+        },
+        {
+          "const": "gauge",
+          "description": "One value on a ring that fills to it: `values` as for `progress`.",
+          "type": "string"
+        }
+      ]
+    },
+    "Line": {
+      "additionalProperties": false,
+      "description": "One spoken line of a dub, on the base video's own times.",
+      "properties": {
+        "end": {
+          "description": "When the source line ends. The new line may run past it into the gap before the next line.",
+          "format": "double",
+          "type": "number"
+        },
+        "start": {
+          "description": "Seconds from the start of the base video.",
+          "format": "double",
+          "type": "number"
+        },
+        "text": {
+          "description": "The words to say.",
+          "type": "string"
+        },
+        "voice": {
+          "description": "Another voice for this line: a voice id of the same engine (`scriptvox voices`), for a second speaker.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "start",
+        "end",
+        "text"
+      ],
+      "type": "object"
+    },
+    "Logo": {
+      "additionalProperties": false,
+      "description": "A logo in a corner of every frame.",
+      "properties": {
+        "corner": {
+          "description": "The top corner: `right` (default) or `left`. Not mirrored for Arabic: a brand keeps its place.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "file": {
+          "description": "A PNG inside the project, relative to the brief. A transparent background reads best.",
+          "type": "string"
+        },
+        "opacity": {
+          "description": "0.2 to 1 (default 0.9).",
+          "format": "float",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "width": {
+          "description": "Width as a share of the frame width, 0.05 to 0.4 (default 0.16).",
+          "format": "float",
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "file"
+      ],
+      "type": "object"
+    },
+    "Mark": {
+      "additionalProperties": false,
+      "description": "One piece of a card and the spoken word that marks it.",
+      "properties": {
+        "on": {
+          "description": "A word of the scene's narration, as the script writes it: from this word on the piece is marked, to the end\nof the card.",
+          "type": "string"
+        },
+        "part": {
+          "description": "Formula: a piece of the card's `text`, written as the formula writes it (`mc^2`, `\\frac{a}{b}`). It must be\nthere exactly once. A symbol keeps its `^` and `_`: in `mc^2` the pieces are `m`, `c`, `2`, `c^2` and `mc^2`.\nTitle, stat, quote, list: one or more whole words of the card's `text`, `label` or `items`, in a row, there\nexactly once.",
+          "type": "string"
+        },
+        "style": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarkStyle"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Title, stat, quote, list: `underline` (default), `ring` or `highlight`, in the accent colour. Not for a\nformula, whose piece takes the accent colour itself."
+        }
+      },
+      "required": [
+        "part",
+        "on"
+      ],
+      "type": "object"
+    },
+    "MarkStyle": {
+      "description": "How a phrase of a text card is marked.",
+      "oneOf": [
+        {
+          "const": "underline",
+          "description": "A line under the words; it grows from the reading side.",
+          "type": "string"
+        },
+        {
+          "const": "ring",
+          "description": "An oval line around the words.",
+          "type": "string"
+        },
+        {
+          "const": "highlight",
+          "description": "A band behind the words.",
+          "type": "string"
+        }
+      ]
+    },
+    "Outro": {
+      "additionalProperties": false,
+      "description": "The end card.",
+      "properties": {
+        "seconds": {
+          "description": "Length in seconds, 1 to 6 (default 2.5).",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "text": {
+          "description": "The line under the logo, for example a web address or \"Follow for more\".",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "Scene": {
+      "additionalProperties": false,
+      "description": "One scene: its narration and, optionally, its own visual.",
+      "properties": {
+        "camera": {
+          "description": "A camera move made by scriptvox on this scene's clip or photo, the same every time: `push_in`, `pull_out`,\n`pan_left` or `pan_right` (about 12 percent over the scene). Generated clips need it: their own camera words\nbarely move (measured on Wan 2.2 5B).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "card": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Card"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Motion text over this scene: title, stat, lower_third, list, bars, line, formula, code, diff, terminal, plot, quote, compare, donut,\ntimeline, table, number_line, diagram, steps, progress or gauge."
+        },
+        "cards": {
+          "description": "Or 1 to 4 cards that show one after the other in this scene, never two together, in time order. Each is a\n`card` with its own start, `on` (a spoken word) or `at` (seconds from the scene's start), and its own `hold`;\na card ends 0.2 s before the next starts. With no times the cards share the scene evenly. Not with `card`.",
+          "items": {
+            "$ref": "#/$defs/Card"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "generate": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GenScene"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An AI video clip for this scene, made by a generator row (costs money; `plan` prices it)."
+        },
+        "inset": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Inset"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A smaller picture over this scene (a speaker over slides, a detail over a wide shot). Its own sound is not used."
+        },
+        "media": {
+          "description": "A clip or photo for this scene, inside the project, relative to the brief.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "media_from": {
+          "description": "Where `media` starts playing, in seconds, when it is a clip. Default: its start.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "media_to": {
+          "description": "Where that clip stops, in seconds. Past it the clip slows or holds its last frame, and never runs on into what\ncomes next in the file. Default: its end.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "open_image": {
+          "description": "A search term for a free picture for this scene, found with no key through `media search`. Each picture keeps its own\nlicence in credits.txt and in export; its terms do not stop the run.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "overlay": {
+          "description": "A full-frame layer with a transparent background over this scene, inside the project, relative to the brief: a\nWebM (VP8 or VP9 with alpha), a MOV (ProRes 4444 or Animation) or a PNG, for example a Manim, Remotion or\nHyperFrames render. It fits the frame without stretching and starts with the scene; captions stay on top. Its\nown sound is not used. A file with no alpha is refused, as it would hide the scene.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "script": {
+          "default": "",
+          "description": "The narration of this scene. Leave it out, with `seconds`, for a scene with no words.",
+          "type": "string"
+        },
+        "seconds": {
+          "description": "For a scene with no `script`: how long its picture shows, in seconds (0.2 to 600). No voice and no caption; any `music` plays on. A scene with a script takes the time of its words.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "sound": {
+          "description": "The sound of this scene's own `media` clip: `none` (default, the clip is silent), `under` (quiet, about 12 dB\nunder the voice) or `keep` (at the voice's level, lowered while the voice speaks). It is the same part of the\nfile as the picture, at the clip's own speed. Not for `stock`, `open_image` or `generate`.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stock": {
+          "description": "A stock search term for this scene (Pexels or Pixabay with a key, else Commons and Internet Archive).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "transition": {
+          "description": "The transition into this scene, instead of the video's `transition`. Same names. Not on the first scene.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "voice": {
+          "description": "Another speaker for this scene: a voice id of the same engine (`scriptvox voices`), for a dialogue. The open `selfhost`\nvoice has one speaker and refuses this.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "SecondsOrClock": {
+      "anyOf": [
+        {
+          "format": "double",
+          "type": "number"
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "description": "The schema of a time that is seconds as a number, or text (`\"12.5\"`, `\"0:12\"`). The brief keeps it as text."
+    },
+    "Source": {
+      "additionalProperties": false,
+      "description": "One fact of the script and where it comes from.",
+      "properties": {
+        "publisher": {
+          "description": "The short name of who published it (\"Wikipedia\", \"NASA\"): the name that a `sources_card` shows.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "text": {
+          "description": "The fact as the script states it, for example \"Revenue grew 42 percent in 2025\".",
+          "type": "string"
+        },
+        "title": {
+          "description": "The name of the source: a report, a book, a person. Give `url`, `title` or both.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "url": {
+          "description": "Where it comes from: a page (`https://...`).",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "accent": {
+      "description": "The brand colour as `#RRGGBB`: the highlight of the spoken word and the bars of a chart (default yellow).",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ambience": {
+      "description": "Sound for each video scene from its own picture (MMAudio on your own GPU service), low under the voice. The\nterms of the model are in `providers` and in `metadata.json`.",
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "aspect": {
+      "description": "9:16, 16:9, 1:1, 4:5, 3:4, 4:3, 2:3 or 21:9. Generated clips are asked as 9:16 (tall shapes) or 16:9 (wide shapes) and\ncropped to the frame.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "background": {
+      "description": "The plain background, when a scene has no picture: `dusk` (default, purple to yellow), `night`, `ocean`, `forest`,\n`sand`, `slate`, or 2 or 3 of your colours as `#0b1020,#1b2a4a`. It moves slowly.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "base_sound": {
+      "description": "The base video's own sound under the new voice: `none` (default), `keep` (all of it, low and ducked) or\n`background` (its voice removed by a stem row, so the music and ambience stay: a dub). Replaces the\nmusic bed.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "base_video": {
+      "description": "A video to re-voice: it plays from the start under the new narration, and its own sound is dropped\n(translate: transcribe it with `scriptvox analyze --transcript`, write the new script, set `lang`). Give the\nnarration as `script` or `script_file`, not `scenes`: the base video replaces the other visuals.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "brand": {
+      "description": "A brand file (JSON, path relative to the brief) with the look of a series: lang, tts, voice, aspect, size, fps,\ncaptions, caption_at, caption_size, caption_outline, caption_box, font, style, background, music_level, transition, look, sfx, music, music_prompt, logo, accent, outro, card_style. A field in the brief wins.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "caption_at": {
+      "description": "Where captions sit: `bottom` (default), `middle` (lower middle, a common short-form place) or `top`. `middle` and\n`top` need a video with no `hook` and no scene `card`, which use that space.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "caption_box": {
+      "description": "The black box behind the captions, as its opacity: 0 is no box, 1 is solid black. Default 0.65. Not for\n`captions` `reveal`, which has no box. With no box, the gate `contrast` warns when the letters cannot be\nread on the picture.",
+      "format": "double",
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "caption_outline": {
+      "description": "A black outline around the caption letters, in px on a 1080 px short side: 0 to 12 (it follows the frame's\nsize). Default: none inside the box; with `caption_box` 0, a tenth of the caption size.",
+      "format": "double",
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "caption_size": {
+      "description": "How big the captions are: `small` (four fifths), `normal` (default), `large` (five quarters), or a percent of\nnormal from `\"50%\"` to `\"200%\"`, for example `\"115%\"`. The lines are measured again at the new size, so they\nstill fit the frame. The hook, the cards and `captions_second` keep their size.\nA bare number is read as a percent: 115 is `\"115%\"`.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "captions": {
+      "description": "Caption style: `karaoke` (default: up to two lines, the spoken word lights up) , `pop` (1 to 3 big words\nat a time, each page pops in) or `reveal` (up to 3 lines, no box, each word appears when it is said).",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "captions_second": {
+      "description": "A small second caption line under the main one, for example a translation: one entry per sentence of the\nscript, in order. Each shows while its sentence is said. Not with `caption_at` `top`.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "card_style": {
+      "description": "The colours of the cards, the hook and the end card: `dark` (default, light text on dark boxes) or `paper` for a light `background`: dark text, light boxes, thin rules, and the `accent` for headers, marks and numbers.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "character": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Character"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The same person or thing in every generated scene: each still and first frame starts from one reference\npicture, and a clip with no first frame gets one. Name them in the scene prompts as \"the same woman\"."
+    },
+    "characters": {
+      "description": "Two or more people in one story, each with a `name`. A scene names who is in it with `generate.who`.",
+      "items": {
+        "$ref": "#/$defs/Character"
+      },
+      "type": "array"
+    },
+    "cut_on": {
+      "description": "`beat`: each scene boundary moves to the nearest beat of the music bed when that beat is at most 0.25 s away;\nthe picture, the scene's card and the whoosh move, the voice and the captions do not. Needs `scenes` and\n`music` as a built-in bed with a beat (`pulse`) or a music file in the project. A boundary with no beat near,\nor a bed with no steady beat, stays where it was; the result's `cut_on` lists each boundary.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cutaways": {
+      "description": "Pictures over `base_video` at its own times, each a file or a generated shot: one plan prices them all, then\nthey go over the video with its own sound and captions on top. Needs `base_video`, and no script, scenes or lines.",
+      "items": {
+        "$ref": "#/$defs/Cutaway"
+      },
+      "type": "array"
+    },
+    "duration": {
+      "description": "Target length in seconds; the narration is fitted before render. A brief with `duration` and no script, script_file, scenes or lines is a video with no words of that length (picture and `music` only).",
+      "format": "double",
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "emphasis": {
+      "description": "Key words or phrases of the script that stay in the accent colour on their caption page, for example\n`[\"90 percent\", \"free\"]`. Few of them, or nothing stands out.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "font": {
+      "description": "The brand's font for captions, cards and the hook: a TTF or OTF file inside the project, relative to the brief.\nIt must hold every letter of the script. You answer for its licence.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fps": {
+      "description": "Frames per second of the video: 24 (film; generated clips at 24 play frame for frame), 25, 30 (default) or 60.",
+      "format": "uint32",
+      "minimum": 0,
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "hook": {
+      "description": "A headline shown big for the first 1.6 seconds (the hook).",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "lang": {
+      "description": "en, ar, es, fr, de, pt or id (`scriptvox voices` lists them). Default: detected from the script.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "lines": {
+      "description": "A dub on the times of the base video: each line starts at its own `start` and fits its own time. Needs\n`base_video`. Use this in place of `script`, `script_file` and `scenes`.",
+      "items": {
+        "$ref": "#/$defs/Line"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "logo": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Logo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A logo on every frame: a PNG (transparent background) in a top corner, under the captions."
+    },
+    "look": {
+      "description": "The colour look of the picture: `natural` (default), `warm`, `cool`, `film` (softer colour, more contrast,\na vignette), `punchy` (more contrast and colour), `mono`, or a `.cube` 3D LUT file relative to the brief (a grade\nfrom your colourist). Captions and cards keep their colours.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "loop": {
+      "description": "`true`: the video is meant to play in a loop. It only asks for the gate `loop_seam`, which compares the last\nframe with the first and warns when the jump shows. It changes nothing in the video.",
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "media": {
+      "description": "Folder of your own clips and stills, inside the project, relative to the brief.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "media_match": {
+      "description": "With `media`: each line of the script gets the file from the folder that shows it, instead of the folder order. A\nvision service you set looks at each file once. `plan` sends nothing and names the host; `make` sends the frames and\nlists the picks in `media_match`, and a later `plan` shows them. To change one, write `scenes` yourself.",
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "music": {
+      "description": "calm, pulse, a music file in the project, an https address, or none. Any song or media file can be used (mp3, m4a, wav, or a video for its sound): the choice and the responsibility are yours. A file shorter than the video starts again, and the music fades out in the last second. An address: `make` downloads its sound one time through `fetch` (run `scriptvox setup fetch` first), and `plan` lists the download.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "music_from": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SecondsOrClock"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The start of the cut of a music file or of music from an address: seconds as a number (`12.5`) or as text (`\"12.5\"`), or a clock (`\"0:12\"`)."
+    },
+    "music_level": {
+      "description": "How far any bed sits under the voice: `quiet`, `normal` (default) or `loud`.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "music_prompt": {
+      "description": "Or a music bed made by a music row from this description (style, instruments, mood, tempo; no vocals).",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "music_search": {
+      "description": "Or a free music bed found with no key through `media search`, from these search words. It keeps its own licence.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "music_to": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SecondsOrClock"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The end of that cut, in the same forms."
+    },
+    "narration": {
+      "description": "Your own recorded narration (wav, mp3, m4a or flac) instead of a voice: no TTS. Keep `script` as the words said:\ncaptions follow them, exactly with a speech to text row, else at an even pace. The file sets the length, so\nno `duration`.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "outro": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Outro"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "An end card after the narration: the picture blurs and darkens, the logo (if any) shows large in the middle,\nand `text` (a call to action, at most 60 characters) under it. The music runs on."
+    },
+    "say": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Written forms the voice says another way, `{\"ACME\": \"A C M E\"}`, or with IPA between slashes and then the respelled form, `{\"Doha\": \"/\u02c8do\u028ah\u0259/ doh-ha\"}` (a voice with `takes_ipa` says the IPA). The captions keep the written form. A brand file\nmay hold this.",
+      "type": "object"
+    },
+    "scenes": {
+      "description": "Scenes in order: each with its narration and its own clip, photo or stock term.\nCuts fall on scene boundaries. Use this, `script` or `script_file`. A scene with `seconds` and no `script` has no words: its picture shows for that time, with no voice and no caption (a reel with music only: every scene with `seconds`).",
+      "items": {
+        "$ref": "#/$defs/Scene"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "script": {
+      "description": "The narration. Pause tags like `[pause 1.5]` are allowed (0.1 to 10 s each; a pause at the end holds the picture and the music), and delivery cues like `[whisper]` for a voice whose row takes them (`takes_tags` in `scriptvox voices`). Use this or `script_file`.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "script_file": {
+      "description": "A text file with the narration, relative to the brief.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "seed": {
+      "description": "A seed for every generated still and clip: the same seed and brief give the same pictures on rows that take one\n(`takes_seed` in `scriptvox providers`, today the local image row). The plan says when a row does not.",
+      "format": "uint64",
+      "minimum": 0,
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "sfx": {
+      "description": "Built-in sound effects: a whoosh into each scene cut, a pop when a card appears, ticks while a stat counts.",
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "size": {
+      "description": "The short side of the frame in px: 720, 1080 (default), 1440 or 2160, for every `aspect` (16:9 at 2160 is 3840x2160). Text, cards, logo and outro follow it; a smaller clip is scaled up. `plan` gives the render time and disk use.",
+      "format": "uint32",
+      "minimum": 0,
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "smooth": {
+      "description": "Smooth motion for each generated clip with an interpolate row (RIFE on your own GPU service): new frames between\nthe clip's own, 24 to 48 fps. A clip a little short for its scene then plays up to 2 times slower without\na stutter (24 fps clips: 1.43 times at most). Adds about half a minute per clip.",
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "sources": {
+      "description": "The facts the script states and where each comes from (at most 20). ScriptVox fetches nothing and does not judge\nthem: `export` writes them to `metadata.json` and to the credits, and they travel in the MP4's recipe, so a\nviewer or an editor can check a number.",
+      "items": {
+        "$ref": "#/$defs/Source"
+      },
+      "type": "array"
+    },
+    "sources_card": {
+      "description": "`true`: a card \"Sources\" on the last scene with the names of the publishers of `sources` (each `publisher`, else `title`, else the host of `url`), in English or Arabic. Needs `scenes` and `sources`. Default: no card.",
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "stock": {
+      "description": "Stock search terms, one per shot, or `auto`.",
+      "items": {
+        "type": "string"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "style": {
+      "description": "A look added to the end of every `generate` prompt, so the clips of a video or a series look alike. For example\n\"ink illustration, muted colours, soft morning light\". Name the result, not the making.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "transition": {
+      "description": "The transition between shots: `fade` (default, 0.25 s), `slide`, `cut`, `wipe`, `push`, `cover`,\n`dissolve`, `blur`, `circle`, `dip` (through black), `flash` (through white), `pixel`, `radial`, `wind`, `zoom`,\n`reveal`, `iris`, `split`, `slice` or `rise`.\nSideways moves follow the reading direction. A scene's own `transition` wins for the cut into that scene.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tts": {
+      "description": "TTS engine: edge, elevenlabs, kokoro, kokoro-rust, selfhost (an open voice on your own GPU service), or none: no voice, the script runs\nas captions at reading pace over the picture and any music. `reveal` captions suit it.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "upscale": {
+      "description": "Upscale each generated clip with an upscale row (SeedVR2 3B on your own GPU service): a 704x1280 Wan clip comes back\nas 1080x1920 with real detail instead of plain scaling. Adds about a minute per clip.",
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "voice": {
+      "description": "Voice id from `scriptvox voices`.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "voice_rate": {
+      "description": "How fast the voice speaks: 1.0 is the voice's own pace, 0.75 is slower, 1.3 is faster (ElevenLabs: up to 1.2).\nFor `tts` edge, elevenlabs, kokoro-rust and none. With `duration` the voice keeps this pace, and the length is\nreached by a tempo change of at most 16 percent, or the run stops and says how many words to add or cut.",
+      "format": "double",
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "waveform": {
+      "description": "`true`: a waveform that follows the video's own sound (voice and music as heard), in the `accent` colour, over\nthe plain background of the scenes with no picture and no card. For a podcast clip or a voice-only video. It\nstays clear of the captions. Needs sound: a voice, a narration or music.",
+      "type": [
+        "boolean",
+        "null"
+      ]
+    }
+  },
+  "title": "Brief",
+  "type": "object"
+}

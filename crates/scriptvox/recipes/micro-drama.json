@@ -1,0 +1,22 @@
+{
+  "lang": "en",
+  "tts": "kokoro-rust",
+  "voice": "af_heart",
+  "aspect": "9:16",
+  "duration": 25,
+  "hook": "He sold the family shop",
+  "music": "calm",
+  "music_level": "quiet",
+  "background": "night",
+  "transition": "cut",
+  "scenes": [
+    {"script": "You sold the shop. Without telling me.",
+     "card": {"kind": "title", "text": "The Counter"}},
+    {"script": "I had to, Mira. The bank called on Monday.", "voice": "am_michael"},
+    {"script": "Dad built that counter with his own hands."},
+    {"script": "I know. That is why I kept it.", "voice": "am_michael"},
+    {"script": "You kept it? Where?"},
+    {"script": "Look outside. It is on the truck, and so is the sign. We open across the river in spring.", "voice": "am_michael"},
+    {"script": "Then you are buying the paint, Tomas."}
+  ]
+}

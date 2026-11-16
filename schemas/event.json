@@ -1,0 +1,45 @@
+{
+  "$id": "scriptvox.event/v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "exit": {
+      "type": "integer"
+    },
+    "explain": {
+      "type": "string"
+    },
+    "run": {
+      "pattern": "^r_[0-9a-f]{6}$",
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "t": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "run.start",
+        "progress",
+        "stage.start",
+        "stage.done",
+        "fallback",
+        "range_done",
+        "run.end"
+      ]
+    },
+    "v": {
+      "const": 1
+    }
+  },
+  "required": [
+    "v",
+    "t",
+    "run",
+    "type"
+  ],
+  "title": "ScriptVox run event (one line of events.jsonl)",
+  "type": "object"
+}

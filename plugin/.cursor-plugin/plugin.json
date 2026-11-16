@@ -1,0 +1,20 @@
+{
+  "$schema": "https://cursor.com/schemas/cursor-plugin/plugin.json",
+  "name": "scriptvox",
+  "version": "0.1.0",
+  "description": "Narrated, captioned, self-checked MP4s from a script, in English or Arabic, and edits of a video you have. It runs on your machine, and any paid model needs your approval.",
+  "author": {
+    "name": "ScriptVox contributors"
+  },
+  "repository": "https://github.com/scriptvox/scriptvox",
+  "license": "Apache-2.0",
+  "keywords": [
+    "video",
+    "captions",
+    "dubbing",
+    "arabic",
+    "ffmpeg"
+  ],
+  "skills": "./skills/",
+  "displayName": "ScriptVox"
+}

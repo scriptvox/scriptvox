@@ -1,0 +1,42 @@
+[package]
+name = "scriptvox"
+description = "Agent-first CLI that turns a script and your clips into a narrated, captioned, self-checked video"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "scriptvox"
+path = "src/main.rs"
+
+[features]
+# Off by default. The part of `fetch` that reads a site by its name. Its code is not in every tree: where the files
+# are not there, this feature does not build.
+fetch-youtube = []
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+schemars = "1"
+blake3 = "1"
+base64 = "0.23"
+sha2 = "0.11"
+ureq = { version = "3", features = ["platform-verifier"] }
+rusqlite = { version = "0.37", features = ["bundled"] }
+scriptvox-kokoro = { path = "../scriptvox-kokoro", version = "0.1.0" }
+harfrust = "0.15"
+read-fonts = "0.46"
+strsim = "0.11"
+zip = { version = "8", default-features = false, features = ["deflate-flate2-zlib-rs"] }
+toml = { version = "0.9", default-features = false, features = ["parse", "serde", "display"] }
+unicode-normalization = "0.1.26"
+# The OS random source, the same on every platform (OAuth verifier and state). Already in the tree through rand_core.
+getrandom = "0.3"
+
+[dev-dependencies]
+assert_cmd = "2"
+insta = { version = "1", features = ["json"] }
+proptest = { version = "1", default-features = false, features = ["std"] }
+tempfile = "3"

@@ -1,0 +1,27 @@
+{
+  "lang": "en",
+  "tts": "kokoro-rust",
+  "voice": "af_heart",
+  "aspect": "16:9",
+  "duration": 40,
+  "hook": "Find what fills your disk",
+  "music": "calm",
+  "music_level": "quiet",
+  "background": "slate",
+  "transition": "wipe",
+  "caption_size": "small",
+  "say": {"du": "D U"},
+  "scenes": [
+    {"script": "Your disk is full, and you do not know why. Do not guess, and do not delete yet. Three short commands will tell you."},
+    {"script": "The plan is simple. First measure every folder, then sort the sizes, then keep the largest five.",
+     "card": {"kind": "steps", "items": ["Measure every folder", "Sort the sizes", "Keep the largest five"]}},
+    {"script": "Open a terminal in your home folder and type this line. The du command measures each folder, and prints one short size for each.",
+     "card": {"kind": "terminal", "label": "terminal", "text": "$ du -sh *\n1.2G  Videos\n340M  Photos\n12K   notes"}},
+    {"script": "Now send the result through sort, and keep only the last five lines with tail.",
+     "card": {"kind": "terminal", "label": "terminal", "text": "$ du -sh * | sort -h | tail -5\n96M   Music\n340M  Photos\n1.2G  Videos"}},
+    {"script": "Save the line as a small script, so next time it is one word.",
+     "card": {"kind": "code", "label": "big.sh", "text": "#!/bin/sh\ndu -sh * | sort -h | tail -5"}},
+    {"script": "Run it in any folder that feels heavy. And delete only what you know you can lose.",
+     "card": {"kind": "progress", "values": [3, 3], "text": "3 of 3", "label": "Steps done"}}
+  ]
+}

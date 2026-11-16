@@ -1,0 +1,113 @@
+{
+"voice": "en-US-AndrewNeural",
+"text": "ScriptVox reads your script aloud.",
+"chunks": [
+{
+"type": "WordBoundary",
+"offset": 1000000,
+"duration": 6000000,
+"text": "ScriptVox"
+},
+{
+"type": "WordBoundary",
+"offset": 7125000,
+"duration": 2750000,
+"text": "reads"
+},
+{
+"type": "WordBoundary",
+"offset": 10000000,
+"duration": 875000,
+"text": "your"
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMQ=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMg=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMw=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgNA=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgNQ=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgNg=="
+},
+{
+"type": "WordBoundary",
+"offset": 11000000,
+"duration": 3125000,
+"text": "script"
+},
+{
+"type": "WordBoundary",
+"offset": 14250000,
+"duration": 4125000,
+"text": "aloud"
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgNw=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgOA=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgOQ=="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTA="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTE="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTI="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTM="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTQ="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTU="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTY="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTc="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTg="
+},
+{
+"type": "audio",
+"data": "cGxhY2Vob2xkZXIgYXVkaW8gY2h1bmsgMTk="
+}
+],
+"note": "Word timings recorded live from Edge TTS 7.3.1. Audio bytes replaced with placeholders: no Microsoft audio is stored."
+}

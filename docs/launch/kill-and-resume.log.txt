@@ -1,0 +1,15 @@
+$ scriptvox make --script s.txt --media clips --duration 30
+  scriptvox: r_b60f07: TTS edge en-US-AndrewNeural (free, external service, no key): unofficial, personal or non-commercial, may break; the script text goes to Microsoft's Edge read-aloud service (speech.platform.bing.com)
+  scriptvox: preparing the voice worker (Python 3.12 and packages, once)
+  scriptvox: r_b60f07: narration 21.3 s for 30.0 s, speaking rate -29%
+  scriptvox: r_b60f07: 69 words, 9 caption pages
+  scriptvox: r_b60f07: rendering 30.0 s
+  scriptvox: r_b60f07: 9 shots from 4 media files
+  ... killed with SIGKILL while chunk 4 was being written
+
+$ scriptvox make --script s.txt --media clips --duration 30
+  scriptvox: r_eaa631: rendering 30.0 s
+  scriptvox: r_eaa631: kept 3 finished chunks of 10, rendering the rest
+  scriptvox: r_eaa631: checking
+  ok=true  chunks=10  resumed_from_chunk=3  frames=900
+  gates: black pass, slideshow pass, silence pass, loudness pass, av_drift pass, words pass, captions pass, text_bounds pass, fit warn

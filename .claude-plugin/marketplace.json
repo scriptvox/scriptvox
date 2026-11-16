@@ -1,0 +1,18 @@
+{
+  "name": "scriptvox",
+  "owner": {
+    "name": "ScriptVox contributors"
+  },
+  "description": "The scriptvox video skill for Claude Code.",
+  "plugins": [
+    {
+      "name": "scriptvox",
+      "source": "./plugin",
+      "description": "One skill: write a brief, plan, make, wait, check, report. Needs the scriptvox binary on PATH.",
+      "license": "Apache-2.0",
+      "skills": [
+        "./skills/scriptvox"
+      ]
+    }
+  ]
+}

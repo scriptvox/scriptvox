@@ -1,0 +1,23 @@
+---
+source: crates/scriptvox/tests/envelope.rs
+expression: v
+---
+{
+  "agent_mode": false,
+  "artifacts": {},
+  "command": "status",
+  "error": null,
+  "events_file": null,
+  "findings": [],
+  "metrics": {},
+  "needs_input": [],
+  "next": [
+    "scriptvox status <run_id> --json for one run's last events."
+  ],
+  "ok": true,
+  "plan_id": null,
+  "run_id": null,
+  "runs": [],
+  "schema": "scriptvox.result/v1",
+  "status": "ok"
+}

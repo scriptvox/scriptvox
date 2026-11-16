@@ -1,0 +1,471 @@
+# Rows on the self-hosted gateway name an example host. Add your service to generators.toml in the config folder: a row with the same name replaces this one (docs/specs/self-hosted.md).
+# Generative rows (phase 2, P2-001): data, checked by Rust (src/generators.rs).
+# Price units: `usd_per_s` per second of output, and on a speech to text row per second of the audio sent; `usd_each` per
+# picture on an image row. `unverified`: never run against the real service; `providers` and `plan` say so.
+# Every price comes from the provider's own page, with the link and the day it was read. `price = "exact"` means the
+# page states this per-second price for this model; `"base"` means a per-second price is stated but the page does not
+# say whether resolution or duration changes it, so plans show it as an estimate.
+# Other price shapes, only when the provider page states them: `usd_min` (smallest charge of a call), `usd_per_input_s` (per
+# second of the source sent), `usd_per_reference` (per reference picture), `usd_per_s_sound` (with `generate_audio = true`).
+# `durations`: only values a provider page states. `duration_string`: the model takes "5", not 5.
+# `extra`: fixed inputs sent with every request. `commercial`: false until the model licence is checked.
+
+[[generator]]
+name = "kling-2.6-pro"
+gateway = "fal"
+kind = "video.gen"
+key = "fal"
+t2v = "fal-ai/kling-video/v2.6/pro/text-to-video"
+i2v = "fal-ai/kling-video/v2.6/pro/image-to-video"
+# The endpoint's own schema, read 9 Nov 2026: `start_image_url` is required and `image_url` does not exist.
+image_field = "start_image_url"
+durations = [5, 10]
+aspects = ["16:9", "9:16", "1:1"]
+usd_per_s = 0.07
+price = "exact"
+price_source = "https://fal.ai/pricing"
+price_checked = "2026-11-02"
+output = "video.url"
+hosts = ["fal.media"]
+duration_string = true
+# Kling makes audio by default; scriptvox adds its own voice, and audio may change the price.
+extra = { generate_audio = false }
+terms = { attribution_required = false, redistribution = false, note = "Kling through fal. Not confirmed for business use: the fal page says commercial use via fal. Kling's own terms (https://kling.ai/docs/user-policy, updated 21 Apr 2026) ask for written permission for commercial use, so read both before business use. Read 9 Nov 2026." }
+
+[[generator]]
+name = "minimax-h3-max-turbo"
+gateway = "fal"
+kind = "video.gen"
+key = "fal"
+t2v = "minimax/h3-max-turbo/text-to-video"
+i2v = "minimax/h3-max-turbo/image-to-video"
+durations = [5]
+aspects = ["16:9", "9:16", "1:1"]
+# The plan is never below the bill. 768P is fal's default and is asked for by name, so a 480P setting that is ignored
+# cannot bill above the plan. $0.04/s is the rate from 16 Nov 2026 ($0.028 before), and a clip may run 0.7 s long: 5.7 x 0.04 / 5.
+usd_per_s = 0.046
+unverified = true
+price = "base"
+price_source = "https://fal.ai/models/minimax/h3-max-turbo/text-to-video"
+price_checked = "2026-11-09"
+output = "video.url"
+hosts = ["fal.media"]
+extra = { resolution = "768P" }
+terms = { attribution_required = false, redistribution = false, note = "MiniMax H3 through fal. Output may run up to 0.7 s longer than asked (fal page). Not confirmed for business use: the fal page tags it for commercial use, and the page of MiniMax's own terms (https://platform.minimax.io/protocol/terms-of-service) gave no text to read. Read 9 Nov 2026." }
+
+[[generator]]
+name = "grok-imagine"
+gateway = "fal"
+kind = "video.gen"
+key = "fal"
+t2v = "xai/grok-imagine-video/text-to-video"
+i2v = "xai/grok-imagine-video/image-to-video"
+durations = [6]
+aspects = ["16:9", "9:16", "1:1"]
+# The plan is never below the bill. 720p is fal's default and the highest it takes, so a setting that is ignored cannot
+# bill above the plan. $0.07/s, plus $0.002 for the picture of an image to video clip, spread over the row's 6 s.
+usd_per_s = 0.0704
+unverified = true
+price = "base"
+price_source = "https://fal.ai/models/xai/grok-imagine-video/text-to-video"
+price_checked = "2026-11-09"
+output = "video.url"
+hosts = ["fal.media"]
+extra = { resolution = "720p" }
+terms = { attribution_required = false, redistribution = false, note = "xAI Grok Imagine through fal. Not confirmed for business use: the fal page tags it for commercial use, and the terms of xAI (https://x.ai/legal) refused an automated read. Read 9 Nov 2026." }
+
+# Self-hosted: Wan 2.2 TI2V 5B (Apache-2.0) on your own GPU service (services/gen). Free: no plan
+# approval and no ledger charge. Needs `scriptvox keys set selfhost` and your service's CA at <config>/ca/selfhost.pem.
+[[generator]]
+name = "wan22-ti2v-5b-self"
+takes_s = 226
+gateway = "selfhost"
+kind = "video.gen"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-gen"
+t2v = "wan22-ti2v-5b/t2v"
+# The same weights take a first frame (diffusers WanImageToVideoPipeline), so image to video is free too.
+i2v = "wan22-ti2v-5b/i2v"
+durations = [5]
+aspects = ["9:16", "16:9", "1:1"]
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B-Diffusers"
+price_checked = "2026-11-02"
+output = "video.url"
+hosts = ["gen.example.invalid"]
+terms = { commercial = true, attribution_required = false, redistribution = true, note = "Wan 2.2 weights under Apache-2.0 (model card read 2 Nov 2026), run on your own GPUs." }
+
+# Self-hosted fast video on your own GPU service (services/gen, video image): FastWan 2.2 TI2V 5B, the same model distilled to 3 steps. Free.
+[[generator]]
+name = "fastwan22-self"
+takes_s = 35
+gateway = "selfhost"
+kind = "video.gen"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-gen"
+t2v = "fastwan22-ti2v-5b/t2v"
+i2v = "fastwan22-ti2v-5b/i2v"
+durations = [5]
+aspects = ["9:16", "16:9", "1:1"]
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://huggingface.co/FastVideo/FastWan2.2-TI2V-5B-FullAttn-Diffusers"
+price_checked = "2026-11-03"
+output = "video.url"
+hosts = ["gen.example.invalid"]
+terms = { commercial = true, attribution_required = false, redistribution = true, note = "FastWan 2.2 TI2V 5B (FastVideo, Apache-2.0, model card read 3 Nov 2026): Wan 2.2 TI2V 5B distilled with DMD to 3 steps; text encoder and VAE from Wan 2.2 (Apache-2.0)." }
+
+# Self-hosted image on your own GPU service (services/gen, video image): first frames for image to video. Free.
+[[generator]]
+name = "flux2-klein-4b-self"
+takes_s = 10
+takes_reference = true
+gateway = "selfhost"
+kind = "image.gen"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-gen"
+t2v = "flux2-klein-4b/t2i"
+durations = []
+aspects = ["9:16", "16:9", "1:1"]
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://huggingface.co/black-forest-labs/FLUX.2-klein-4B"
+price_checked = "2026-11-02"
+output = "image.url"
+hosts = ["gen.example.invalid"]
+terms = { commercial = true, attribution_required = false, redistribution = true, note = "FLUX.2 klein 4B, Apache-2.0 (model card read 2 Nov 2026). 4 steps, 768x1344 for 9:16." }
+
+# Self-hosted music on your own GPU service (services/gen, video image): beds under the voice. Free.
+[[generator]]
+name = "acestep-xl-turbo-self"
+gateway = "selfhost"
+kind = "music.gen"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-gen"
+t2v = "acestep-xl-turbo/music"
+durations = [15, 30, 60, 120]
+aspects = []
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://huggingface.co/ACE-Step/acestep-v15-xl-turbo-diffusers"
+price_checked = "2026-11-02"
+output = "audio.url"
+hosts = ["gen.example.invalid"]
+terms = { commercial = true, attribution_required = false, redistribution = true, note = "ACE-Step v1.5 XL Turbo, MIT (model card read 2 Nov 2026). Instrumental when no lyrics are sent. Stereo 48 kHz." }
+
+# Self-hosted speech on your own GPU service (scriptvox-audio, services/gen/engines_audio.py). Free. Same key and CA as the Wan row.
+[[generator]]
+name = "chatterbox-mtl-self"
+gateway = "selfhost"
+kind = "tts"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-audio"
+t2v = "chatterbox-mtl/tts"
+durations = []
+aspects = []
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://huggingface.co/ResembleAI/chatterbox"
+price_checked = "2026-11-02"
+output = "audio.url"
+hosts = ["gen.example.invalid"]
+terms = { commercial = true, attribution_required = false, redistribution = true, note = "Chatterbox Multilingual 0.1.7, MIT (model card read 2 Nov 2026). 23 languages incl. ar, en. Output carries an inaudible Perth watermark. Clone a voice only with the speaker's consent." }
+
+[[generator]]
+name = "whisper-large-v3-self"
+gateway = "selfhost"
+kind = "stt"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-audio"
+t2v = "whisper-large-v3/stt"
+durations = []
+aspects = []
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://huggingface.co/Systran/faster-whisper-large-v3"
+price_checked = "2026-11-02"
+output = "transcript.url"
+hosts = ["gen.example.invalid"]
+terms = { commercial = true, attribution_required = false, redistribution = true, note = "Whisper large-v3 (MIT) through faster-whisper 1.2.1. Word timestamps, ar and en." }
+
+# Self-hosted upscale on your own GPU service (services/gen, video image): Wan clips (704x1280) to 1080x1920 with real detail. Free.
+[[generator]]
+name = "seedvr2-3b-self"
+gateway = "selfhost"
+kind = "upscale"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-gen"
+t2v = "seedvr2-3b/upscale"
+durations = []
+aspects = []
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://huggingface.co/ByteDance-Seed/SeedVR2-3B"
+price_checked = "2026-11-03"
+output = "video.url"
+hosts = ["gen.example.invalid"]
+extra = { resolution = 1080, batch_size = 121 }
+terms = { commercial = true, attribution_required = false, redistribution = true, note = "SeedVR2 3B (ByteDance-Seed, Apache-2.0, model card read 3 Nov 2026), fp16 weights from numz/SeedVR2_comfyUI (Apache-2.0), one-step restoration; short side to 1080." }
+
+# Self-hosted frame interpolation on your own GPU service (services/gen, video image): a 24 fps clip back at 48 fps, same length. Free.
+[[generator]]
+name = "rife426-self"
+gateway = "selfhost"
+kind = "interpolate"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-gen"
+t2v = "rife426/interpolate"
+durations = []
+aspects = []
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://github.com/hzwer/Practical-RIFE"
+price_checked = "2026-11-04"
+output = "video.url"
+hosts = ["gen.example.invalid"]
+extra = { multi = 2 }
+terms = { commercial = true, attribution_required = false, redistribution = true, note = "RIFE 4.26 (hzwer, MIT: Practical-RIFE code and the author's hzwer/RIFE weights, read 4 Nov 2026); two frames out per frame in." }
+
+# Self-hosted subject cut-out on your own GPU service (services/gen, video image): a grey mask per frame, for titles behind the subject. Free.
+[[generator]]
+name = "birefnet-self"
+gateway = "selfhost"
+kind = "matte"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-gen"
+t2v = "birefnet/matte"
+durations = []
+aspects = []
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://huggingface.co/ZhengPeng7/BiRefNet"
+price_checked = "2026-11-03"
+output = "video.url"
+hosts = ["gen.example.invalid"]
+terms = { commercial = true, attribution_required = false, redistribution = true, note = "BiRefNet (ZhengPeng7, MIT, model card read 3 Nov 2026): dichotomous image segmentation at 1024x1024, one mask per frame." }
+
+# Self-hosted sound effects on your own GPU service (services/gen, audio image): MMAudio large 44k v2. TESTING ONLY: the weights are
+# CC BY-NC 4.0, so these rows carry non-commercial terms. Trained on 8 s clips; the server takes 1 to 10 s. Free.
+[[generator]]
+name = "mmaudio-v2a-self"
+gateway = "selfhost"
+kind = "sfx.gen"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-audio"
+t2v = "mmaudio-large-44k/v2a"
+durations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+aspects = []
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://huggingface.co/hkchengrex/MMAudio"
+price_checked = "2026-11-03"
+output = "audio.url"
+hosts = ["gen.example.invalid"]
+terms = { commercial = false, attribution_required = true, redistribution = false, note = "MMAudio (hkchengrex): code MIT, weights CC BY-NC 4.0 (model card read 3 Nov 2026); CLIP DFN5B (Apple) and BigVGAN v2 (NVIDIA, MIT) inside. Needs --video: the sound follows the clip." }
+
+[[generator]]
+name = "mmaudio-t2a-self"
+gateway = "selfhost"
+kind = "sfx.gen"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-audio"
+t2v = "mmaudio-large-44k/t2a"
+durations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+aspects = []
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://huggingface.co/hkchengrex/MMAudio"
+price_checked = "2026-11-03"
+output = "audio.url"
+hosts = ["gen.example.invalid"]
+terms = { commercial = false, attribution_required = true, redistribution = false, note = "MMAudio (hkchengrex): code MIT, weights CC BY-NC 4.0 (model card read 3 Nov 2026). Sound from a text prompt alone." }
+
+# Self-hosted stem split on your own GPU service (services/gen, audio image): Demucs v4 htdemucs. Returns the track without the voice, so a
+# dub keeps the original music and ambience (brief `base_sound: "background"`). Free.
+[[generator]]
+name = "demucs-self"
+gateway = "selfhost"
+kind = "stems"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-audio"
+t2v = "demucs-htdemucs/stems"
+durations = []
+aspects = []
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://github.com/facebookresearch/demucs"
+price_checked = "2026-11-03"
+output = "audio.url"
+hosts = ["gen.example.invalid"]
+terms = { commercial = true, attribution_required = false, redistribution = true, note = "Demucs v4 (Meta, MIT code and weights, read 3 Nov 2026), htdemucs 955717e8. Output: the input without its voice." }
+
+# Self-hosted lip sync on your own GPU service (services/gen, lip sync image): a video and a new voice in, the mouth moves to the voice. Free. 
+[[generator]]
+name = "latentsync-16-self"
+gateway = "selfhost"
+kind = "lipsync"
+key = "selfhost"
+base = "https://gen.example.invalid/scriptvox-lipsync"
+t2v = "latentsync-16/lipsync"
+durations = []
+aspects = []
+usd_per_s = 0.0
+price = "exact"
+price_source = "https://huggingface.co/ByteDance/LatentSync-1.6"
+price_checked = "2026-11-05"
+output = "video.url"
+hosts = ["gen.example.invalid"]
+terms = { commercial = false, attribution_required = false, redistribution = false, note = "LatentSync 1.6 (ByteDance): code Apache-2.0, weights OpenRAIL++ with use limits (model card read 5 Nov 2026); InsightFace buffalo_l face models non-commercial research only (InsightFace README read 5 Nov 2026). A separate part: its licences stay with their owners." }
+
+# Paid rows through fal, for a user with no GPU service. Read from the provider's own pages; no call made yet.
+[[generator]]
+name = "flux-pro-ultra-fal"
+gateway = "fal"
+kind = "image.gen"
+key = "fal"
+t2v = "fal-ai/flux-pro/v1.1-ultra"
+durations = []
+aspects = ["9:16", "16:9", "1:1"]
+usd_per_s = 0.0
+usd_each = 0.06
+unverified = true
+price = "base"
+price_source = "https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra"
+price_checked = "2026-11-05"
+output = "images[*].url"
+hosts = ["fal.media"]
+extra = { output_format = "png" }
+terms = { attribution_required = false, redistribution = false, note = "FLUX1.1 [pro] ultra through fal, a closed model. The page says $0.06 per image and also billing by rounded megapixels, so the price is an estimate. Not confirmed for business use: the fal page says commercial use enabled via fal partnership, and the terms of Black Forest Labs (https://bfl.ai/legal/terms-of-service, revised 1 Aug 2026) let you use your output for your own purposes. Read them before business use. Read 9 Nov 2026." }
+
+[[generator]]
+name = "scribe-fal"
+gateway = "fal"
+kind = "stt"
+key = "fal"
+t2v = "fal-ai/elevenlabs/speech-to-text"
+durations = []
+aspects = []
+usd_per_s = 0.0005
+unverified = true
+price = "exact"
+price_source = "https://fal.ai/models/fal-ai/elevenlabs/speech-to-text"
+price_checked = "2026-11-05"
+output = "inline"
+hosts = ["fal.media"]
+lang_field = "language_code"
+extra = { tag_audio_events = false, diarize = false }
+terms = { attribution_required = false, redistribution = false, note = "ElevenLabs speech to text through fal, a closed model, $0.03 per minute of audio. `edit`, `clips`, `analyze` and `dub` use it only when no free speech row is set up, and only with `--approve` of its own plan. A data URI as audio_url is not stated on the page. Not confirmed for business use: the terms of ElevenLabs (https://elevenlabs.io/terms-of-use, updated 9 Oct 2026) allow commercial use on paid plans only, and do not say how a call through fal counts. Read 9 Nov 2026." }
+
+# Read 7 Nov 2026 from each model's fal page; no call made, so `unverified`. Sound off: scriptvox adds its own voice.
+# kling-3.0-pro ran live on 9 Nov 2026 (5 clips in one `make`, text to video, cost as planned), so it is not `unverified`.
+[[generator]]
+name = "kling-3.0-pro"
+gateway = "fal"
+kind = "video.gen"
+key = "fal"
+t2v = "fal-ai/kling-video/v3/pro/text-to-video"
+durations = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+aspects = ["16:9", "9:16", "1:1"]
+usd_per_s = 0.112
+price = "exact"
+price_source = "https://fal.ai/models/fal-ai/kling-video/v3/pro/text-to-video"
+price_checked = "2026-11-07"
+output = "video.url"
+hosts = ["fal.media"]
+duration_string = true
+extra = { generate_audio = false }
+terms = { attribution_required = false, redistribution = false, note = "Kling 3.0 Pro through fal, a closed model. Not confirmed for business use: the fal page tags it for commercial use. Kling's own terms (https://kling.ai/docs/user-policy, updated 21 Apr 2026) ask for written permission for commercial use, so read both before business use. Read 9 Nov 2026. $0.112 a second with sound off, $0.168 with sound." }
+
+[[generator]]
+name = "seedance-2-fal"
+gateway = "fal"
+kind = "video.gen"
+key = "fal"
+t2v = "bytedance/seedance-2.0/text-to-video"
+durations = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+aspects = ["21:9", "16:9", "4:3", "1:1", "3:4", "9:16"]
+usd_per_s = 0.3034
+unverified = true
+price = "base"
+price_source = "https://fal.ai/models/bytedance/seedance-2.0/text-to-video"
+price_checked = "2026-11-07"
+output = "video.url"
+hosts = ["fal.media"]
+duration_string = true
+extra = { generate_audio = false, resolution = "720p" }
+terms = { attribution_required = false, redistribution = false, note = "Seedance 2.0 through fal, a closed model, at 720p. The page prices $0.3034 a second with sound and does not state a price with sound off, so the price is an estimate. Not confirmed for business use: the fal page tags it for commercial use, and no terms for outputs were found on https://seed.bytedance.com/en/seedance2_0. Read 9 Nov 2026." }
+
+[[generator]]
+name = "sync-lipsync-2-fal"
+gateway = "fal"
+kind = "lipsync"
+key = "fal"
+t2v = "fal-ai/sync-lipsync/v2"
+durations = []
+aspects = []
+usd_per_s = 0.0
+usd_per_input_s = 0.05
+unverified = true
+price = "exact"
+price_source = "https://fal.ai/models/fal-ai/sync-lipsync/v2"
+price_checked = "2026-11-07"
+output = "video.url"
+hosts = ["fal.media"]
+terms = { attribution_required = false, redistribution = false, note = "lipsync-2 through fal, a closed model, $3 a minute. Not confirmed for business use: the fal page says commercial use is permitted with its Partner designation, and the terms of Sync Labs (https://sync.so/terms, revised 6 Jun 2024) do not cover outputs. Read 9 Nov 2026. Use a person's face and voice only with their consent." }
+
+# Read 7 Nov 2026 from each model's fal listing and input schema; no call made, so `unverified`. Text to video only.
+[[generator]]
+name = "kling-4.0-fal"
+gateway = "fal"
+kind = "video.gen"
+key = "fal"
+t2v = "kling/v4/text-to-video"
+durations = [3, 4, 5, 6, 8, 10, 12, 15, 20, 30]
+aspects = ["16:9", "9:16", "1:1", "21:9"]
+usd_per_s = 0.235
+unverified = true
+price = "exact"
+price_source = "https://fal.ai/models/kling/v4/text-to-video"
+price_checked = "2026-11-07"
+output = "video.url"
+hosts = ["fal.media"]
+extra = { resolution = "1080p" }
+terms = { attribution_required = false, redistribution = false, note = "Kling 4.0 through fal, a closed model, at 1080p. Not confirmed for business use: the fal listing tags it for commercial use. Kling's own terms (https://kling.ai/docs/user-policy, updated 21 Apr 2026) ask for written permission for commercial use, so read both before business use. Read 9 Nov 2026. A 720p call costs $0.157 a second." }
+
+[[generator]]
+name = "luma-ray-3.2-fal"
+gateway = "fal"
+kind = "video.gen"
+key = "fal"
+t2v = "luma/agent/ray/v3.2/text-to-video"
+durations = [5, 10]
+aspects = ["3:4", "4:3", "1:1", "9:16", "16:9", "21:9"]
+usd_per_s = 0.2
+unverified = true
+price = "exact"
+price_source = "https://fal.ai/models/luma/agent/ray/v3.2/text-to-video"
+price_checked = "2026-11-07"
+output = "video.url"
+hosts = ["fal.media"]
+duration_suffix = "s"
+extra = { resolution = "720p" }
+terms = { attribution_required = false, redistribution = false, note = "Luma Ray 3.2 through fal, a closed model, at 720p. Not confirmed for business use: the fal listing tags it for commercial use, and the terms of Luma (https://lumalabs.ai/legal/tos, updated 14 May 2026) allow commercial use only of output made during an active subscription. Read 9 Nov 2026." }
+
+[[generator]]
+name = "gemini-omni-flash-fal"
+gateway = "fal"
+kind = "video.gen"
+key = "fal"
+t2v = "google/gemini-omni-flash/v1.2/text-to-video"
+durations = [3, 4, 5, 6, 8, 10, 12, 15]
+aspects = ["16:9", "9:16"]
+usd_per_s = 0.0819
+unverified = true
+price = "exact"
+price_source = "https://fal.ai/models/google/gemini-omni-flash/v1.2/text-to-video"
+price_checked = "2026-11-07"
+output = "video.url"
+hosts = ["fal.media"]
+extra = { resolution = "720p" }
+terms = { attribution_required = false, redistribution = false, note = "Gemini Omni Flash 1.2 through fal, a closed model, at 720p. Native sound is in the price and scriptvox adds its own voice. Not confirmed for business use: the fal listing tags it for commercial use, and Google's terms (https://aistudio.google.com/docs/terms, effective 23 Mar 2026) claim no ownership and have no clause on commercial use. Read 9 Nov 2026." }

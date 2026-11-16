@@ -1,0 +1,82 @@
+---
+source: crates/scriptvox/tests/discovery.rs
+expression: "v[\"providers\"]"
+---
+[
+  {
+    "business_use": "Business use yes",
+    "cost": "free",
+    "key": "PEXELS_API_KEY",
+    "key_set": false,
+    "kind": "stock.video",
+    "name": "pexels",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": true,
+      "note": "Pexels licence: free to use, no attribution needed, do not resell or redistribute as stock",
+      "redistribution": false
+    },
+    "runnable": false,
+    "service": "free external API, your own key PEXELS_API_KEY",
+    "site": "Pexels",
+    "why_not": "no pexels key. Run `scriptvox keys set pexels` in your terminal."
+  },
+  {
+    "business_use": "Business use yes",
+    "cost": "free",
+    "key": "PIXABAY_API_KEY",
+    "key_set": false,
+    "kind": "stock.video",
+    "name": "pixabay",
+    "network": true,
+    "output_terms": {
+      "attribution_required": false,
+      "commercial": true,
+      "note": "Pixabay Content Licence: free to use, do not sell or redistribute unaltered",
+      "redistribution": false
+    },
+    "runnable": false,
+    "service": "free external API, your own key PIXABAY_API_KEY",
+    "site": "Pixabay",
+    "why_not": "no pixabay key. Run `scriptvox keys set pixabay` in your terminal."
+  },
+  {
+    "business_use": "Not confirmed",
+    "cost": "free",
+    "key": null,
+    "key_set": true,
+    "kind": "stock.video",
+    "name": "commons",
+    "network": true,
+    "output_terms": {
+      "attribution_required": true,
+      "commercial": null,
+      "note": "Terms per file: CC0, public domain or CC BY forms, read from each file's page",
+      "redistribution": false
+    },
+    "runnable": true,
+    "service": "free external API, no key",
+    "site": "Wikimedia Commons",
+    "why_not": null
+  },
+  {
+    "business_use": "Not confirmed",
+    "cost": "free",
+    "key": null,
+    "key_set": true,
+    "kind": "stock.video",
+    "name": "archive",
+    "network": true,
+    "output_terms": {
+      "attribution_required": true,
+      "commercial": null,
+      "note": "Terms per file: the licence its uploader states on the item",
+      "redistribution": false
+    },
+    "runnable": true,
+    "service": "free external API, no key",
+    "site": "Internet Archive",
+    "why_not": null
+  }
+]

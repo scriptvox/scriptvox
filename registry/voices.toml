@@ -1,0 +1,346 @@
+# Voice registry (PLAN-R1 §5). Data, not code: a new voice is a new row.
+# terms: shown in every `explain` line for the row. network: needs the internet.
+
+[[voice]]
+engine = "edge"
+id = "en-US-AndrewNeural"
+lang = "en"
+gender = "male"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "en-US-AvaNeural"
+lang = "en"
+gender = "female"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "ar-AE-HamdanNeural"
+lang = "ar"
+gender = "male"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "ar-AE-FatimaNeural"
+lang = "ar"
+gender = "female"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "ar-SA-HamedNeural"
+lang = "ar"
+gender = "male"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+# Spanish, French, German, Portuguese and Indonesian (docs/specs/latin-languages.md). Ids from the live voice list, 13 Nov 2026.
+[[voice]]
+engine = "edge"
+id = "es-ES-AlvaroNeural"
+lang = "es"
+gender = "male"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "es-ES-ElviraNeural"
+lang = "es"
+gender = "female"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "fr-FR-HenriNeural"
+lang = "fr"
+gender = "male"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "fr-FR-DeniseNeural"
+lang = "fr"
+gender = "female"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "de-DE-ConradNeural"
+lang = "de"
+gender = "male"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "de-DE-KatjaNeural"
+lang = "de"
+gender = "female"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "pt-BR-AntonioNeural"
+lang = "pt"
+gender = "male"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "pt-BR-FranciscaNeural"
+lang = "pt"
+gender = "female"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "id-ID-ArdiNeural"
+lang = "id"
+gender = "male"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "edge"
+id = "id-ID-GadisNeural"
+lang = "id"
+gender = "female"
+network = true
+cost = "free"
+timing = "exact"
+terms = "unofficial, personal or non-commercial, may break"
+commercial = false
+
+[[voice]]
+engine = "elevenlabs"
+id = "21m00Tcm4TlvDq8ikWAM"
+model = "eleven_multilingual_v2"
+lang = "en,ar"
+gender = "any"
+network = true
+cost = "paid"
+timing = "exact"
+terms = "commercial use on paid plans, see elevenlabs.io/terms"
+commercial = true
+key = "ELEVENLABS_API_KEY"
+# Estimate for plans; the provider bill is the truth.
+usd_per_1k_chars = 0.08
+price_checked = "2026-11-06"
+price_source = "https://elevenlabs.io/pricing/api"
+
+# Kokoro: local, opt-in (`scriptvox setup voice-local`). English only in v0.1.
+[[voice]]
+engine = "kokoro"
+id = "af_heart"
+lang = "en"
+gender = "female"
+network = false
+cost = "free"
+timing = "estimated"
+terms = "local; Kokoro model Apache-2.0; G2P GPL-3.0 (separate plugin process)"
+commercial = true
+
+[[voice]]
+engine = "kokoro"
+id = "am_michael"
+lang = "en"
+gender = "male"
+network = false
+cost = "free"
+timing = "estimated"
+terms = "local; Kokoro model Apache-2.0; G2P GPL-3.0 (separate plugin process)"
+commercial = true
+
+# The same voices in pure Rust, on the CPU (`scriptvox setup voice-rust`, about 332 MB). Chosen with `--tts kokoro-rust`.
+[[voice]]
+engine = "kokoro-rust"
+id = "af_heart"
+lang = "en"
+gender = "female"
+network = false
+cost = "free"
+timing = "estimated"
+terms = "local; Kokoro model Apache-2.0; CMUdict BSD-2-Clause; no GPL part"
+commercial = true
+# A `say` term with an IPA form is said with those sounds (American English sounds only).
+takes_ipa = true
+
+[[voice]]
+engine = "kokoro-rust"
+id = "am_michael"
+lang = "en"
+gender = "male"
+network = false
+cost = "free"
+timing = "estimated"
+terms = "local; Kokoro model Apache-2.0; CMUdict BSD-2-Clause; no GPL part"
+commercial = true
+# A `say` term with an IPA form is said with those sounds (American English sounds only).
+takes_ipa = true
+
+# Open voices on your own GPU service (services/gen, audio image): Chatterbox Multilingual speaks, Whisper large-v3 times the words.
+# Free, MIT. Needs `scriptvox keys set selfhost` and your service's CA (see the selfhost generator rows). Clone only with consent.
+[[voice]]
+engine = "selfhost"
+id = "chatterbox-ar"
+lang = "ar"
+gender = "built-in (one voice; clone a consented sample for others)"
+network = true
+cost = "free"
+timing = "aligned"
+terms = "Chatterbox Multilingual (MIT) on self-hosted GPUs, watermarked output; word times from Whisper"
+key = "SCRIPTVOX_SELFHOST_KEY"
+commercial = true
+
+[[voice]]
+engine = "selfhost"
+id = "chatterbox-en"
+lang = "en"
+gender = "built-in (one voice; clone a consented sample for others)"
+network = true
+cost = "free"
+timing = "aligned"
+terms = "Chatterbox Multilingual (MIT) on self-hosted GPUs, watermarked output; word times from Whisper"
+key = "SCRIPTVOX_SELFHOST_KEY"
+commercial = true
+
+# Your own speech row in the five Latin languages (docs/specs/voice-services.md): a `tts` row in generators.toml speaks, the
+# speech to text row times the words. Not run live: the rate of your service is not measured here.
+[[voice]]
+engine = "selfhost"
+id = "own-es"
+lang = "es"
+gender = "the voice of your own speech row"
+network = true
+cost = "free"
+timing = "aligned"
+terms = "your own speech service; its terms are on its row in generators.toml; word times from the speech to text row"
+key = "SCRIPTVOX_SELFHOST_KEY"
+commercial = true
+
+[[voice]]
+engine = "selfhost"
+id = "own-fr"
+lang = "fr"
+gender = "the voice of your own speech row"
+network = true
+cost = "free"
+timing = "aligned"
+terms = "your own speech service; its terms are on its row in generators.toml; word times from the speech to text row"
+key = "SCRIPTVOX_SELFHOST_KEY"
+commercial = true
+
+[[voice]]
+engine = "selfhost"
+id = "own-de"
+lang = "de"
+gender = "the voice of your own speech row"
+network = true
+cost = "free"
+timing = "aligned"
+terms = "your own speech service; its terms are on its row in generators.toml; word times from the speech to text row"
+key = "SCRIPTVOX_SELFHOST_KEY"
+commercial = true
+
+[[voice]]
+engine = "selfhost"
+id = "own-pt"
+lang = "pt"
+gender = "the voice of your own speech row"
+network = true
+cost = "free"
+timing = "aligned"
+terms = "your own speech service; its terms are on its row in generators.toml; word times from the speech to text row"
+key = "SCRIPTVOX_SELFHOST_KEY"
+commercial = true
+
+[[voice]]
+engine = "selfhost"
+id = "own-id"
+lang = "id"
+gender = "the voice of your own speech row"
+network = true
+cost = "free"
+timing = "aligned"
+terms = "your own speech service; its terms are on its row in generators.toml; word times from the speech to text row"
+key = "SCRIPTVOX_SELFHOST_KEY"
+commercial = true
+
+[[voice]]
+engine = "none"
+id = "no-voice"
+lang = "en,ar"
+gender = "no voice: text on screen at reading pace, with music if the brief has it"
+network = false
+cost = "free"
+timing = "reading pace"
+terms = "no voice is made"
+commercial = true
+
+# No voice in the five Latin languages: its own row, so the English and Arabic lists stay as they were.
+[[voice]]
+engine = "none"
+id = "no-voice"
+lang = "es,fr,de,pt,id"
+gender = "no voice: text on screen at reading pace, with music if the brief has it"
+network = false
+cost = "free"
+timing = "reading pace"
+terms = "no voice is made"
+commercial = true
