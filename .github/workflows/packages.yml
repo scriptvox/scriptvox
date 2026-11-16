@@ -139,3 +139,22 @@ jobs:
           scriptvox demo --json --out demo.mp4 | Out-File demo.json
           if ($LASTEXITCODE -ne 0) { Get-Content demo.json; exit 1 }
           Get-Item demo.mp4
+
+  # The public bucket of this repository (`bucket/scriptvox.json`), installed as a user installs it.
+  scoop-bucket:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Install from the public bucket
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Invoke-Expression "& {$(Invoke-RestMethod get.scoop.sh)} -RunAsAdmin"
+          $env:PATH = "$env:USERPROFILE\scoop\shims;$env:PATH"
+          scoop install git
+          scoop bucket add scriptvox https://github.com/${{ github.repository }}
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          scoop install scriptvox
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          scriptvox --version
+          if ($LASTEXITCODE -ne 0) { exit 1 }

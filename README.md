@@ -104,10 +104,12 @@ Music: you can use any song or media file. The normal route is a file on your co
 |---|---|
 | Ubuntu and Debian | Download `scriptvox_0.1.0_amd64.deb` from the [release page](https://github.com/scriptvox/scriptvox/releases/latest). Then: `sudo apt install ./scriptvox_0.1.0_amd64.deb` |
 | Linux, with the script | `curl -fsSL https://github.com/scriptvox/scriptvox/releases/latest/download/install.sh -o install.sh && sh install.sh` |
+| macOS (preview) and Linux, with Homebrew | `brew install scriptvox/tap/scriptvox`. On macOS it also installs FFmpeg (`ffmpeg-full`) and uv |
 | macOS (preview), with the script | The same command as Linux. Then install FFmpeg with libass, and uv: `brew install ffmpeg-full uv` |
+| Windows, with Scoop | `scoop bucket add scriptvox https://github.com/scriptvox/scriptvox`, then `scoop install scriptvox` |
 | Windows, with the script | `irm https://github.com/scriptvox/scriptvox/releases/latest/download/install.ps1 -OutFile install.ps1; powershell -ExecutionPolicy Bypass -File install.ps1` |
 
-The Linux and Windows routes were installed and run on a real machine of that system before the release. Packages for Homebrew, Scoop and the AUR come in a later release.
+Each route was installed and run on a real machine of that system. The AUR package comes in a later release.
 
 The Windows program is not signed. Windows can show a warning for a file that you download in a browser. The script installs it without that warning.
 

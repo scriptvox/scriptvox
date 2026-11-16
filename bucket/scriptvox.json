@@ -1,0 +1,14 @@
+{
+  "version": "0.1.0",
+  "description": "Command-line tool that makes a narrated, captioned video from a script",
+  "homepage": "https://github.com/scriptvox/scriptvox",
+  "license": "Apache-2.0",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/scriptvox/scriptvox/releases/download/v0.1.0/scriptvox-0.1.0-x86_64-pc-windows-gnullvm.zip",
+      "hash": "6619755fed7874488636951afa4f1c4b905021e6f2afbb96f92c72537bb26f50",
+      "extract_dir": "scriptvox-0.1.0-x86_64-pc-windows-gnullvm"
+    }
+  },
+  "bin": "scriptvox.exe"
+}
