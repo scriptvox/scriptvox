@@ -580,25 +580,45 @@ pub fn local_host(url: &str) -> bool {
         .is_ok_and(|mut addrs| addrs.any(|a| local_ip(a.ip())))
 }
 
-/// An address in a private, loopback, link-local, shared or unspecified range.
+/// An address in a private, loopback, link-local, shared, reserved, multicast or unspecified range, also when it is
+/// carried inside an IPv6 form (mapped, compatible, NAT64 64:ff9b::/96 and 64:ff9b:1::/48, 6to4 2002::/16).
 fn local_ip(ip: std::net::IpAddr) -> bool {
+    use std::net::{IpAddr, Ipv4Addr};
     match ip {
-        std::net::IpAddr::V4(a) => {
+        IpAddr::V4(a) => {
+            let o = a.octets();
             a.is_private()
                 || a.is_loopback()
                 || a.is_link_local()
                 || a.is_unspecified()
                 || a.is_broadcast()
-                // 100.64.0.0/10, shared address space
-                || (a.octets()[0] == 100 && (a.octets()[1] & 0xc0) == 64)
+                || a.is_multicast()
+                || o[0] == 0 // 0.0.0.0/8
+                || (o[0] == 100 && (o[1] & 0xc0) == 64) // 100.64.0.0/10, shared address space
+                || (o[0] == 192 && o[1] == 0 && o[2] == 0) // 192.0.0.0/24
+                || (o[0] == 198 && (o[1] & 0xfe) == 18) // 198.18.0.0/15
+                || o[0] >= 240 // 240.0.0.0/4
         }
-        std::net::IpAddr::V6(a) => {
+        IpAddr::V6(a) => {
+            let g = a.segments();
+            let v4 = |hi: u16, lo: u16| {
+                local_ip(IpAddr::V4(Ipv4Addr::new(
+                    (hi >> 8) as u8,
+                    hi as u8,
+                    (lo >> 8) as u8,
+                    lo as u8,
+                )))
+            };
             a.is_loopback()
                 || a.is_unspecified()
-                || (a.segments()[0] & 0xfe00) == 0xfc00
-                || (a.segments()[0] & 0xffc0) == 0xfe80
-                || a.to_ipv4_mapped()
-                    .is_some_and(|v4| local_ip(std::net::IpAddr::V4(v4)))
+                || a.is_multicast()
+                || (g[0] & 0xfe00) == 0xfc00
+                || (g[0] & 0xffc0) == 0xfe80
+                // ::a.b.c.d (compatible) and ::ffff:a.b.c.d (mapped)
+                || (g[..5] == [0; 5] && (g[5] == 0 || g[5] == 0xffff) && v4(g[6], g[7]))
+                || (g[0] == 0x64 && g[1] == 0xff9b && g[2..6] == [0; 4] && v4(g[6], g[7]))
+                || (g[0] == 0x64 && g[1] == 0xff9b && g[2] == 1)
+                || (g[0] == 0x2002 && v4(g[1], g[2]))
         }
     }
 }
@@ -986,5 +1006,41 @@ mod public_agent_tests {
             .call()
             .is_err_and(|e| e.to_string().contains("private address")));
         let _ = t.join();
+    }
+}
+
+#[cfg(test)]
+mod local_ip_tests {
+    #[test]
+    fn private_v4_inside_v6_forms_and_reserved_ranges_are_local() {
+        for a in [
+            "::ffff:10.0.0.1",
+            "::10.0.0.1",
+            "64:ff9b::a00:1",
+            "64:ff9b:1::1",
+            "2002:a00:1::",
+            "2002:7f00:1::",
+            "ff02::1",
+            "0.1.2.3",
+            "192.0.0.8",
+            "198.18.0.1",
+            "240.0.0.1",
+            "224.0.0.1",
+            "127.0.0.1",
+            "169.254.169.254",
+            "fd00::1",
+            "fe80::1",
+        ] {
+            assert!(super::local_ip(a.parse().unwrap()), "{a}");
+        }
+        for a in [
+            "8.8.8.8",
+            "2606:4700::1111",
+            "64:ff9b::808:808",
+            "2002:808:808::",
+            "1.1.1.1",
+        ] {
+            assert!(!super::local_ip(a.parse().unwrap()), "{a}");
+        }
     }
 }

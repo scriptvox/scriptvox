@@ -107,15 +107,19 @@ release-check version="0.1.0":
 
 # Static Linux binary (musl), for the release tarball. Needs the musl cross gcc in ~/.local/opt.
 musl := env("HOME") + "/.local/opt/x86_64-linux-musl-cross/bin/x86_64-linux-musl-gcc"
+# A release binary holds no path of the build machine: the home folder (user name) becomes /build.
+remap := "--remap-path-prefix=" + env("HOME") + "=/build"
 build-musl:
-    CC_x86_64_unknown_linux_musl={{musl}} CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER={{musl}} {{cargo}} build --release {{jobs}} --target x86_64-unknown-linux-musl
+    CC_x86_64_unknown_linux_musl={{musl}} CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER={{musl}} CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="{{remap}}" {{cargo}} build --release {{jobs}} --target x86_64-unknown-linux-musl
     ls -la target/x86_64-unknown-linux-musl/release/scriptvox
+    @! grep -q "$HOME" target/x86_64-unknown-linux-musl/release/scriptvox || { echo "the binary holds the home path"; exit 1; }
 
 # Windows exe, cross-built with llvm-mingw (no MSVC licence). The C runtime is linked statically.
 mingw := env("HOME") + "/.local/opt/llvm-mingw-20261020-ucrt-ubuntu-22.04-x86_64/bin"
 build-windows:
-    CC_x86_64_pc_windows_gnullvm={{mingw}}/x86_64-w64-mingw32-clang AR_x86_64_pc_windows_gnullvm={{mingw}}/llvm-ar CARGO_TARGET_X86_64_PC_WINDOWS_GNULLVM_LINKER={{mingw}}/x86_64-w64-mingw32-clang CARGO_TARGET_X86_64_PC_WINDOWS_GNULLVM_RUSTFLAGS="-C target-feature=+crt-static" PATH={{mingw}}:$PATH {{cargo}} build --release {{jobs}} --target x86_64-pc-windows-gnullvm
+    CC_x86_64_pc_windows_gnullvm={{mingw}}/x86_64-w64-mingw32-clang AR_x86_64_pc_windows_gnullvm={{mingw}}/llvm-ar CARGO_TARGET_X86_64_PC_WINDOWS_GNULLVM_LINKER={{mingw}}/x86_64-w64-mingw32-clang CARGO_TARGET_X86_64_PC_WINDOWS_GNULLVM_RUSTFLAGS="-C target-feature=+crt-static {{remap}}" PATH={{mingw}}:$PATH {{cargo}} build --release {{jobs}} --target x86_64-pc-windows-gnullvm
     ls -la target/x86_64-pc-windows-gnullvm/release/scriptvox.exe
+    @! grep -q "$HOME" target/x86_64-pc-windows-gnullvm/release/scriptvox.exe || { echo "the exe holds the home path"; exit 1; }
 
 # Release tarball with the notices and a sha256 file (local; nothing is published).
 package: build-musl
