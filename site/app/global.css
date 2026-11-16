@@ -1,0 +1,104 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/* ScriptVox tokens. True black, one accent: the yellow of a burned-in caption. */
+:root,
+.dark {
+  --sv-ink: #000000;
+  --sv-chalk: #edede8;
+  --sv-smoke: #8c8c88;
+  --sv-rule: #1c1c1c;
+  --sv-caption: #ffd84a;
+
+  --color-fd-background: var(--sv-ink);
+  --color-fd-foreground: var(--sv-chalk);
+  --color-fd-muted: #0a0a0a;
+  --color-fd-muted-foreground: var(--sv-smoke);
+  --color-fd-card: #050505;
+  --color-fd-card-foreground: var(--sv-chalk);
+  --color-fd-popover: #050505;
+  --color-fd-popover-foreground: var(--sv-chalk);
+  --color-fd-border: var(--sv-rule);
+  --color-fd-primary: var(--sv-caption);
+  --color-fd-primary-foreground: var(--sv-ink);
+  --color-fd-secondary: #0d0d0d;
+  --color-fd-secondary-foreground: var(--sv-chalk);
+  --color-fd-accent: #141414;
+  --color-fd-accent-foreground: var(--sv-chalk);
+  --color-fd-ring: var(--sv-caption);
+}
+
+@theme inline {
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+}
+
+html {
+  scrollbar-gutter: stable;
+  background: var(--sv-ink);
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+body {
+  background: var(--sv-ink);
+  color: var(--sv-chalk);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--sv-caption);
+  outline-offset: 3px;
+}
+
+.sv-wordmark {
+  font-weight: 800;
+  font-stretch: 125%;
+  letter-spacing: -0.01em;
+}
+
+/* The caption headline: words light up as they are spoken, the way ScriptVox draws karaoke captions. */
+.sv-word {
+  color: color-mix(in srgb, var(--sv-chalk) 28%, transparent);
+  animation: sv-speak 0.35s steps(1, end) forwards;
+  animation-delay: var(--at);
+}
+@keyframes sv-speak {
+  to {
+    color: var(--sv-caption);
+  }
+}
+.sv-replay .sv-word {
+  animation-name: sv-speak-again;
+}
+@keyframes sv-speak-again {
+  to {
+    color: var(--sv-caption);
+  }
+}
+
+/* Viewfinder corners of the hero frame. */
+.sv-frame {
+  --c: 22px;
+  background:
+    linear-gradient(var(--sv-smoke), var(--sv-smoke)) top left / var(--c) 1px,
+    linear-gradient(var(--sv-smoke), var(--sv-smoke)) top left / 1px var(--c),
+    linear-gradient(var(--sv-smoke), var(--sv-smoke)) top right / var(--c) 1px,
+    linear-gradient(var(--sv-smoke), var(--sv-smoke)) top right / 1px var(--c),
+    linear-gradient(var(--sv-smoke), var(--sv-smoke)) bottom left / var(--c) 1px,
+    linear-gradient(var(--sv-smoke), var(--sv-smoke)) bottom left / 1px var(--c),
+    linear-gradient(var(--sv-smoke), var(--sv-smoke)) bottom right / var(--c) 1px,
+    linear-gradient(var(--sv-smoke), var(--sv-smoke)) bottom right / 1px var(--c);
+  background-repeat: no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sv-word {
+    animation: none;
+    color: var(--sv-caption);
+  }
+}

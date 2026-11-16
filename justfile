@@ -146,3 +146,7 @@ package-windows: build-windows
     (cd dist && python3 -m zipfile -c "$n.zip" "$n" && sha256sum "$n.zip" > "$n.zip.sha256")
     cp install.ps1 dist/
     ls -la "dist/$n.zip"
+
+# The website (docs/plan/MILESTONE-SITE.md): Next.js static export into site/out.
+site:
+    cd site && pnpm install --frozen-lockfile && pnpm build

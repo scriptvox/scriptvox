@@ -1,0 +1,5 @@
+allowBuilds:
+  esbuild: true
+  sharp: false
+minimumReleaseAgeExclude:
+  - fumadocs-mdx@15.6.3
