@@ -14,7 +14,7 @@ Songs with a traced source and a free licence, for a user who wants real music a
 |---|---|
 | Name | A wrong name stops at `plan` with exit 2 and lists the right names |
 | `plan` | One stage `music.library` with the title, composer, licence and source. When the track is not downloaded: the size, "downloads one time", and `network: true`. A plan sends no request |
-| Download | From the pinned address in `registry/music.toml`, into the content store and `.scriptvox/music/`. The sha256 must match the pinned one. A file that does not match is deleted and the run stops: "changed at its source" |
+| Download | From the pinned address in `registry/music.toml`, into the content store, and copied for the mix to `music/` in the ScriptVox data folder (never a fixed path in the project, where a planted link could redirect the write). The sha256 must match the pinned one. A file that does not match is deleted and the run stops: "changed at its source" |
 | Rerun | From the store, with no request. `--local-only` works when the track is in the store. When it is not: `needs_input`, with the built-in bed as the offline choice |
 | Credits | `Music: "<title>" by <composer>, <source> (CC0 1.0, from the ScriptVox music library)` in `credits.txt` |
 | Receipt and export | One `stock` item, `provider: "library"`, with its terms. CC0 gives `commercial: true` and no credit duty, so `commercial_ok` stays true |

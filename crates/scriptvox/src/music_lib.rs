@@ -69,6 +69,12 @@ fn file_name(t: &Track) -> String {
     format!("{}.ogg", t.name)
 }
 
+/// Where a track is copied for the mix: a folder of ScriptVox's own data, never in the project. A project can come
+/// from someone else, and a link planted at a fixed path in it would turn the copy into a write anywhere.
+pub fn dir() -> PathBuf {
+    crate::provision::data_dir().join("music")
+}
+
 /// True when the track is in the content store: `make` needs no request for it.
 pub fn cached(t: &Track) -> bool {
     crate::store::Cas::open().has(&key(t))

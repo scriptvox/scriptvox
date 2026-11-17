@@ -1588,18 +1588,16 @@ pub fn run(mut a: Args) -> Envelope {
         // A library track: from the store, or downloaded once (free, checked by its sha256). A plan sends no request.
         Some(_) if library.is_some() => match library.as_ref() {
             Some(t) if a.plan_only && !crate::music_lib::cached(t) => audio::Music::None,
-            Some(t) => {
-                match crate::music_lib::get(t, Path::new(".scriptvox/music"), a.cache_only) {
-                    Ok(p) => audio::Music::File(std::path::absolute(&p).unwrap_or(p)),
-                    Err(e) => {
-                        return fail(
-                            Exit::ProviderRetryable,
-                            e,
-                            Some("Run it again; a download resumes. Or use music calm."),
-                        )
-                    }
+            Some(t) => match crate::music_lib::get(t, &crate::music_lib::dir(), a.cache_only) {
+                Ok(p) => audio::Music::File(std::path::absolute(&p).unwrap_or(p)),
+                Err(e) => {
+                    return fail(
+                        Exit::ProviderRetryable,
+                        e,
+                        Some("Run it again; a download resumes. Or use music calm."),
+                    )
                 }
-            }
+            },
             None => audio::Music::None,
         },
         Some(name) => match audio::pick_music(name) {

@@ -525,6 +525,9 @@ fn a_library_track_from_the_store_is_the_music_and_its_source_goes_to_the_credit
     )
     .unwrap();
     assert_eq!(meta["commercial_ok"], true, "{meta}");
+    // The copy for the mix is in ScriptVox's data folder, not at a fixed path of the project.
+    assert!(d.path().join("no-data/music/picnic.ogg").is_file());
+    assert!(!d.path().join(".scriptvox/music").exists());
 }
 
 /// A wrong name lists the right ones. With --local-only, a track that is not in the store asks for the network.
@@ -581,6 +584,6 @@ fn a_library_track_is_named_right_downloaded_only_with_the_network_and_checked_b
         "{v}"
     );
     assert!(hits.load(std::sync::atomic::Ordering::SeqCst) >= 1);
-    assert!(!d.path().join(".scriptvox/music/picnic.ogg").exists());
+    assert!(!d.path().join("no-data/music/picnic.ogg").exists());
     assert!(!d.path().join("swap.mp4").exists());
 }

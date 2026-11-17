@@ -1482,7 +1482,7 @@ fn run_sdr(mut a: Args) -> Envelope {
                 )];
                 return env;
             }
-            Ok(t) => match crate::music_lib::get(&t, Path::new(".scriptvox/music"), false) {
+            Ok(t) => match crate::music_lib::get(&t, &crate::music_lib::dir(), false) {
                 Ok(p) => Some((t, std::path::absolute(&p).unwrap_or(p))),
                 Err(e) => {
                     return fail(
