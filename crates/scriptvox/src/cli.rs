@@ -138,7 +138,7 @@ pub enum Cmd {
         /// A headline shown big for the first 1.6 s (the hook).
         #[arg(long)]
         hook: Option<String>,
-        /// Music under the voice, ducked: calm, pulse (built in), a file in this project, an https address, or none.
+        /// Music under the voice, ducked: calm, pulse (built in), library:<name> (a song with a free licence, `scriptvox media music` lists them), a file in this project, an https address, or none.
         /// Any song or media file can be used (mp3, m4a, wav, or a video for its sound): the choice and the responsibility are yours.
         /// A file shorter than the video starts again; the music fades out in the last second.
         /// An address: its sound is downloaded one time through `fetch` (run `scriptvox setup fetch` first).
@@ -755,7 +755,7 @@ pub enum Cmd {
         /// sentence of the speech, in order. Needs --captions (or --captions-file).
         #[arg(long, value_name = "FILE")]
         captions_second: Option<PathBuf>,
-        /// Add a music bed under the sound; the speech ducks it: `calm`, `pulse`, a music file inside this project, or
+        /// Add a music bed under the sound; the speech ducks it: `calm`, `pulse`, `library:<name>`, a music file inside this project, or
         /// an https address (needs `scriptvox setup fetch`; one download, kept for a rerun; its source goes to
         /// `<out>.credits.txt`). Any song can be used: the choice and the responsibility are yours.
         #[arg(long)]
@@ -1162,6 +1162,13 @@ pub enum MediaCmd {
         /// Save this result (1 is the first) in scriptvox-out/open-media/.
         #[arg(long)]
         get: Option<usize>,
+    },
+    /// The music library: songs with a traced source and a free licence (CC0). Give one to make as
+    /// "music": "library:<name>"; it downloads once and is kept for a rerun.
+    Music {
+        /// Only this mood: calm, happy, chill, energetic, tense, sad or epic.
+        #[arg(long)]
+        mood: Option<String>,
     },
 }
 

@@ -989,8 +989,8 @@ pub fn run(a: Args) -> Envelope {
             json!({"kind": "music", "name": req["music"], "commercial": true, "terms": "built-in bed, made by scriptvox"}),
         ),
         Some("none") | None => {}
-        // Music from an address is a stock item of the receipt, with its own terms.
-        Some(f) if crate::fetch::is_address(f) => {}
+        // Music from an address or the library is a stock item of the receipt, with its own terms.
+        Some(f) if crate::fetch::is_address(f) || crate::music_lib::is_library(f) => {}
         Some(f) => parts.push(
             json!({"kind": "music", "name": f, "commercial": null, "terms": "supplied by the user"}),
         ),

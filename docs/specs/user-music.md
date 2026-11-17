@@ -6,6 +6,7 @@ Owner decision of 14 Nov 2026: the user can load any song, from a file or from a
 
 - One line, one time: the notice of `scriptvox setup fetch`: "fetch gets a file from any address that you give. The choice and the responsibility are yours: ScriptVox does not check the rights to a file." A JSON run has it in the field `notice`, a person at a terminal gets the line.
 - A music file of the user's own (`--music song.mp3`) shows no note.
+- For real music with clear terms, the music library (`library:<name>`, `music-library.md`) has CC0 songs with a traced source.
 - No refusal, no question and no repeated warning in `plan`, `make`, `wait` and `check`. Nothing about rights is drawn or said in the video.
 - The `plan` line of the music says what the mix does: the source, the cut, the loop, the fade and the level.
 - Licence data stays in `metadata.json`, `credits.txt` and the listing commands. For a file of the user's own, the entry in `metadata.json` says "supplied by the user". For music from an address with no licence stated, the note is "no licence stated; the user gave this address".

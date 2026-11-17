@@ -437,3 +437,150 @@ fn a_broken_music_file_is_named_with_a_fix_line() {
         );
     }
 }
+
+/// A file server on loopback that answers every request with `body`, and counts the requests.
+fn serve(body: Vec<u8>) -> (String, std::sync::Arc<std::sync::atomic::AtomicUsize>) {
+    use std::io::{BufRead, BufReader, Write};
+    let l = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+    let base = format!("http://127.0.0.1:{}", l.local_addr().unwrap().port());
+    let hits = std::sync::Arc::new(std::sync::atomic::AtomicUsize::new(0));
+    let h = hits.clone();
+    std::thread::spawn(move || {
+        for s in l.incoming().flatten() {
+            h.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+            let mut r = BufReader::new(s.try_clone().unwrap());
+            let mut line = String::new();
+            while r.read_line(&mut line).is_ok_and(|n| n > 2) {
+                line.clear();
+            }
+            let mut w = s;
+            let _ = write!(
+                w,
+                "HTTP/1.1 200 OK\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+                body.len()
+            );
+            let _ = w.write_all(&body);
+        }
+    });
+    (base, hits)
+}
+
+/// The music library (docs/specs/music-library.md). A track in the content store is used with no request: the music
+/// is the sound of the video, the credits name the title, the composer, the source and the licence, and `export`
+/// says the video may be used commercially. The store copy is put there by the test (the real file needs the network).
+#[test]
+fn a_library_track_from_the_store_is_the_music_and_its_source_goes_to_the_credits() {
+    let Some(ff) = common::ready() else { return };
+    let d = tempfile::tempdir().unwrap();
+    song(&ff, d.path(), "seed.ogg", &["-c:a", "libvorbis"]);
+    let t = scriptvox::music_lib::find("library:picnic").unwrap();
+    let store = scriptvox::store::Cas::new(d.path().join("no-data").join("cache"));
+    store
+        .put(
+            &scriptvox::music_lib::key(&t),
+            "music.library",
+            "1",
+            &[("picnic.ogg", &d.path().join("seed.ogg"))],
+            json!({}),
+        )
+        .unwrap();
+    let (code, plan) = sv(
+        &ff,
+        d.path(),
+        "plan",
+        "lib",
+        &no_words("library:picnic", 5.0),
+    );
+    assert_eq!(code, Some(0), "{plan}");
+    let stage = plan.to_string();
+    assert!(
+        stage.contains("music.library") && stage.contains("Go to the Picnic"),
+        "{plan}"
+    );
+    let v = made(&ff, d.path(), "lib", &no_words("library:picnic", 5.0));
+    let out = d.path().join("lib.mp4");
+    assert!((length(&ff, &out) - 5.0).abs() < 0.2, "{v}");
+    assert!(
+        level(&ff, &out, 0.5, 3.0, 440) > -40.0,
+        "the track is the sound: {v}"
+    );
+    let credits = std::fs::read_to_string(d.path().join("lib.credits.txt")).unwrap();
+    assert!(
+        credits.contains("Go to the Picnic")
+            && credits.contains("Loyalty Freak Music")
+            && credits.contains("CC0"),
+        "{credits}"
+    );
+    let run = v["run_id"].as_str().unwrap();
+    let o = common::bin()
+        .current_dir(d.path())
+        .env("SCRIPTVOX_DATA", d.path().join("no-data"))
+        .env("SCRIPTVOX_CONFIG", d.path().join("cfg"))
+        .args(["export", run, "--json"])
+        .output()
+        .unwrap();
+    let ex: Value = serde_json::from_slice(&o.stdout).unwrap();
+    let meta: Value = serde_json::from_slice(
+        &std::fs::read(ex["artifacts"]["metadata"].as_str().unwrap()).unwrap(),
+    )
+    .unwrap();
+    assert_eq!(meta["commercial_ok"], true, "{meta}");
+}
+
+/// A wrong name lists the right ones. With --local-only, a track that is not in the store asks for the network.
+/// A file that does not match the pinned sha256 is refused and not kept.
+#[test]
+fn a_library_track_is_named_right_downloaded_only_with_the_network_and_checked_by_its_hash() {
+    let Some(ff) = common::ready() else { return };
+    let d = tempfile::tempdir().unwrap();
+    let (code, v) = sv(&ff, d.path(), "plan", "bad", &no_words("library:rock", 5.0));
+    assert_eq!(code, Some(2), "{v}");
+    assert!(
+        v["error"]["fix"].as_str().unwrap().contains("picnic"),
+        "{v}"
+    );
+    let (code, v) = sv(
+        &ff,
+        d.path(),
+        "make",
+        "off",
+        &no_words("library:picnic", 5.0),
+    );
+    assert_eq!(code, Some(10), "{v}");
+    assert_eq!(v["status"], "needs_input", "{v}");
+    song(&ff, d.path(), "other.ogg", &["-c:a", "libvorbis"]);
+    let (base, hits) = serve(std::fs::read(d.path().join("other.ogg")).unwrap());
+    std::fs::write(
+        d.path().join("swap.json"),
+        no_words("library:picnic", 5.0).to_string(),
+    )
+    .unwrap();
+    let o = common::bin()
+        .current_dir(d.path())
+        .env("SCRIPTVOX_FFMPEG", &ff)
+        .env("SCRIPTVOX_DATA", d.path().join("no-data"))
+        .env("SCRIPTVOX_CONFIG", d.path().join("cfg"))
+        .env("SCRIPTVOX_MUSIC_LIBRARY_BASE", &base)
+        .args([
+            "make",
+            "--brief",
+            "swap.json",
+            "--out",
+            "swap.mp4",
+            "--json",
+        ])
+        .output()
+        .unwrap();
+    let v: Value = serde_json::from_slice(&o.stdout).unwrap();
+    assert!(!v["ok"].as_bool().unwrap(), "{v}");
+    assert!(
+        v["error"]["message"]
+            .as_str()
+            .unwrap()
+            .contains("changed at its source"),
+        "{v}"
+    );
+    assert!(hits.load(std::sync::atomic::Ordering::SeqCst) >= 1);
+    assert!(!d.path().join(".scriptvox/music/picnic.ogg").exists());
+    assert!(!d.path().join("swap.mp4").exists());
+}

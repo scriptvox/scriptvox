@@ -1,0 +1,149 @@
+# The music library (MILESTONE-PARITY 12.5, docs/specs/music-library.md). Each track was traced on 17 Nov 2026:
+# the Wikimedia Commons file names its Free Music Archive track page as the source, and that page states CC0 1.0.
+# Both composers write on their artist page that the music may be used as you want. ScriptVox ships no audio:
+# `make` downloads a track on first use, checks its sha256, and keeps it in the content store.
+# Use: "music": "library:<name>". List: `scriptvox media music`.
+
+[[track]]
+name = "serenity"
+title = "Serenity Temple"
+artist = "Komiku"
+mood = "calm"
+seconds = 96.0
+bytes = 2036245
+sha256 = "1616dd9d8ac996deee3535d575a03a98f7f0c8ecd5db441be3514982ace01893"
+url = "https://upload.wikimedia.org/wikipedia/commons/a/a7/Komiku_-_34_-_Serenity_Temple.ogg"
+page = "https://commons.wikimedia.org/wiki/File:Komiku_-_34_-_Serenity_Temple.ogg"
+source = "https://freemusicarchive.org/music/Komiku/Poupis_incredible_adventures_/Komiku_-_Poupis_incredible_adventures__-_34_Serenity_Temple"
+licence = "CC0 1.0"
+
+[[track]]
+name = "quiet-saturday"
+title = "Quiet Saturday"
+artist = "Komiku"
+mood = "calm"
+seconds = 113.1
+bytes = 1763130
+sha256 = "9f8ffb49436fb48b2c53f0f616d6f6e4b0bd52d921b233167ee952018f7941e0"
+url = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Komiku_-_57_-_Quiet_Saturday.ogg"
+page = "https://commons.wikimedia.org/wiki/File:Komiku_-_57_-_Quiet_Saturday.ogg"
+source = "https://freemusicarchive.org/music/Komiku/Poupis_incredible_adventures_/Komiku_-_Poupis_incredible_adventures__-_57_Quiet_Saturday"
+licence = "CC0 1.0"
+
+[[track]]
+name = "picnic"
+title = "Go to the Picnic"
+artist = "Loyalty Freak Music"
+mood = "happy"
+seconds = 187.0
+bytes = 3831003
+sha256 = "6cdccc32fb47ab7f819c72e591fb23c6472bae6d2b41b56208b899d022d53891"
+url = "https://upload.wikimedia.org/wikipedia/commons/0/0c/Loyalty_Freak_Music_-_01_-_Go_to_the_Picnic.ogg"
+page = "https://commons.wikimedia.org/wiki/File:Loyalty_Freak_Music_-_01_-_Go_to_the_Picnic.ogg"
+source = "https://freemusicarchive.org/music/Loyalty_Freak_Music/POSITIVE_ATTITUDE_/Loyalty_Freak_Music_-_POSITIVE_ATTITUDE__-_01_Go_to_the_Picnic"
+licence = "CC0 1.0"
+
+[[track]]
+name = "sunflower-field"
+title = "Champ de tournesol"
+artist = "Komiku"
+mood = "happy"
+seconds = 117.9
+bytes = 2117150
+sha256 = "c1d514f13d637a55f4b997a274aae3d6729dced31d2628d4900fea341236055b"
+url = "https://upload.wikimedia.org/wikipedia/commons/1/18/Komiku_-_03_-_Champ_de_tournesol.ogg"
+page = "https://commons.wikimedia.org/wiki/File:Komiku_-_03_-_Champ_de_tournesol.ogg"
+source = "https://freemusicarchive.org/music/Komiku/Its_time_for_adventure_/Komiku_-_Its_time_for_adventure_-_03_Champ_de_tournesol"
+licence = "CC0 1.0"
+
+[[track]]
+name = "chill-out"
+title = "Chill Out Theme"
+artist = "Komiku"
+mood = "chill"
+seconds = 187.6
+bytes = 4453304
+sha256 = "75cf291f5f2dd55a424a4d92020e47bd27d93a40fbe04cbb7d745b9a713ccbb9"
+url = "https://upload.wikimedia.org/wikipedia/commons/a/a0/Komiku_-_02_-_Chill_Out_Theme.ogg"
+page = "https://commons.wikimedia.org/wiki/File:Komiku_-_02_-_Chill_Out_Theme.ogg"
+source = "https://freemusicarchive.org/music/Komiku/Its_time_for_adventure__vol_2/Komiku_-_Its_time_for_adventure_vol_2_-_02_Chill_Out_Theme"
+licence = "CC0 1.0"
+
+[[track]]
+name = "take-a-break"
+title = "Take A Break"
+artist = "Loyalty Freak Music"
+mood = "chill"
+seconds = 125.8
+bytes = 2486506
+sha256 = "d667016640ad6b239943fa1d19867991c02a4a9bae6ae9b8b65326122c3575a9"
+url = "https://upload.wikimedia.org/wikipedia/commons/d/dc/Loyalty_Freak_Music_-_06_-_Take_A_Break.ogg"
+page = "https://commons.wikimedia.org/wiki/File:Loyalty_Freak_Music_-_06_-_Take_A_Break.ogg"
+source = "https://freemusicarchive.org/music/Loyalty_Freak_Music/ROLLER_DISCO_DANCE_DANCE/Loyalty_Freak_Music_-_ROLLER_DISCO_DANCE_DANCE_-_06_Take_A_Break"
+licence = "CC0 1.0"
+
+[[track]]
+name = "beat-explosion"
+title = "High Technologic Beat Explosion"
+artist = "Loyalty Freak Music"
+mood = "energetic"
+seconds = 221.4
+bytes = 4980514
+sha256 = "63080c2e569a04bcc20ffaa0236798c7eb4a60402b02c7df438969811cd9f7d1"
+url = "https://upload.wikimedia.org/wikipedia/commons/a/ad/Loyalty_Freak_Music_-_02_-_High_Technologic_Beat_Explosion.ogg"
+page = "https://commons.wikimedia.org/wiki/File:Loyalty_Freak_Music_-_02_-_High_Technologic_Beat_Explosion.ogg"
+source = "https://freemusicarchive.org/music/Loyalty_Freak_Music/ROBOT_DANCE_/Loyalty_Freak_Music_-_ROBOT_DANCE__-_02_High_Technologic_Beat_Explosion"
+licence = "CC0 1.0"
+
+[[track]]
+name = "cant-stop-my-feet"
+title = "Cant Stop My Feet"
+artist = "Loyalty Freak Music"
+mood = "energetic"
+seconds = 185.6
+bytes = 3987831
+sha256 = "8484df80ac0d78dba17047061d3509b59735f45592bb54fb174ae46bbb5f9319"
+url = "https://upload.wikimedia.org/wikipedia/commons/2/22/Loyalty_Freak_Music_-_04_-_Cant_Stop_My_Feet_.ogg"
+page = "https://commons.wikimedia.org/wiki/File:Loyalty_Freak_Music_-_04_-_Cant_Stop_My_Feet_.ogg"
+source = "https://freemusicarchive.org/music/Loyalty_Freak_Music/ROLLER_DISCO_DANCE_DANCE/Loyalty_Freak_Music_-_ROLLER_DISCO_DANCE_DANCE_-_04_Cant_Stop_My_Feet_"
+licence = "CC0 1.0"
+
+[[track]]
+name = "tension"
+title = "Tension"
+artist = "Komiku"
+mood = "tense"
+seconds = 201.0
+bytes = 3896771
+sha256 = "bdd3a9d7fc134c72bddd3732c307b823ad3b16e80b36c5a3cc63a47f2a8d14db"
+url = "https://upload.wikimedia.org/wikipedia/commons/d/df/Komiku_-_12_-_Tension.ogg"
+page = "https://commons.wikimedia.org/wiki/File:Komiku_-_12_-_Tension.ogg"
+source = "https://freemusicarchive.org/music/Komiku/Its_time_for_adventure__vol_2/Komiku_-_Its_time_for_adventure_vol_2_-_12_Tension"
+licence = "CC0 1.0"
+
+[[track]]
+name = "sad-piano"
+title = "Sad walk with sad piano"
+artist = "Komiku"
+mood = "sad"
+seconds = 191.3
+bytes = 3795577
+sha256 = "406180aa03999e7a5bed664bc40e0d422c483447f83cfb638fd6925a71721b74"
+url = "https://upload.wikimedia.org/wikipedia/commons/e/ea/Komiku_-_32_-_Sad_walk_with_sad_piano.ogg"
+page = "https://commons.wikimedia.org/wiki/File:Komiku_-_32_-_Sad_walk_with_sad_piano.ogg"
+source = "https://freemusicarchive.org/music/Komiku/A_Monplaisir_Best-Of__Lets_hear_that_crap/Komiku_-_A_Monplaisir_Best-of__Lets_here_that_crap_-_32_Sad_walk_with_sad_piano"
+licence = "CC0 1.0"
+
+[[track]]
+name = "something-to-save"
+title = "Something to save"
+artist = "Komiku"
+mood = "epic"
+seconds = 210.8
+bytes = 4126033
+sha256 = "ca0701814659c2da65b07ce32c7cd538b709ba7f886158ecd6b4107492637d87"
+url = "https://upload.wikimedia.org/wikipedia/commons/1/14/Komiku_-_10_-_Something_to_save.ogg"
+page = "https://commons.wikimedia.org/wiki/File:Komiku_-_10_-_Something_to_save.ogg"
+source = "https://freemusicarchive.org/music/Komiku/Its_time_for_adventure__vol_2/Komiku_-_Its_time_for_adventure_vol_2_-_10_Something_to_save"
+licence = "CC0 1.0"
+

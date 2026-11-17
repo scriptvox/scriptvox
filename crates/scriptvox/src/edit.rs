@@ -80,7 +80,7 @@ pub struct Args {
     pub label: Option<String>,
     /// Words of the speech to mark in the captions, comma separated.
     pub emphasis: Option<String>,
-    /// A music bed under the sound: "calm", "pulse", a file in this project, or an https address (`fetch.md` 10).
+    /// A music bed under the sound: "calm", "pulse", "library:<name>", a file in this project, or an https address (`fetch.md` 10).
     pub music: Option<String>,
     /// A new voice: the row for lip sync moves the mouth in the video to it, first.
     pub lipsync: Option<PathBuf>,
@@ -1460,7 +1460,44 @@ fn run_sdr(mut a: Args) -> Envelope {
         }
         None => {}
     }
-    let local_music = a.music.as_deref().filter(|_| music_url.is_none());
+    // A library track: from the store, or downloaded once and checked by its sha256 (docs/specs/music-library.md).
+    let library = match a
+        .music
+        .as_deref()
+        .filter(|m| crate::music_lib::is_library(m))
+    {
+        None => None,
+        Some(m) => match crate::music_lib::find(m) {
+            Err((msg, fix)) => return fail(Exit::Usage, msg, &fix),
+            Ok(t) if crate::plan::local_only() && !crate::music_lib::cached(&t) => {
+                let action = "This library track is not downloaded yet, and that needs the network. Run once without --local-only, or use a built-in bed.";
+                let mut env = Envelope::fail("edit", Exit::NeedsInput, action, None);
+                env.needs_input = vec![crate::voices::needs_input(
+                    "music",
+                    "dependency",
+                    action,
+                    vec![
+                        json!({"args": ["--music", "calm"], "cost_usd": 0, "note": "built-in bed, offline"}),
+                    ],
+                )];
+                return env;
+            }
+            Ok(t) => match crate::music_lib::get(&t, Path::new(".scriptvox/music"), false) {
+                Ok(p) => Some((t, std::path::absolute(&p).unwrap_or(p))),
+                Err(e) => {
+                    return fail(
+                        Exit::ProviderRetryable,
+                        e,
+                        "Run it again; a download resumes. Or use --music calm.",
+                    )
+                }
+            },
+        },
+    };
+    let local_music = a
+        .music
+        .as_deref()
+        .filter(|_| music_url.is_none() && library.is_none());
     let mut music = match local_music.map(crate::audio::pick_music) {
         None => None,
         Some(Ok(m)) => Some(m),
@@ -1468,7 +1505,7 @@ fn run_sdr(mut a: Args) -> Envelope {
             return fail(
                 Exit::Usage,
                 format!("no music {}", a.music.as_deref().unwrap_or("")),
-                "Use --music calm, --music pulse, a music file inside this project, or an https address.",
+                "Use --music calm, --music pulse, library:<name> (`scriptvox media music`), a music file inside this project, or an https address.",
             )
         }
         Some(Err(crate::audio::MusicRefused::Outside)) => {
@@ -1479,6 +1516,9 @@ fn run_sdr(mut a: Args) -> Envelope {
             )
         }
     };
+    if let Some((_, p)) = &library {
+        music = Some(crate::audio::Music::File(p.clone()));
+    }
     let sfx = match crate::edit_sfx::parse(&a.sfx) {
         Ok(c) => c,
         Err((e, fix)) => return fail(Exit::Usage, e, &fix),
@@ -2679,6 +2719,18 @@ fn run_sdr(mut a: Args) -> Envelope {
     if let Some(v) = sfx_info {
         env = env.with("sfx", v);
     }
+    // A library track: its source beside the video and in the answer. Nothing is drawn on the picture.
+    if let Some((t, _)) = &library {
+        let credits = out.with_extension("credits.txt");
+        let credits = std::path::absolute(&credits).unwrap_or(credits);
+        if std::fs::write(&credits, format!("{}\n", crate::music_lib::credit(t))).is_ok() {
+            env.artifacts.insert("credits".into(), json!(credits));
+        }
+        env = env.with(
+            "music",
+            json!({"library": t.name, "source": crate::music_lib::pick(t)}),
+        );
+    }
     // Music from an address: its source beside the video and in the answer. Nothing is drawn on the picture.
     if let Some(p) = &music_info {
         let credits = out.with_extension("credits.txt");
@@ -2834,7 +2886,7 @@ pub fn crop_cuts_text(ff: &Ffmpeg, input: &Path, shape: &str) -> Option<String> 
 fn music_file(music: &Option<String>) -> Option<PathBuf> {
     music
         .as_deref()
-        .filter(|m| !crate::fetch::is_address(m))
+        .filter(|m| !crate::fetch::is_address(m) && !crate::music_lib::is_library(m))
         .map(PathBuf::from)
 }
 

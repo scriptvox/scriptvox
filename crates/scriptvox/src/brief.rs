@@ -345,7 +345,7 @@ pub struct Brief {
     /// terms of the model are in `providers` and in `metadata.json`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ambience: Option<bool>,
-    /// calm, pulse, a music file in the project, an https address, or none. Any song or media file can be used (mp3, m4a, wav, or a video for its sound): the choice and the responsibility are yours. A file shorter than the video starts again, and the music fades out in the last second. An address: `make` downloads its sound one time through `fetch` (run `scriptvox setup fetch` first), and `plan` lists the download.
+    /// calm, pulse, library:<name> (a song with a free licence, `scriptvox media music` lists them), a music file in the project, an https address, or none. Any song or media file can be used (mp3, m4a, wav, or a video for its sound): the choice and the responsibility are yours. A file shorter than the video starts again, and the music fades out in the last second. An address: `make` downloads its sound one time through `fetch` (run `scriptvox setup fetch` first), and `plan` lists the download.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub music: Option<String>,
     /// The start of the cut of a music file or of music from an address: seconds as a number (`12.5`) or as text (`"12.5"`), or a clock (`"0:12"`).

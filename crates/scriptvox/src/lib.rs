@@ -67,6 +67,7 @@ pub mod mcp_setup;
 pub mod media;
 pub mod media_gate;
 pub mod model_add;
+pub mod music_lib;
 pub mod open_search;
 pub mod openapi;
 pub mod opentts;

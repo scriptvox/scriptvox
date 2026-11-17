@@ -703,6 +703,7 @@ fn run(mut cli: Cli, agent: bool) -> Envelope {
         Some(Cmd::Cancel { id }) => scriptvox::supervise::cancel(std::path::Path::new("."), &id),
         Some(Cmd::Media { action: MediaCmd::Add { dir } }) => media_add(&dir),
         Some(Cmd::Media { action: MediaCmd::Search { query, kind, limit, get } }) => scriptvox::open_search::run(&query, &kind, limit, get),
+        Some(Cmd::Media { action: MediaCmd::Music { mood } }) => scriptvox::music_lib::list(mood.as_deref()),
         Some(Cmd::Setup { what: Some(w), dry_run, arabic, from, .. }) if w == "speech-local" => {
             if arabic { scriptvox::speech_arabic::setup(dry_run, from.as_deref(), || setup_speech_local(dry_run)) } else { setup_speech_local(dry_run) }
         }

@@ -1037,7 +1037,7 @@
       ]
     },
     "music": {
-      "description": "calm, pulse, a music file in the project, an https address, or none. Any song or media file can be used (mp3, m4a, wav, or a video for its sound): the choice and the responsibility are yours. A file shorter than the video starts again, and the music fades out in the last second. An address: `make` downloads its sound one time through `fetch` (run `scriptvox setup fetch` first), and `plan` lists the download.",
+      "description": "calm, pulse, library:<name> (a song with a free licence, `scriptvox media music` lists them), a music file in the project, an https address, or none. Any song or media file can be used (mp3, m4a, wav, or a video for its sound): the choice and the responsibility are yours. A file shorter than the video starts again, and the music fades out in the last second. An address: `make` downloads its sound one time through `fetch` (run `scriptvox setup fetch` first), and `plan` lists the download.",
       "type": [
         "string",
         "null"

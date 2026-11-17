@@ -206,7 +206,7 @@ pub struct Args {
     pub media: Option<PathBuf>,
     /// Stock video: comma-separated search terms (one per shot, cycled), or `auto`.
     pub stock: Option<String>,
-    /// Music: `calm`, `pulse` (built-in beds), a file inside the project, an https address, or none.
+    /// Music: `calm`, `pulse` (built-in beds), `library:<name>`, a file inside the project, an https address, or none.
     pub music: Option<String>,
     /// The cut of music from an address: start and end, seconds or a clock.
     #[serde(default)]
@@ -760,7 +760,7 @@ fn media_files(a: &Args) -> Vec<PathBuf> {
     files.extend(
         a.music
             .iter()
-            .filter(|m| !crate::fetch::is_address(m))
+            .filter(|m| !crate::fetch::is_address(m) && !crate::music_lib::is_library(m))
             .map(PathBuf::from),
     );
     // The media folder: each clip or photo in it (the kinds `media::list` takes).
@@ -853,6 +853,25 @@ pub fn run(mut a: Args) -> Envelope {
             e,
             Some("Use \"card_style\": \"paper\" with a light `background` and an `accent` that is dark enough, or drop card_style.".into()),
         );
+    }
+    // A library track: a known name, and with --local-only a copy in the store (docs/specs/music-library.md).
+    if let Some(m) = a
+        .music
+        .as_deref()
+        .filter(|m| crate::music_lib::is_library(m))
+    {
+        match crate::music_lib::find(m) {
+            Err((msg, fix)) => return Envelope::fail("make", Exit::Usage, msg, Some(fix)),
+            Ok(t) if a.local_only && !crate::music_lib::cached(&t) => {
+                return needs(voices::needs_input(
+                    "music",
+                    "dependency",
+                    "This library track is not downloaded yet, and that needs the network. Run once without --local-only, or use a built-in bed.",
+                    vec![json!({"args": ["--music", "calm"], "cost_usd": 0, "note": "built-in bed, offline"})],
+                ));
+            }
+            Ok(_) => {}
+        }
     }
     // Music from an address: the checks of `fetch` that cost no request, before any other work.
     let music_url = a.music.clone().filter(|m| crate::fetch::is_address(m));
@@ -1557,17 +1576,39 @@ pub fn run(mut a: Args) -> Envelope {
             }
         },
     };
+    let library = a
+        .music
+        .as_deref()
+        .filter(|m| crate::music_lib::is_library(m))
+        .and_then(|m| crate::music_lib::find(m).ok());
     let mut music = match a.music.as_deref() {
         None | Some("none") => audio::Music::None,
         // Downloaded after the plan, with the stock files.
         Some(_) if music_url.is_some() => audio::Music::None,
+        // A library track: from the store, or downloaded once (free, checked by its sha256). A plan sends no request.
+        Some(_) if library.is_some() => match library.as_ref() {
+            Some(t) if a.plan_only && !crate::music_lib::cached(t) => audio::Music::None,
+            Some(t) => {
+                match crate::music_lib::get(t, Path::new(".scriptvox/music"), a.cache_only) {
+                    Ok(p) => audio::Music::File(std::path::absolute(&p).unwrap_or(p)),
+                    Err(e) => {
+                        return fail(
+                            Exit::ProviderRetryable,
+                            e,
+                            Some("Run it again; a download resumes. Or use music calm."),
+                        )
+                    }
+                }
+            }
+            None => audio::Music::None,
+        },
         Some(name) => match audio::pick_music(name) {
             Ok(m) => m,
             Err(audio::MusicRefused::Missing) => {
                 return fail(
                     Exit::Usage,
                     format!("no music {name}"),
-                    Some("Use --music calm, --music pulse, or a music file inside this project."),
+                    Some("Use --music calm, --music pulse, library:<name> (`scriptvox media music`), or a music file inside this project."),
                 );
             }
             Err(audio::MusicRefused::Outside) => {
@@ -1964,6 +2005,30 @@ pub fn run(mut a: Args) -> Envelope {
             ),
         });
     }
+    if let Some(t) = &library {
+        let here = crate::music_lib::cached(t);
+        stages.push(plan::Stage {
+            stage: "music",
+            tool: "music.library".into(),
+            cost_usd: 0.0,
+            network: !here,
+            explain: format!(
+                "the library track \"{}\" by {} ({}, {}){}",
+                t.title,
+                t.artist,
+                t.licence,
+                t.source,
+                if here {
+                    String::new()
+                } else {
+                    format!(
+                        "; downloads {:.1} MB one time and keeps it for a rerun",
+                        t.bytes as f64 / 1e6
+                    )
+                }
+            ),
+        });
+    }
     // The user's own music file: what the mix does with it. No stage for a built-in bed, as before.
     if let (audio::Music::File(p), None) = (&music, &music_url) {
         let cut = match music_cut {
@@ -1978,8 +2043,11 @@ pub fn run(mut a: Args) -> Envelope {
             cost_usd: 0.0,
             network: false,
             explain: format!(
-                "your file {}{cut}: it starts again when it is shorter than the video and fades out in the last second; {}; the video is set to {} LUFS",
-                p.file_name().unwrap_or_default().to_string_lossy(),
+                "{}{cut}: it starts again when it is shorter than the video and fades out in the last second; {}; the video is set to {} LUFS",
+                match &library {
+                    Some(t) => format!("the library track {}", t.name),
+                    None => format!("your file {}", p.file_name().unwrap_or_default().to_string_lossy()),
+                },
                 if has_sound_voice {
                     format!("{gap:.0} dB under the voice, and lower while the voice speaks")
                 } else {
@@ -3696,6 +3764,10 @@ pub fn run(mut a: Args) -> Envelope {
                     return env;
                 }
             }
+        }
+        if let Some(t) = &library {
+            credits.push(crate::music_lib::credit(t));
+            open_picks.push(crate::music_lib::pick(t));
         }
         if let Some(p) = music_first.take() {
             credits.push(fetch_credit(&p));
